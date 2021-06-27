@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>My Page!</title>
+        <title>HelpingSoup</title>
         <link rel="stylesheet" href="../forms.css">
     </head>
     
@@ -11,7 +11,7 @@
             <h1>Forms</h1>
             <nav>
                 <ul>
-                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="main.html">Home</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="forms.html">Forms</a></li>
@@ -31,12 +31,13 @@
                     </div>
                     <!--last name box-->
                     <div class="form-group">
-                        <label for="lastName">Last Name</label>s
+                        <label for="lastName">Last Name</label>
                         <input type="text" id="lastName" name="lastName" required>
+                        <p><br></p>
                     </div>
 
                     <!--choice between email or phone-->
-                    <span>What is your preferred method of communication?</span>
+                    <span>Method of Communication?<br></span>
                     <label for="chkYes">
                         <input type="radio" id="chkYes" name="typeofcommunication" onclick="emailorphoneshower ()" required/>
                         Email address
