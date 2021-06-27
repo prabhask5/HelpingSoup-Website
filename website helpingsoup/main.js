@@ -2,14 +2,7 @@ window.addEventListener("DOMContentLoaded",function () {
     var form = document.getElementById("my-form") //my-form variable in html
     var status = document.getElementById("status") // status id in html
 
-    function emailorphoneshower() {
-        var chkYes = document.getElementById("chkYes");
-        var chkNo = document.getElementById('chkNo');
-        var emailaddress = document.getElementById("emailaddress");
-        var phonenumber = document.getElementById('phonenumber')
-        emailaddress.style.display = chkYes.checked ? "block" : "none";
-        phonenumber.style.display = chkNo.checked ? "block" : "none";
-    }
+    
     //success and error functions after forms is submitted
     function success() {
         form.reset();
@@ -29,7 +22,14 @@ window.addEventListener("DOMContentLoaded",function () {
         ajax(form.method, form.action, data, success, error)
     });
 });
-
+function emailorphoneshower() {
+    var chkYes = document.getElementById("chkYes");
+    var chkNo = document.getElementById('chkNo');
+    var emailaddress = document.getElementById("emailaddress");
+    var phonenumber = document.getElementById('phonenumber')
+    emailaddress.style.display = chkYes.checked ? "block" : "none";
+    phonenumber.style.display = chkNo.checked ? "block" : "none";
+}
 //method for checking status of site data
 function ajax(method, url, data, success, error) {
     var xhr = new XMLHttpRequest();

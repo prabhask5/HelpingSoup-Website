@@ -15,6 +15,7 @@
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="forms.html">Forms</a></li>
+                    
                 </ul>
             </nav>
             
@@ -23,41 +24,50 @@
         <section>
             <div class="container">
                 <form action="https://formspree.io/f/xvodkwnr" method="POST" id="my-form">
+                    <!--first name box-->
                     <div class="form-group">
                         <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" name="firstName">
+                        <input type="text" id="firstName" name="firstName" required>
                     </div>
-
+                    <!--last name box-->
                     <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" name="lastName">
+                        <label for="lastName">Last Name</label>s
+                        <input type="text" id="lastName" name="lastName" required>
                     </div>
 
                     <!--choice between email or phone-->
                     <span>What is your preferred method of communication?</span>
                     <label for="chkYes">
-                        <input type="radio" id="chkYes" name="chkcommunication" onclick="emailorphoneshower ()" />
+                        <input type="radio" id="chkYes" name="typeofcommunication" onclick="emailorphoneshower ()" required/>
                         Email address
                     </label>
                     <label for="chkNo">
-                        <input type="radio" id="chkNo" name="chkcommunication" onclick="emailorphoneshower ()" />
+                        <input type="radio" id="chkNo" name="typeofcommunication" onclick="emailorphoneshower ()" required/>
                         Phone number
                     </label>
                     <hr />
-                    <div id="emailaddress" style="display: none">
-                        Email Address:
-                        <input type="text" id="txtPassportNumber" />
+                    <div class="form-group" id="emailaddress"  style="display: none">
+                        <label for="email">Email Address:</label>
+                        <input type="text" id="txtPassportNumber" name="email" required/>
                     </div>
-                    <div id="phonenumber" style="display: none;">
-                        Phone number:
-                        <input type="tel" id="telphonenumber">
+                    <div class="form-group" id="phonenumber" style="display: none;">
+                        
+                        <label for="phone">Phone number:</label>
+                        <input type="tel" id="telphonenumber" name="phone" required>
                     </div>
-                    
+                    <!--date box-->
                     <div class="form-group">
                         <label for="datebox">Date</label>
                         <input type="date" id="date" name="date" value="2021-5-20"
-                         min="2019-01-01" max="2025-12-31">
+                         min="2019-01-01" max="2025-12-31" required>
                     </div>
+                    <!--time box-->
+                    <div class="form-group">
+                        <label for="timebox">Choose a time for your pickup</label>
+                        <input type="time" id="appt" name="time" min="10:00" max="20:00" required>
+                        <small>Office hours are 10am to 8pm</small>
+                    </div>
+                    <!--message box-->
                     <div class="form-group">
                         <label for="message">Message</label>
                         <textarea name="message" id="message" cols="30" rows="10"></textarea>
