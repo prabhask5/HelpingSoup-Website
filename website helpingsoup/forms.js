@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded",function () {
   //filling inside of html error
   function error() {
       status.classList.add('error');
-      status.innerHTML = "An error has occured"
+      status.innerHTML = "An error has occured";
   }
 
 
