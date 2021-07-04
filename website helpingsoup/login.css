@@ -36,7 +36,6 @@ li{
     
 }
 section{
-    height: 65vh;
     width: 100%;
     background-color: aliceblue;
     display: flex;
@@ -47,22 +46,23 @@ section{
 .container{
     width: 90%;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 50px;
     padding: 20px;
     box-shadow: 0 0 20px #00000010;
     background-color: white;
     border-radius: 8px;
     margin-bottom: 20px;
 }
-
 .container,
 .form__input,
 .form__button {
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
+
 .form--hidden {
     display: none;
+    height: 100vh;
 }
 
 .form > *:first-child {
@@ -108,7 +108,7 @@ section{
 }
 
 .form__input:focus {
-    border-color: var(--color-primary);
+    border-color: black;
     background: #ffffff;
 }
 
