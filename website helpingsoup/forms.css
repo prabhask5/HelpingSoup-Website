@@ -58,7 +58,7 @@ section{
     width: 100%;
     margin-top: 20px;
     font-size: 20px;
-
+    margin-bottom: 1rem;
 }
 .form__title {
     margin-bottom: 2rem;
@@ -87,7 +87,7 @@ textarea{
 }
 
 .form__input:focus {
-    border-color: var(--color-primary);
+    border-color: black;
     background: #ffffff;
 }
 .form__button {
