@@ -3,6 +3,8 @@
     <head>
         <title>HelpingSoup</title>
         <link rel="stylesheet" href="../forms.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="../forms.js"></script>
     </head>
     
     <body>
@@ -27,54 +29,131 @@
                     <h1 class="form__title">Donation Form</h1>
                     <!--first name box-->
                     <div class="form-group">
-                        <input type="text" class="form__input" autofocus placeholder="First Name" required>
+                        <input
+                        type="text"
+                        class="form__input" 
+                        id="firstName"
+                        name="firstName" 
+                        autofocus 
+                        placeholder="First Name"
+                        required>
                     </div>
                     <!--last name box-->
                     <div class="form-group">
-                        <input type="text" class="form__input" autofocus placeholder="Last Name" required>
+                        <input 
+                        type="text" 
+                        class="form__input" 
+                        id="lastName"
+                        name="lastName" 
+                        autofocus 
+                        placeholder="Last Name"
+                        required>
                     </div>
                     <!--choice between email or phone-->
                     <span><br>Method of Communication?<br></span>
                     <label for="chkYes">
-                        <input type="radio" id="chkYes" name="typeofcommunication" onclick="emailorphoneshower()" required/>
+                        <input 
+                        type="radio" 
+                        id="chkYes" 
+                        name="typeofcommunication" 
+                        onclick="emailorphoneshower()"
+                        required/>
                         Email address
                     </label>
                     <label for="chkNo">
-                        <input type="radio" id="chkNo" name="typeofcommunication" onclick="emailorphoneshower()" required/>
+                        <input 
+                        type="radio" 
+                        id="chkNo" 
+                        name="typeofcommunication" 
+                        onclick="emailorphoneshower()"
+                        required/>
                         Phone number
                     </label>
                     <hr />
                     <div class="form-group" id="emailaddress"  style="display: none">
-                        <input type="text" class="form__input" autofocus placeholder="Email" required>
+                        <input 
+                        type="text" 
+                        class="form__input"
+                        id="email"
+                        name="email" 
+                        autofocus 
+                        placeholder="email@example.com">
                     </div>
                     <div class="form-group" id="phonenumber" style="display: none;">
-                        <input type="text" class="form__input" autofocus placeholder="Phone Number" required>
+                        <input 
+                        type="text" 
+                        class="form__input"
+                        id="phone"
+                        name="phone" 
+                        autofocus 
+                        placeholder="e.g 999-999-9999">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form__input" autofocus placeholder="Street Address" required>
+                        <input 
+                        type="text" 
+                        class="form__input" 
+                        id="address"
+                        name="address" 
+                        autofocus 
+                        placeholder="Street Address"
+                        required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form__input" autofocus placeholder="City" required>
+                        <input 
+                        type="text" 
+                        class="form__input" 
+                        id="city"
+                        name="city" 
+                        autofocus 
+                        placeholder="City"
+                        required>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form__input" autofocus placeholder="Zip Code" required>
+                        <input 
+                        type="text" 
+                        class="form__input" 
+                        id="zip"
+                        name="zip" 
+                        autofocus 
+                        placeholder="Zip Code"
+                        required>
                     </div>
                     <!--date box-->
                     <div class="form-group">
                         <label for="datebox">Choose a date for your pickup</label>
-                        <input type="date" class="form__input" id="date" name="date" value="2021-5-20"
-                         min="2019-01-01" max="2025-12-31" required>
+                        <input 
+                        type="date" 
+                        class="form__input" 
+                        id="date" 
+                        name="date" 
+                        value="2021-5-20"
+                        min="2019-01-01" 
+                        max="2025-12-31"
+                        required>
                     </div>
                     <!--time box-->
                     <div class="form-group">
                         <label for="timebox">Choose a time for your pickup</label>
-                        <input type="time" class="form__input" id="appt" name="time" min="10:00" max="20:00" required>
+                        <input 
+                        type="time" 
+                        class="form__input" 
+                        id="appt" 
+                        name="time" 
+                        min="10:00" 
+                        max="20:00"
+                        required>
                         <small>Office hours are 10am to 8pm</small>
                     </div>
                     <!--message box-->
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea name="message" class="form__input"id="message" cols="30" rows="10"></textarea>
+                        <textarea 
+                        name="message"
+                        class="form__input"
+                        id="message" 
+                        cols="30" 
+                        rows="10"
+                        ></textarea>
                     </div>
 
                     <button type="submit" class="form__button">Continue</button>
@@ -82,6 +161,5 @@
             </div>
             <div id="status"></div>
         </section>
-        <script src="../forms.js"></script>
     </body>
 </html>

@@ -1,47 +1,64 @@
-window.addEventListener("DOMContentLoaded",function () {
-  var form = document.getElementById("my-form") //my-form variable in html
-  var status = document.getElementById("status") // status id in html
+$(document).ready(function () {
+  var form = document.getElementById("my-form");
+  var status = document.getElementById("status");
+  $("#email").attr("required", false);
+  $("#phone").attr("required", false);
+  $(form).submit(function (event) {
+    var formData = {
+      firstName: $("#firstName").val(),
+      lastName: $("#lastName").val(),
+      email: $("#email").val(),
+      phone: $("#phone").val(),
+      address: $("#address").val(),
+      city: $("#city").val(),
+      zip: $("#zip").val(),
+      date: $("#date").val(),
+      time: $("#appt").val(),
+      message: $("#message").val(),
+    }
 
-  
-  //success and error functions after forms is submitted
-  function success() {
-      form.reset();
-      status.classList.add('success');
-      status.innerHTML = "Thanks!";
-  }
-  //filling inside of html error
-  function error() {
-      status.classList.add('error');
-      status.innerHTML = "An error has occured";
-  }
+    $.ajax({
+      type: "POST",
+      url: "https://formspree.io/f/xyylpbdw",
+      data: formData,
+      dataType: "json",
+      encode: true,
+    }).done(function (data) {
+      console.log("success!");
+      $(form).trigger("reset");
+      $(status).addClass('success');
+      $(status).html("Thanks!");
+    }).fail(function (data) {
+      console.log("error");
+      $(status).addClass('error');
+      $(status).html("An error has occurred");
+    });
 
-
-  form.addEventListener("submit", function (ev) {
-      ev.preventDefault();
-      var data = new FormData(form);
-      ajax(form.method, form.action, data, success, error)
+    event.preventDefault();
   });
 });
+
 function emailorphoneshower() {
   var chkYes = document.getElementById("chkYes");
   var chkNo = document.getElementById('chkNo');
   var emailaddress = document.getElementById("emailaddress");
   var phonenumber = document.getElementById('phonenumber')
-  emailaddress.style.display = chkYes.checked ? "block" : "none";
-  phonenumber.style.display = chkNo.checked ? "block" : "none";
-}
-//method for checking status of site data
-function ajax(method, url, data, success, error) {
-  var xhr = new XMLHttpRequest();
-  xhr.open(method,url);
-  xhr.setRequestHeader("Accept", "application/json");
-  xhr.onreadystatechange = function () {
-      if (xhr.readyState !== XMLHttpRequest.DONE) return;
-      if (xhr.status == 200) {
-          success(xhr.response, xhr.responseType);
-      } else {
-          error(xhr.status,xhr.response,xhr.responseType);
-      }
-  };
-  xhr.send(data);
+  var email = document.getElementById("email");
+  var phone = document.getElementById("phone");
+  if(chkYes.checked){
+    emailaddress.style.display = "block";
+    email.required = true;
+    phone.required = false;
+  }
+  else{
+    emailaddress.style.display = "none";
+  } 
+  if(chkNo.checked){
+    phonenumber.style.display = "block";
+    phone.required = true;
+    email.required = false;
+  }
+  else{
+    phonenumber.style.display = "none";
+  } 
 }
