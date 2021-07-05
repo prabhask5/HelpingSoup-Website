@@ -40,11 +40,47 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         setFormMessage(loginForm, "error", "Invalid email/password combination"); // default error message
     });
 
+    createAccountForm.addEventListener("submit", e => {
+        e.preventDefault();
+        var formData = {
+            firstName: $("#firstName").val(),
+            lastName: $("#lastName").val(),
+            email: $("#email").val(),
+            address: $("#address").val(),
+            city: $("#city").val(),
+            zip: $("#zip").val(),
+            school: $("#school").val(),
+            password: $("#password").val(),
+          }
+      
+          $.ajax({
+            type: "POST",
+            url: "https://formspree.io/f/xjvjoloo",
+            data: formData,
+            dataType: "json",
+            encode: true,
+          }).done(function (data) {
+            console.log("success!");
+            $(createAccountForm).trigger("reset");
+            setFormMessage(createAccountForm, "success", "Great! Your account has been made!");
+          }).fail(function (data) {
+            console.log("error");
+            setFormMessage(createAccountForm, "error", "Sorry, an error occurred.");
+          });
+    })
+
     document.querySelectorAll(".form__input").forEach(inputElement => { // looks at all form__input classes
         inputElement.addEventListener("blur", e => { // when user inputs something then clicks off
-            if (e.target.id === "signupUsername" && e.target.value.length > 0 && e.target.value.length < 10) {
+            if (e.target.id === "confirmPassword" && (e.target.value > 0 && e.target.value !== $("#password").val())) {
                 // ^ if statement to check if id of html elemnt is signupUsername and checks if that username is long enough
-                setInputError(inputElement, "Username must be at least 10 characters in length"); // calls setInputError method
+                setInputError(inputElement, "Please make sure your passwords match."); // calls setInputError method
+            }
+            if(e.target.id === "zip" && (e.target.value.length > 0 && (e.target.value.match(/^[0-9]+$/) == null || e.target.value.length != 5))){
+                setInputError(inputElement, "Please make sure you inputted your zip code in the correct format.");
+            }
+            var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(e.target.id === "email" && (e.target.value.length > 0 && !re.test(e.target.value))){
+                setInputError(inputElement, "Please make you inputted your email address in the corrent format.");
             }
         });
 

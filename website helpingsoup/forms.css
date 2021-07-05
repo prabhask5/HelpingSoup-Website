@@ -90,6 +90,16 @@ textarea{
     border-color: black;
     background: #ffffff;
 }
+.form__input--error {
+    color: var(--color-error);
+    border-color: var(--color-error);
+}
+
+.form__input-error-message {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-error);
+}
 .form__button {
     width: 100%;
     padding: 1rem 2rem;
