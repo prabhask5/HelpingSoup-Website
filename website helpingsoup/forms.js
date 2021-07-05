@@ -27,11 +27,11 @@ $(document).ready(function () {
       console.log("success!");
       $(form).trigger("reset");
       $(status).addClass('success');
-      $(status).html("Thanks!");
+      $(status).html("Thanks! Your donation has been submitted.");
     }).fail(function (data) {
       console.log("error");
       $(status).addClass('error');
-      $(status).html("An error has occurred");
+      $(status).html("Sorry, an error has occurred");
     });
 
     event.preventDefault();
