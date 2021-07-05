@@ -36,7 +36,7 @@ li{
     
 }
 section{
-    height: 155vh;
+    height: 165vh;
     width: 100%;
     background-color: aliceblue;
     display: flex;
@@ -47,7 +47,7 @@ section{
 .container{
     width: 90%;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 50px;
     padding: 20px;
     box-shadow: 0 0 20px #00000010;
     background-color: white;
