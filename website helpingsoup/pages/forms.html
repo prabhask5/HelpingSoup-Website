@@ -28,7 +28,7 @@
                 <form action="https://formspree.io/f/xyylpbdw" method="POST" id="my-form">
                     <h1 class="form__title">Donation Form</h1>
                     <!--first name box-->
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <input
                         type="text"
                         class="form__input" 
@@ -40,7 +40,7 @@
                         <div class="form__input-error-message"></div>
                     </div>
                     <!--last name box-->
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <input 
                         type="text" 
                         class="form__input" 
@@ -72,30 +72,30 @@
                         Phone number
                     </label>
                     <hr />
-                    <div class="form-group" id="emailaddress"  style="display: none">
+                    <div class="form__input-group" id="emailaddress"  style="display: none">
                         <input 
                         type="text" 
-                        class="form__input"
+                        class="form__input second"
                         id="email"
                         name="email" 
                         autofocus 
                         placeholder="email@example.com">
                         <div class="form__input-error-message"></div>
                     </div>
-                    <div class="form-group" id="phonenumber" style="display: none;">
+                    <div class="form__input-group" id="phonenumber" style="display: none;">
                         <input 
                         type="text" 
-                        class="form__input"
+                        class="form__input second"
                         id="phone"
                         name="phone" 
                         autofocus 
                         placeholder="e.g 999-999-9999">
                         <div class="form__input-error-message"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <input 
                         type="text" 
-                        class="form__input" 
+                        class="form__input second" 
                         id="address"
                         name="address" 
                         autofocus 
@@ -103,7 +103,7 @@
                         required>
                         <div class="form__input-error-message"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <input 
                         type="text" 
                         class="form__input" 
@@ -114,7 +114,7 @@
                         required>
                         <div class="form__input-error-message"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <input 
                         type="text" 
                         class="form__input" 
@@ -125,7 +125,7 @@
                         required>
                         <div class="form__input-error-message"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <input 
                         type="text" 
                         class="form__input" 
@@ -137,7 +137,7 @@
                         <div class="form__input-error-message"></div>
                     </div>
                     <!--date box-->
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <label for="datebox">Choose a date for your pickup</label>
                         <input 
                         type="date" 
@@ -151,7 +151,7 @@
                         <div class="form__input-error-message"></div>
                     </div>
                     <!--time box-->
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <label for="timebox">Choose a time for your pickup</label>
                         <input 
                         type="time" 
@@ -165,7 +165,7 @@
                         <small>Office hours are 10am to 8pm</small>
                     </div>
                     <!--message box-->
-                    <div class="form-group">
+                    <div class="form__input-group">
                         <label for="message">Message</label>
                         <textarea 
                         name="message"
