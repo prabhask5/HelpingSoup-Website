@@ -67,8 +67,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
 
     document.querySelectorAll(".form__input").forEach(inputElement => { // looks at all form__input classes
         inputElement.addEventListener("blur", e => { // when user inputs something then clicks off
-            if (e.target.id === "confirmPassword" && (e.target.value > 0 && e.target.value !== $("#password").val())) {
-                // ^ if statement to check if id of html elemnt is signupUsername and checks if that username is long enough
+            if (e.target.id === "confirmPassword" && (e.target.value.length > 0 && e.target.value !== $("#password").val())) {
                 setInputError(inputElement, "Please make sure your passwords match."); // calls setInputError method
             }
             if(e.target.id === "zip" && (e.target.value.length > 0 && (e.target.value.match(/^[0-9]+$/) == null || e.target.value.length != 5))){
