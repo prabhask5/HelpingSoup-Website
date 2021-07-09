@@ -1,0 +1,42 @@
+
+CREATE TABLE [dbo].[Customer](
+	[customer_id] [numeric](18, 0) NOT NULL,
+	[firstname] [varchar](50) NOT NULL,
+	[lastname] [varchar](50) NOT NULL,
+	[phone] [nvarchar](50) NOT NULL,
+	[emailaddress] [nvarchar](50) NOT NULL,
+	[aptnumber] [nvarchar](50) NOT NULL,
+	[street] [nvarchar](50) NULL,
+	[city] [varchar](50) NULL,
+	[state] [char](10) NULL,
+	[zip] [numeric](18, 0) NULL
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Goods](
+	[goods_id] [numeric](18, 0) NULL,
+	[startTime] [time](7) NULL,
+	[endTime] [time](7) NULL,
+	[notes] [nvarchar](50) NULL,
+	[volunteer assigned (t/f)] [varchar](50) NULL
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Volunteer](
+	[email] [nvarchar](50) NULL,
+	[address] [nchar](10) NULL,
+	[password] [nchar](10) NULL,
+	[school] [nchar](10) NULL,
+	[firstName] [nchar](10) NULL,
+	[lastName] [nchar](10) NULL
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Volunteer Delivery Notes](
+	[deliverynotes_id] [nchar](10) NULL,
+	[notes] [nchar](10) NULL,
+	[status] [nchar](10) NULL,
+	[email] [nchar](10) NULL,
+	[goods_id] [nchar](10) NULL
+) ON [PRIMARY]
+GO
