@@ -6,15 +6,15 @@ CREATE TABLE [dbo].[Customer](
 	[phone] [nvarchar](50) NOT NULL,
 	[emailaddress] [nvarchar](50) NOT NULL,
 	[aptnumber] [nvarchar](50) NOT NULL,
-	[street] [nvarchar](50) NULL,
-	[city] [varchar](50) NULL,
-	[state] [char](10) NULL,
-	[zip] [numeric](18, 0) NULL
+	[street] [nvarchar](50) NOT NULL,
+	[city] [varchar](50) NOT NULL,
+	[state] [char](10) NOT NULL,
+	[zip] [numeric](18, 0) NOT NULL
 ) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[Goods](
-	[goods_id] [numeric](18, 0) NULL,
+	[goods_id] [numeric](18, 0) NOT NULL,
 	[startTime] [time](7) NULL,
 	[endTime] [time](7) NULL,
 	[notes] [nvarchar](50) NULL,
@@ -23,20 +23,20 @@ CREATE TABLE [dbo].[Goods](
 GO
 
 CREATE TABLE [dbo].[Volunteer](
-	[email] [nvarchar](50) NULL,
-	[address] [nchar](10) NULL,
-	[password] [nchar](10) NULL,
-	[school] [nchar](10) NULL,
-	[firstName] [nchar](10) NULL,
-	[lastName] [nchar](10) NULL
+	[email] [nvarchar](50) NOT NULL,
+	[address] [nchar](10) NOT NULL,
+	[password] [nchar](10) NOT NULL,
+	[school] [nchar](10) NOT NULL,
+	[firstName] [nchar](10) NOT NULL,
+	[lastName] [nchar](10) NOT NULL
 ) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[Volunteer Delivery Notes](
-	[deliverynotes_id] [nchar](10) NULL,
+	[deliverynotes_id] [nchar](10) NOT NULL,
 	[notes] [nchar](10) NULL,
-	[status] [nchar](10) NULL,
-	[email] [nchar](10) NULL,
-	[goods_id] [nchar](10) NULL
+	[status] [nchar](10) NOT NULL,
+	[email] [nchar](10) NOT NULL,
+	[goods_id] [nchar](10) NOT NULL
 ) ON [PRIMARY]
 GO
