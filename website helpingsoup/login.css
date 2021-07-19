@@ -53,9 +53,6 @@ section{
     border-radius: 8px;
     margin-bottom: 20px;
 }
-.form__input-group {
-    margin-bottom: 1rem;
-}
 .container,
 .form__input,
 .form__button {
@@ -63,22 +60,11 @@ section{
 }
 
 
-.form__input {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    box-sizing: border-box;
-    border-radius: var(--border-radius);
-    border: 1px solid #dddddd;
-    outline: none;
-    background: #eeeeee;
-    transition: background 0.2s, border-color 0.2s;
+.form--hidden {
+    display: none;
+    height: 100vh;
 }
 
-.form__input:focus {
-    border-color: black;
-    background: #ffffff;
-}
 .form > *:first-child {
     margin-top: 0;
 }
@@ -86,23 +72,29 @@ section{
 .form > *:last-child {
     margin-bottom: 0;
 }
+
 .form__title {
     margin-bottom: 2rem;
     text-align: center;
 }
-.form-group input, .form-group textarea{
-    width: 100%;
-    padding: 5px;
-    font-size: 18px;
-    border: 1px solid gray;
-    margin-top: 5px;
+
+.form__message {
+    text-align: center;
+    margin-bottom: 1rem;
 }
-textarea{
-    resize: vertical;
+
+.form__message--success {
+    color: var(--color-success);
 }
-.second{
-    margin-top: 15px;
+
+.form__message--error {
+    color: var(--color-error);
 }
+
+.form__input-group {
+    margin-bottom: 1rem;
+}
+
 .form__input {
     display: block;
     width: 100%;
@@ -119,6 +111,7 @@ textarea{
     border-color: black;
     background: #ffffff;
 }
+
 .form__input--error {
     color: var(--color-error);
     border-color: var(--color-error);
@@ -129,10 +122,12 @@ textarea{
     font-size: 0.85rem;
     color: var(--color-error);
 }
+
 .form__button {
     width: 100%;
     padding: 1rem 2rem;
     font-weight: bold;
+    font-size: 1.1rem;
     color: #ffffff;
     border: none;
     border-radius: var(--border-radius);
@@ -149,6 +144,19 @@ textarea{
     transform: scale(0.98);
 }
 
+.form__text {
+    text-align: center;
+}
+
+.form__link {
+    color: var(--color-secondary);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form__link:hover {
+    text-decoration: underline;
+}
 #status{
     width: 90%;
     max-width: 500px;
