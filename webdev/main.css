@@ -5,23 +5,24 @@
 }
 body{
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #84DFED;;
-    --color-primary: #009579;
-    --color-primary-dark: #007f67;
+    background-color: #83b271;
+    --color-primary: #ffffff;
+    --color-primary-dark: #a8a8a8;
     --color-secondary: #252c6a;
     --color-error: #cc3333;
-    --color-success: #4bb544;
+    --color-success: #ffffff;
     --border-radius: 4px
 }
 header {
-    background: #FCF6DB;
-    padding: 20px;
+    background: #ffffff;
+    padding: 0px;
     color: var(--color-primary);
 }
 img{
-    width:245px;
-    height:149px;
+    width:120px;
+    height:120px;
     vertical-align: bottom;
+    margin-left: 100px;
 }
 h1{
     padding: 20px;
@@ -32,6 +33,7 @@ h1{
     right: 520px;
     width: 200px;
     height: 100px;
+    
 
 }
 h2{
@@ -61,12 +63,13 @@ li{
     background: var(--color-success);
     padding: 10px;
     border-radius: 5px;
-    margin-left: 125px;
+    margin-left: 145px;
+    margin-bottom: 40px;
     display: inline-block;
     
 }
 div {
-    background-color: #FCF6DB;
+    background-color: #ffffff;
     text-align:center;
     position: absolute;
     top: 250px;
