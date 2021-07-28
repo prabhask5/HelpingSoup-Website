@@ -33,28 +33,32 @@ h1{
 
 }
 h2{
-    padding: 20px;
-    display:inline-table;
-    position: absolute;
-    font-size: 30px;
-    top: 180px;
-    right: 800px;
-    width: 200px;
-    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 42px;
+    text-align: center;
+    line-height: 3;
+    margin: auto;
+    top: 200px;
+    height: 50%;
+    font-family: 'Franklin';
 
 }
 h3{
     text-align: center;
     margin-bottom:1%;
     top: 10px;
+    text-decoration: underline;
     font-size: 22px;
     width: 100%;
+    font-family: Elephant;
 }
 .container {
     margin: 0;
     padding: 0;
     list-style-type: none;
-    
     display: flex;
     justify-content: space-between;
 }
@@ -63,17 +67,40 @@ li{
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
-    display: inline-block;
-
+    display: flex;
+    margin-top: 2.3%;
     
+    
+}
+a{
+    text-decoration: none;
+    font-family:'Platnomor';
+    font-size: 20px;
+    font-weight: bold;
+    color:black;
+
+}
+@font-face {
+    font-family: Platnomor;
+    src: url(/docs/PlatNomor.ttf);
+}
+@font-face {
+    font-family: Franklin;
+    src: url(/docs/Franklin\ Gothic\ Heavy\ Regular.ttf);
+}
+@font-face {
+    font-family: Elephant;
+    src: url(/docs/Elephant\ V1.ttf);
 }
 .textBox {
     background-color: #ffffff;
     text-align:center;
+    font-family: Georgia, serif;
     margin:auto;
     border: 2px solid rgb(0, 0, 0);
-    padding: 50px;
+    padding: 25px;
     border-radius: 15px;
+    font-size: 20px;
     width: 50%;
-    margin-top: 7%;
+    margin-top: 1%;
 }
