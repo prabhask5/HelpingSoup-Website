@@ -22,17 +22,34 @@ img{
 }
 #image1{
     width: 19.5%;
-    height: 20%;
+    height: auto;
     float: left;
-    margin-top: 5%;
-    margin-left: 2.5%
+    padding: 0px;
+    position: absolute;
+    left:2.5%;
+    top:350px;
 }
 #image2{
+    /*
     width: 20.25%;
-    height: 30%;
-    float: right;
-    margin-top: -12%;
-    margin-right: 2.15%
+    margin-top: 5%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(130%, -20%);
+    */
+    width: 20.3%;
+    height: auto;
+    float: left;
+    padding: 0px;
+    position: absolute;
+    right:2.5%;
+    top:350px;
+
+    
+    
+    
 
 }
 .roundedcorners{
@@ -89,9 +106,9 @@ h4{
     font-size: 42px;
     text-align: center;
     text-shadow: -2px 4px 2px #666666;
-    line-height: 0.1;
     height: 50%;
     font-family: 'Franklin';
+    white-space: normal;
 }
 .container {
     margin: 0;
@@ -118,18 +135,20 @@ li{
     margin-top: 5%;
     height: 5%;
     font-family: 'Franklin';
-    font-size: 40px;
+    font-size: 20px;
     text-align: center;
     color: #000000;
     background-color: #FFFFFF;
     border: 1px solid #CDCDCD;
     border-radius: 10px;
+    white-space: nowrap;
 
 }
 a{
     text-decoration: none;
     font-family:'Platnomor';
-    font-size: 20px;
+    padding-left:50px;
+    padding-right:50px;
     font-weight: bold;
     color:black;
 
@@ -156,5 +175,47 @@ a{
     border-radius: 15px;
     font-size: 20px;
     width: 50%;
-    margin-top: 5%;
+    margin-top: 40px;
 }
+@media only screen and (max-device-width: 1144px) {
+    .textBox {
+        background: rgb(255, 255, 255);
+        
+    }
+    .roundedcorners{
+        margin-top:50px;
+    }
+  }
+  @media only screen and (max-device-width: 750px) {
+    .textBox {
+        background: rgb(255, 255, 255);
+        width:90%;
+        
+    }
+    .roundedcorners{
+        display:none
+    }
+  }
+  @media only screen and (max-device-width: 600px) {
+    .textBox {
+        background: rgb(255, 255, 255);
+        
+        
+    }
+    .button{
+        width:25%;
+        font-size: 40px;
+
+    }
+    .fifty{
+        font-size: 130px;
+    }
+    .people{
+        font-size: 60px;
+    }
+    .container{
+        font-size:16px;
+    }
+    
+  }
+
