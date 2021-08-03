@@ -9,7 +9,7 @@ body{
 
 }
 header {
-    background: #ffffff;
+    background: white;
     padding: 0px;
     color: var(--color-primary);
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
@@ -118,7 +118,7 @@ h4{
     justify-content: space-between;
 }
 li{
-    background: var(--color-success);
+    background: white;
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
