@@ -29,5 +29,16 @@ app.post('/volunteerLogin', (request, response) => {
     .then(data => response.json({data: data}));
 });
 
+app.post('/donation', (request, response) => {
+    const formData = request.body;
+    const db = DbService.getDbServiceInstance();
+    const result = db.insertDonation(formData.firstName, formData.lastName, formData.email,
+         formData.address, formData.city, formData.state,
+         formData.zip, formData.date, formData.startTime,
+         formData.endTime, formData.message);
+    result
+    .then(data => response.json({data: data}));
+})
+
 
 app.listen(process.env.PORT, () => console.log('app is running'));

@@ -43,7 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
         state: $("#state").val(),
         zip: $("#zip").val(),
         date: $("#date").val(),
-        time: $("#appt").val(),
+        startTime: $("#firstTime").val(),
+        endTime: $("#secondTime").val(),
         message: $("#message").val(),
       }
   
@@ -105,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
           var timeStart = new Date("01/01/2007 " + valuestart);
           var timeEnd = new Date("01/01/2007 " + valuestop);
           var diffMin = (timeEnd - timeStart) / 60 / 1000;
-          console.log(diffMin);
+          //console.log(diffMin);
           if((valuestart != "" && valuestop != "") && !timeError){
             if(diffMin < 30){
               setInputError(inputElement, "Please make sure your time range is 30 minutes or greater.");

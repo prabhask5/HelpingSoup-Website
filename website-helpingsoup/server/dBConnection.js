@@ -29,20 +29,14 @@ var createCustomer = `CREATE TABLE IF NOT EXISTS customer(
     customerStreetAddress VARCHAR(250) NULL,
     customerCity VARCHAR(100) NULL,
     customerState VARCHAR(50) NULL,
-    customerZip CHAR(5) NULL
-);`
-queryList.push(createCustomer);
-var createGoods = `CREATE TABLE IF NOT EXISTS goods(
-    goodsID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    customerID INT NOT NULL,
+    customerZip CHAR(5) NULL,
     pickupDate DATE NULL,
     startTime TIME NULL,
     endTime TIME NULL,
     goodsNotes VARCHAR(500) NULL,
-    goodsAssigned TINYINT(1) NULL,
-    FOREIGN KEY (customerID) REFERENCES customer(customerID)
-);`;
-queryList.push(createGoods);
+    goodsAssigned TINYINT(1) NOT NULL
+);`
+queryList.push(createCustomer);
 var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
     volunteerID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     volunteerFirstName VARCHAR(100) NULL,
@@ -61,9 +55,9 @@ var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
     deliveryNotes VARCHAR(500) NULL,
     deliveryStatus TINYINT(1) NULL,
     volunteerID INT NOT NULL,
-    goodsID INT NOT NULL,
+    customerID INT NOT NULL,
     FOREIGN KEY (volunteerID) REFERENCES volunteer(volunteerID),
-    FOREIGN KEY (goodsID) REFERENCES goods(goodsID)
+    FOREIGN KEY (customerID) REFERENCES customer(customerID)
 );`;
 queryList.push(createVolunteerDelivery);
 class DbService{
@@ -108,6 +102,22 @@ class DbService{
             })
             //console.log(response);
             return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
+    async insertDonation(firstName, lastName, email, address, city, state, zip, date, startTime, endTime, message){
+        try{
+            const insert = await new Promise((resolve, reject) => {
+                const query = "INSERT INTO customer (customerFirstName, customerLastName, customerEmail," +
+                     " customerStreetAddress, customerCity, customerState, customerZip, pickUpDate, startTime, endTime, goodsNotes, goodsAssigned)" +
+                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);";
+                connection.query(query, [firstName, lastName, email, address, city, state, zip, date, startTime, endTime, message], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result);
+                })
+            });
+            return insert;
         } catch(error){
             console.log(error);
         }
