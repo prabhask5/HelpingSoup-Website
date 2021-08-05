@@ -3,22 +3,31 @@ const app = express();
 const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
-const server = require('./server')
+
+const DbService = require('./dBConnection');
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 
-//create
-app.post('/insert', (request, reponse) =>{
-
+app.post('/volunteerSignUp', (request, response) =>{
+    const formData = request.body;
+    const db = DbService.getDbServiceInstance();
+    const result = db.insertVolunteer(formData.firstName, formData.lastName, formData.email,
+         formData.address, formData.city, formData.state,
+          formData.zip, formData.school, formData.password);
+    result
+    .then(data => response.json({data: data}));
 });
 
-//read
-app.get('/getAll', (request, response) => {
-    response.json({success:true});
+app.post('/volunteerLogin', (request, response) => {
+    const formData = request.body;
+    const db = DbService.getDbServiceInstance();
+    const result = db.getLogin(formData.email, formData.password);
+    result
+    .then(data => response.json({data: data}));
 });
 
-//delete
 
 app.listen(process.env.PORT, () => console.log('app is running'));
