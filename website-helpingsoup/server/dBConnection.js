@@ -2,6 +2,7 @@ const mysql = require('mysql');
 const dotenv = require('dotenv');
 let instance = null;
 dotenv.config();
+var queryList = [];
 
 const connection = mysql.createConnection({
     host:process.env.HOST,
@@ -16,9 +17,67 @@ connection.connect((err => {
     else console.log('db ' + connection.state);
 }));
 
-
+var createDb = "CREATE DATABASE IF NOT EXISTS helpingsoupdb;";
+queryList.push(createDb);
+var useDb = "use helpingsoupdb;";
+queryList.push(useDb);
+var createCustomer = `CREATE TABLE IF NOT EXISTS customer(
+    customerID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    customerFirstName VARCHAR(50) NULL,
+    customerLastName VARCHAR(50) NULL,
+    customerEmail VARCHAR(100) NULL,
+    customerStreetAddress VARCHAR(250) NULL,
+    customerCity VARCHAR(100) NULL,
+    customerState VARCHAR(50) NULL,
+    customerZip CHAR(5) NULL
+);`
+queryList.push(createCustomer);
+var createGoods = `CREATE TABLE IF NOT EXISTS goods(
+    goodsID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    customerID INT NOT NULL,
+    pickupDate DATE NULL,
+    startTime TIME NULL,
+    endTime TIME NULL,
+    goodsNotes VARCHAR(500) NULL,
+    goodsAssigned TINYINT(1) NULL,
+    FOREIGN KEY (customerID) REFERENCES customer(customerID)
+);`;
+queryList.push(createGoods);
+var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
+    volunteerID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    volunteerFirstName VARCHAR(100) NULL,
+    volunteerLastName VARCHAR(100) NULL,
+    volunteerEmail VARCHAR(100) NULL,
+    volunteerStreetAddress VARCHAR(250) NULL,
+    volunteerCity VARCHAR(100) NULL,
+    volunteerState VARCHAR(50) NULL,
+    volunteerZip CHAR(5) NULL,
+    volunteerSchool VARCHAR(100) NULL,
+    volunteerPassword VARCHAR(250) NOT NULL
+);`;
+queryList.push(createVolunteer);
+var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
+    deliveryNotesID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    deliveryNotes VARCHAR(500) NULL,
+    deliveryStatus TINYINT(1) NULL,
+    volunteerID INT NOT NULL,
+    goodsID INT NOT NULL,
+    FOREIGN KEY (volunteerID) REFERENCES volunteer(volunteerID),
+    FOREIGN KEY (goodsID) REFERENCES goods(goodsID)
+);`;
+queryList.push(createVolunteerDelivery);
 class DbService{
     static getDbServiceInstance(){
+        connection.connect(function (err) {
+            if (err) console.log(err.message);
+        });
+        for(let query of queryList){
+            connection.query(query, function (err) {
+                if (err) {
+                    return console.log(err.message);
+                }
+            });
+        }
         return instance ? instance : new DbService();
     }
 
