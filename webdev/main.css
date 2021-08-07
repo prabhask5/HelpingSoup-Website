@@ -3,42 +3,218 @@
     margin: 0;
     box-sizing: border-box;
 }
-h1{
-    padding: 10px;
-}
 body{
     font-family: Arial, Helvetica, sans-serif;
-    background-color: aliceblue;
-    --color-primary: #009579;
-    --color-primary-dark: #007f67;
-    --color-secondary: #252c6a;
-    --color-error: #cc3333;
-    --color-success: #4bb544;
-    --border-radius: 4px
+    background-color: #83B271;
+
 }
 header {
-    background: rgb(146, 168, 209);
-    padding: 20px;
-    
-    color: white;
+    background: #ffffff;
+    padding: 0px;
+    color: var(--color-primary);
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 }
-ul{
+img{
+    width:120px;
+    height:120px;
+    vertical-align: bottom;
+    margin-left: 10px;
+}
+#image1{
+    width: 19.5%;
+    height: auto;
+    float: left;
+    padding: 0px;
+    position: absolute;
+    left:2.5%;
+    top:350px;
+}
+#image2{
+    /*
+    width: 20.25%;
+    margin-top: 5%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(130%, -20%);
+    */
+    width: 20.3%;
+    height: auto;
+    float: left;
+    padding: 0px;
+    position: absolute;
+    right:2.5%;
+    top:350px;
+
+    
+    
+    
+
+}
+.roundedcorners{
+    border-radius: 20px;
+    box-shadow:0 3px 10px rgb(0, 0, 0);
+}
+
+.imagery{
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+h1{
+    padding: 20px;
+    display:inline-table;
+    position: absolute;
+    font-size: 60px;
+    top: 5px;
+    right: 520px;
+    width: 200px;
+    height: 100px;
+    
+
+}
+h2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 72px;
+    text-align: center;
+    line-height: 2;
+    text-shadow: -2px 4px 2px #666666;
+    margin: auto;
+    top: 200px;
+    height: 50%;
+    font-family: 'Franklin';
+
+}
+h3{
+    text-align: center;
+    margin-bottom:1%;
+    top: 10px;
+    text-decoration: underline;
+    font-size: 22px;
+    width: 100%;
+    font-family: Elephant;
+}
+h4{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 42px;
+    text-align: center;
+    text-shadow: -2px 4px 2px #666666;
+    height: 50%;
+    font-family: 'Franklin';
+    white-space: normal;
+}
+.container {
     margin: 0;
     padding: 0;
     list-style-type: none;
+    display: flex;
+    justify-content: space-between;
 }
 li{
     background: var(--color-success);
-    padding: 7px;
+    padding: 10px;
     border-radius: 5px;
-    margin: 5px;
-    display: inline-block;
+    margin-bottom: 20px;
+    display: flex;
+    margin-top: 2.3%;
+
+}
+.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    margin: auto;
+    margin-top: 5%;
+    height: 5%;
+    font-family: 'Franklin';
+    font-size: 20px;
+    text-align: center;
+    color: #000000;
+    background-color: #FFFFFF;
+    border: 1px solid #CDCDCD;
+    border-radius: 10px;
+    white-space: nowrap;
+
+}
+a{
+    text-decoration: none;
+    font-family:'Platnomor';
+    padding-left:50px;
+    padding-right:50px;
+    font-weight: bold;
+    color:black;
+
+}
+@font-face {
+    font-family: Platnomor;
+    src: url(/docs/PlatNomor.ttf);
+}
+@font-face {
+    font-family: Franklin;
+    src: url(/docs/Franklin\ Gothic\ Heavy\ Regular.ttf);
+}
+@font-face {
+    font-family: Elephant;
+    src: url(/docs/Elephant\ V1.ttf);
+}
+.textBox {
+    background-color: #ffffff;
+    text-align:center;
+    font-family: Georgia, serif;
+    margin:auto;
+    border: 2px solid rgb(0, 0, 0);
+    padding: 25px;
+    border-radius: 15px;
+    font-size: 20px;
+    width: 50%;
+    margin-top: 40px;
+}
+@media only screen and (max-device-width: 1144px) {
+    .textBox {
+        background: rgb(255, 255, 255);
+        
+    }
+    .roundedcorners{
+        margin-top:50px;
+    }
+  }
+  @media only screen and (max-device-width: 750px) {
+    .textBox {
+        background: rgb(255, 255, 255);
+        width:90%;
+        
+    }
+    .roundedcorners{
+        display:none
+    }
+  }
+  @media only screen and (max-device-width: 600px) {
+    .textBox {
+        background: rgb(255, 255, 255);
+        
+        
+    }
+    .button{
+        width:25%;
+        font-size: 40px;
+
+    }
+    .fifty{
+        font-size: 130px;
+    }
+    .people{
+        font-size: 60px;
+    }
+    .container{
+        font-size:16px;
+    }
     
-}
-div {
-    background-color: lightgray;
-    width: 400px;
-    border: 15px solid green;
-    padding: 50px;
-    margin: 20px;
-}
+  }
