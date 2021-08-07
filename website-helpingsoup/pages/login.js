@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
     const loginForm = document.querySelector("#login"); 
     const createAccountForm = document.querySelector("#createAccount");
     var status = document.getElementById("status");
+    var errors = 0;
     var canSubmit = true;
 
     $(document).on("click", "#linkCreateAccount", e => {
@@ -155,21 +156,26 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
             if (e.target.id === "confirmPassword" && (e.target.value.length > 0 && e.target.value !== $("#password").val())) {
                 setInputError(inputElement, "Please make sure your passwords match."); // calls setInputError method
                 canSubmit = false;
+                errors++;
             }
             if(e.target.id === "zip" && (e.target.value.length > 0 && (e.target.value.match(/^[0-9]+$/) == null || e.target.value.length != 5))){
                 setInputError(inputElement, "Please make sure you inputted your zip code in the correct format.");
                 canSubmit = false;
+                errors++;
             }
             var re = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
             if(e.target.id === "email" && (e.target.value.length > 0 && !re.test(e.target.value))){
                 setInputError(inputElement, "Please make you inputted your email address in the correct format.");
                 canSubmit = false;
+                errors++;
             }
         });
 
         inputElement.addEventListener("input", e => { // when user types again
             clearInputError(inputElement); // clears error
-            canSubmit = true;
+            if (errors == 0) errors = 0;
+            else errors--;
+            if (errors = 0) canSubmit = true;
         });
     });
 });
