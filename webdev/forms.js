@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   var zipError = false;
   var timeError = false;
   var rangeError = false;
+  var timeErrors = 0;
   var canSubmit = true;
 
   $(document).on("click", "#donationSubmit", e => {
@@ -93,10 +94,12 @@ document.addEventListener("DOMContentLoaded", () => {
             canSubmit = false;
             emailError = true;
         }
-        if((e.target.id === "secondTime" || e.target.id === "firstTime") && (e.target.value < "10:00" || e.target.value > "20:00")){
-          setInputError(inputElement, "Please make sure this time is within our office hours.");
-          canSubmit = false;
-          rangeError = true;
+        if(e.target.id === "secondTime" || e.target.id === "firstTime"){
+          if (($("#firstTime").val() < "10:00" || $("#firstTime").val() > "20:00") || ($("#secondTime").val() < "10:00" || $("#secondTime").val() > "20:00")){
+            setInputError(inputElement, "Please make sure this time is within our office hours.");
+            canSubmit = false;
+            rangeError = true;
+          }
         }
         if(e.target.id === "secondTime" || e.target.id === "firstTime"){
           //console.log($("#1appt").val());
@@ -108,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
           var timeStart = new Date("01/01/2007 " + valuestart);
           var timeEnd = new Date("01/01/2007 " + valuestop);
           var diffMin = (timeEnd - timeStart) / 60 / 1000;
-          //console.log(diffMin);
+          console.log(diffMin);
           if((valuestart != "" && valuestop != "") && !timeError){
             if(diffMin < 30){
               setInputError(inputElement, "Please make sure your time range is 30 minutes or greater.");
@@ -118,11 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           } 
         }
-       //console.log(errors + " " + canSubmit);
+        console.log(rangeError + " " + timeError);
     });
 
     inputElement.addEventListener("input", e => { // when user types again
-      if(inputElement.id == "firstTime"){
+      if(inputElement.id == "firstTime" || inputElement.id == "secondTime"){
         clearInputError(inputElement);
         rangeError = false;
       }  
@@ -142,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
           emailError = false;
         }
         if((!rangeError && !timeError) && (!zipError && !emailError)) canSubmit = true;
-        //console.log(errors + " " + canSubmit);
+        console.log(rangeError + " " + timeError);
     });
   });
 });

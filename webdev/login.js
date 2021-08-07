@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 clearInputError(inputElement);
                 emailError = false;
             }
-                if((!rangeError && !timeError) && (!zipError && !emailError)) canSubmit = true;
+                if((!passError) && (!zipError && !emailError)) canSubmit = true;
             //console.log("errors " + errors + " canSubmit " + canSubmit);
         });
     });
