@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
               });
         }
         else{
-            console.log("Can't submit!");
+            console.log("Can't  submit!");
             $(status).addClass('error');
             $(status).html("Sorry, an error occurred with your inputs. Please try again.");
         }
