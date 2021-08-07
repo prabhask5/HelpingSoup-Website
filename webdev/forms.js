@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
   var zipError = false;
   var timeError = false;
   var rangeError = false;
-  var timeErrors = 0;
   var canSubmit = true;
 
   $(document).on("click", "#donationSubmit", e => {
