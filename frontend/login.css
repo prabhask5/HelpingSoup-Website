@@ -56,8 +56,7 @@ section{
 .container,
 .form__input,
 .form__button,
-.loginform__input
-.forgotform__input {
+.loginform__input {
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
@@ -97,7 +96,7 @@ section{
     margin-bottom: 1rem;
 }
 
-.form__input, .loginform__input, .forgotform__input {
+.form__input, .loginform__input {
     display: block;
     width: 100%;
     padding: 0.75rem;
@@ -109,7 +108,7 @@ section{
     transition: background 0.2s, border-color 0.2s;
 }
 
-.form__input:focus, .loginform__input:focus, .forgotform__input:focus{
+.form__input:focus, .loginform__input:focus {
     border-color: black;
     background: #ffffff;
 }

@@ -9,7 +9,7 @@ body{
 
 }
 header {
-    background: white;
+    background: #ffffff;
     padding: 0px;
     color: var(--color-primary);
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
@@ -118,7 +118,7 @@ h4{
     justify-content: space-between;
 }
 li{
-    background: white;
+    background: var(--color-success);
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -155,15 +155,15 @@ a{
 }
 @font-face {
     font-family: Platnomor;
-    src: url(../docs/PlatNomor.ttf);
+    src: url(/docs/PlatNomor.ttf);
 }
 @font-face {
     font-family: Franklin;
-    src: url(../docs/Franklin\ Gothic\ Heavy\ Regular.ttf);
+    src: url(/docs/Franklin\ Gothic\ Heavy\ Regular.ttf);
 }
 @font-face {
     font-family: Elephant;
-    src: url(../docs/Elephant\ V1.ttf);
+    src: url(/docs/Elephant\ V1.ttf);
 }
 .textBox {
     background-color: #ffffff;

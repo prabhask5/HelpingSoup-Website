@@ -9,20 +9,18 @@
     
     <body>
         <header>
+            <h1>HelpingSoup</h1>
             <nav>
-                <ul class="container1">
-                    <img src="/docs/logo3.PNG" alt="HelpingSoup Logo">
-                    <h4></h4>
-                
+                <ul>
                     <li><a href="main.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="forms.html">Donation Form</a></li>
                     <li><a href="login.html">Volunteer Login/Sign Up</a></li>
-                    
-                    
+
                 </ul>
             </nav>
+            
         </header>
        
         <section>
@@ -53,48 +51,16 @@
                         required>
                         <div class="form__input-error-message"></div>
                     </div>
-                    <!--choice between email or phone-->
-                    <span><br>Method of Communication?<br></span>
-                    <label for="chkYes">
-                        <input 
-                        type="radio" 
-                        id="chkYes" 
-                        name="typeofcommunication" 
-                        onclick="emailorphoneshower()"
-                        required/>
-                        Email address
-                    </label>
-                    <label for="chkNo">
-                        <input 
-                        type="radio" 
-                        id="chkNo" 
-                        name="typeofcommunication" 
-                        onclick="emailorphoneshower()"
-                        required/>
-                        Phone number
-                    </label>
-                    <hr />
-                    <div class="form__input-group" id="emailaddress"  style="display: none">
+                    <div class="form__input-group">
                         <input 
                         type="text" 
-                        class="form__input second"
+                        class="form__input"
                         id="email"
                         name="email" 
                         autofocus 
                         placeholder="email@example.com">
                         <div class="form__input-error-message"></div>
                     </div>
-                    <div class="form__input-group" id="phonenumber" style="display: none;">
-                        <input 
-                        type="text" 
-                        class="form__input second"
-                        id="phone"
-                        name="phone" 
-                        autofocus 
-                        placeholder="e.g 999-999-9999">
-                        <div class="form__input-error-message"></div>
-                    </div>
-
                     <div class="form__input-group">
                         <input 
                         type="text" 
@@ -141,7 +107,7 @@
                     </div>
                     <!--date box-->
                     <div class="form__input-group">
-                        <label for="datebox">Choose a date for your pickup</label>
+                        <label for="datebox">Choose a date for your pickup.</label>
                         <input 
                         type="date" 
                         class="form__input" 
@@ -155,14 +121,22 @@
                     </div>
                     <!--time box-->
                     <div class="form__input-group">
-                        <label for="timebox">Choose a time for your pickup</label>
+                        <label for="timebox">Choose the first time in the range when you are available for pickup.</label>
                         <input 
                         type="time" 
                         class="form__input" 
-                        id="appt" 
+                        id="firstTime" 
                         name="time" 
-                        min="10:00" 
-                        max="20:00"
+                        required>
+                        <div class="form__input-error-message"></div>
+                    </div>
+                    <div class="form__input-group">
+                        <label for="timebox">Choose the second time in the range when you are available for pickup.</label>
+                        <input 
+                        type="time" 
+                        class="form__input" 
+                        id="secondTime" 
+                        name="time" 
                         required>
                         <div class="form__input-error-message"></div>
                         <small>Office hours are 10am to 8pm</small>
@@ -179,7 +153,7 @@
                         ></textarea>
                         <div class="form__input-error-message"></div>
                     </div>
-                    <button type="submit" class="form__button">Continue</button>
+                    <button type="submit" class="form__button" id="donationSubmit">Continue</button>
                 </form>
             </div>
             <div id="status"></div>
