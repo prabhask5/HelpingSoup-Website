@@ -3,6 +3,7 @@
     margin: 0;
     box-sizing: border-box;
 }
+
 body{
     --color-primary: #009579;
     --color-primary-dark: #007f67;
