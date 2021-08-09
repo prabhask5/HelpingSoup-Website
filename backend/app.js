@@ -2,24 +2,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const dotenv = require('dotenv');
-const mailer = require('nodemailer');
 dotenv.config();
-
 const DbService = require('./dBConnection');
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-
-const transport = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    //port: process.env.EMAIL_PORT,
-    secure: true,
-    auth: {
-       user: process.env.EMAIL_USER,
-       pass: process.env.EMAIL_PASS
-    }
-});
 
 app.post('/volunteerSignUp', (request, response) =>{
     const formData = request.body;
@@ -34,10 +22,43 @@ app.post('/volunteerSignUp', (request, response) =>{
 app.post('/volunteerLogin', (request, response) => {
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
-    const result = db.getLogin(formData.email, formData.password);
+    const result = db.getLogin(formData.email);
     result
-    .then(data => response.json({data: data}));
+    .then(data => {
+        pass = []
+        for(var i = 0; i < data.length; i++){
+            pass.push(data[i].volunteerPassword);
+        }
+        var canLogin = false;
+        for(var i = 0; i < pass.length; i++){
+            if(pass[i] == formData.password) canLogin = true;
+        }
+        response.json({CanLogin: canLogin});
+    });
 });
+
+app.post('/forgotPassword', (request, response) => {
+    const formData = request.body;
+    const db = DbService.getDbServiceInstance();
+    const result1 = db.getLogin(formData.email);
+    var canLogin = false;
+    result1
+    .then(data => {
+        pass = []
+        for(var i = 0; i < data.length; i++){
+            pass.push(data[i].volunteerPassword);
+        }
+        for(var i = 0; i < pass.length; i++){
+            if(pass[i] == formData.oldPass) canLogin = true;
+        }
+    });
+    if(canLogin == true){
+        const result2 = db.changePassword(formData.email, formData.newPass)
+        result2
+        .then(data => response.json({ success: true }));
+    }
+    else response.json({ success: false });
+})
 
 app.post('/donation', (request, response) => {
     const formData = request.body;

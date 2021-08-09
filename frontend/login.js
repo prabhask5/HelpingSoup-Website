@@ -8,22 +8,21 @@ function clearInputError(inputElement) {
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = ""; // removes message
 }
 
-function finalSignUpSubmit(canSubmit){
+function finalSubmit(canSubmit, mode){
     var ret = true;
-    document.querySelectorAll(".form__input").forEach(inputElement => {
-        if(inputElement.value.length === 0){
-            setInputError(inputElement, "Please enter information here.");
-            ret = false;
-        }
-    });
-    //console.log("Ret is " + ret);
-    if(canSubmit == false) ret = false;
-    return ret;
-}
-
-function finalLoginSubmit(canSubmit){
-    var ret = true;
-    document.querySelectorAll(".loginform__input").forEach(inputElement => {
+    var selectClass = "";
+    switch(mode){
+        case 0:
+            selectClass = ".form__input";
+            break;
+        case 1:
+            selectClass = ".loginform__input";
+            break;
+        case 2:
+            selectClass = ".forgotform__input";
+            break;
+    }
+    document.querySelectorAll(selectClass).forEach(inputElement => {
         if(inputElement.value.length === 0){
             setInputError(inputElement, "Please enter information here.");
             ret = false;
@@ -41,7 +40,9 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
     var zipError = false;
     var emailError = false;
     var passError = false;
-    var canSubmit = true;
+    var canSubmitSignUp = true;
+    var canSubmitLogin = true;
+    var canSubmitForgot = true;
 
     $(document).on("click", "#linkCreateAccount", e => {
         e.preventDefault(); // preventing href link, or refreshing the page when link clicked
@@ -68,8 +69,8 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         e.preventDefault();
         $(status).removeClass();
         $(status).html("");
-        canSubmit = finalLoginSubmit(canSubmit);
-        if(canSubmit){
+        canSubmitLogin = finalSubmit(canSubmitLogin);
+        if(canSubmitLogin){
             var formData = {
                 email: $("#loginEmail").val(),
                 password: $("#loginPass").val(),
@@ -78,26 +79,17 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 type: "POST",
                 url: "http://localhost:4000/volunteerLogin",
                 data: formData,
-                dataType: "text",
+                dataType: "json",
                 encode: true,
                 success: function(data){
-                    var obj = JSON.parse(data);
-                    pass = []
-                    for(var i = 0; i < obj.data.length; i++){
-                        pass.push(obj.data[i].volunteerPassword);
-                    }
-                    console.log("success!");
-                    var canLogin = false;
-                    for(var i = 0; i < pass.length; i++){
-                        if(pass[i] == formData.password) canLogin = true;
-                    }
-                    if(canLogin){
+                    if(data.CanLogin == true){
+                        console.log("logged in!");
                         $(loginForm).trigger("reset");
                         $(status).addClass('success');
                         $(status).html("Great! You've been logged in (theoretically)!");
                     }
                     else{
-                        $(loginForm).trigger("reset");
+                        console.log("didn't work!");
                         $(status).addClass('error');
                         $(status).html("Sorry, this username and password combination is incorrect. Please try again.");
                     }
@@ -115,8 +107,52 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
             $(status).addClass('error');
             $(status).html("Sorry, an error occurred with your inputs. Please try again.");
         }
+    });
 
-        //setFormMessage(loginForm, "error", "Invalid email/password combination"); // default error message
+    $(document).on("click", "#forgotSubmit", e => {
+        e.preventDefault();
+        $(status).removeClass();
+        $(status).html("");
+        canSubmitForgot = finalForgotSubmit(canSubmitForgot);
+        if(canSubmitForgot){
+            var formData = {
+                email: $("#forgotEmail").val(),
+                oldPass: $("#forgotOldPass").val(),
+                newPass: $("forgotNewPass").val(),
+            }
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:4000/forgotPassword",
+                data: formData,
+                dataType: "json",
+                encode: true,
+                success: function(data){
+                    if(data.success == true){
+                        console.log("success!");
+                        $(forgotForm).trigger("reset");
+                        $(status).addClass('success');
+                        $(status).html("Great! Your password has been changed!");
+                    }
+                    else{
+                        console.log("didn't work!");
+                        $(forgotForm).trigger("reset");
+                        $(status).addClass('error');
+                        $(status).html("Sorry, this username and password combination is incorrect. Please try again.");
+                    }
+                },
+                error: function(data){
+                    console.log("error");
+                    $(loginForm).trigger("reset");
+                    $(status).addClass('error');
+                    $(status).html("Sorry, an error has occurred. Please try again later.");
+                }
+              });
+        }
+        else{
+            console.log("Can't  submit!");
+            $(status).addClass('error');
+            $(status).html("Sorry, an error occurred with your inputs. Please try again.");
+        }
     });
 
     $(document).on("click", "#signUpSubmit", e => {
@@ -163,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         }
     });
 
-    document.querySelectorAll(".form__input, .loginform__input").forEach(inputElement => { // looks at all form__input classes
+    document.querySelectorAll(".form__input", ".forgotform__input", ".loginform__input").forEach(inputElement => { // looks at all form__input classes
         inputElement.addEventListener("blur", e => { // when user inputs something then clicks off
             if (e.target.id === "confirmPassword" && (e.target.value.length > 0 && e.target.value !== $("#password").val())) {
                 setInputError(inputElement, "Please make sure your passwords match."); // calls setInputError method
@@ -176,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 zipError = true;
             }
             var re = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
-            if(e.target.id === "email" && (e.target.value.length > 0 && !re.test(e.target.value))){
+            if((e.target.id === "email" || e.target.id === "forgotEmail") && (e.target.value.length > 0 && !re.test(e.target.value))){
                 setInputError(inputElement, "Please make you inputted your email address in the correct format.");
                 canSubmit = false;
                 emailError = true;
@@ -193,11 +229,14 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 clearInputError(inputElement);
                 zipError = false;
             }
-            else if(inputElement.id == "email" || inputElement.id == "loginEmail"){
+            else if(inputElement.id == "email" || inputElement.id == "forgotEmail"){
                 clearInputError(inputElement);
                 emailError = false;
             }
-                if((!passError) && (!zipError && !emailError)) canSubmit = true;
+            else{
+                clearInputError(inputElement);
+            }
+            if((!passError) && (!zipError && !emailError)) canSubmit = true;
             //console.log("errors " + errors + " canSubmit " + canSubmit);
         });
     });

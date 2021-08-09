@@ -62,9 +62,6 @@ var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
 queryList.push(createVolunteerDelivery);
 class DbService{
     static getDbServiceInstance(){
-        connection.connect(function (err) {
-            if (err) console.log(err.message);
-        });
         for(let query of queryList){
             connection.query(query, function (err) {
                 if (err) {
@@ -91,7 +88,7 @@ class DbService{
             console.log(error);
         }
     }
-    async getLogin(email, password){
+    async getLogin(email){
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT volunteerPassword FROM volunteer WHERE volunteerEmail = ?;";
@@ -115,6 +112,20 @@ class DbService{
                 connection.query(query, [firstName, lastName, email, address, city, state, zip, date, startTime, endTime, message], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
+                })
+            });
+            return insert;
+        } catch(error){
+            console.log(error);
+        }
+    }
+    async changePassword(email, newPass){
+        try{
+            const insert = await new Promise((resolve, reject) => {
+                const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ?;";
+                connection.query(query, [email, newPass], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result.insert);
                 })
             });
             return insert;
