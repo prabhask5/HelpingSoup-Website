@@ -41,23 +41,25 @@ app.post('/forgotPassword', (request, response) => {
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
     const result1 = db.getLogin(formData.email);
-    var canLogin = false;
     result1
     .then(data => {
         pass = []
         for(var i = 0; i < data.length; i++){
             pass.push(data[i].volunteerPassword);
         }
+        var canLogin = false;
         for(var i = 0; i < pass.length; i++){
-            if(pass[i] == formData.oldPass) canLogin = true;
+            if(pass[i] == formData.oldPass){
+                canLogin = true;
+            }
         }
+        if(canLogin == true){
+            const result2 = db.changePassword(formData.email, formData.newPass)
+            result2
+            .then(data => response.json({ success: true }));
+        }
+        else response.json({ success: false });
     });
-    if(canLogin == true){
-        const result2 = db.changePassword(formData.email, formData.newPass)
-        result2
-        .then(data => response.json({ success: true }));
-    }
-    else response.json({ success: false });
 })
 
 app.post('/donation', (request, response) => {

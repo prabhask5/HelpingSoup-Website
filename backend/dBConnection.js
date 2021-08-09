@@ -123,7 +123,7 @@ class DbService{
         try{
             const insert = await new Promise((resolve, reject) => {
                 const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ?;";
-                connection.query(query, [email, newPass], (err, result) => {
+                connection.query(query, [newPass, email], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insert);
                 })
