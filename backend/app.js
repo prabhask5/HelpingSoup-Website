@@ -12,11 +12,20 @@ app.use(express.urlencoded({extended:false}));
 app.post('/volunteerSignUp', (request, response) =>{
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
-    const result = db.insertVolunteer(formData.firstName, formData.lastName, formData.email,
-         formData.address, formData.city, formData.state,
-          formData.zip, formData.school, formData.password);
-    result
-    .then(data => response.json({data: data}));
+    const result1 = db.getLogin(formData.email)
+    result1
+    .then(data => {
+        if(data.length > 0){
+            response.json({success: false});
+        }
+        else{
+            const result2 = db.insertVolunteer(formData.firstName, formData.lastName, formData.email,
+                formData.address, formData.city, formData.state,
+                 formData.zip, formData.school, formData.password);
+           result2
+           .then(response.json({success: true}));
+        }
+    })
 });
 
 app.post('/volunteerLogin', (request, response) => {

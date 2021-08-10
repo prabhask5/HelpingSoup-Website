@@ -176,13 +176,20 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 type: "POST",
                 url: "http://localhost:4000/volunteerSignUp",
                 data: formData,
-                dataType: "text",
+                dataType: "json",
                 encode: true,
                 success: function(data){
-                    console.log("success!");
-                    $(createAccountForm).trigger("reset");
-                    $(status).addClass('success');
-                    $(status).html("Great! Your account has been made!");
+                    if(data.success == true){
+                        console.log("success!");
+                        $(createAccountForm).trigger("reset");
+                        $(status).addClass('success');
+                        $(status).html("Great! Your account has been made!");
+                    }
+                    else{
+                        console.log("email already in use");
+                        $(status).addClass('error');
+                        $(status).html("Sorry, that email is already in use. Please try again.");
+                    }
                 },
                 error: function(data){
                     console.log("error");
