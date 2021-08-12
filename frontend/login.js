@@ -36,7 +36,6 @@ function finalLoginSubmit(canSubmit){
 document.addEventListener("DOMContentLoaded", () => { // form has loaded
     const loginForm = document.querySelector("#login"); 
     const createAccountForm = document.querySelector("#createAccount");
-    const forgotForm = document.querySelector("#forgot");
     var status = document.getElementById("status");
     var zipError = false;
     var emailError = false;
@@ -46,22 +45,13 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
     $(document).on("click", "#linkCreateAccount", e => {
         e.preventDefault(); // preventing href link, or refreshing the page when link clicked
         loginForm.classList.add("form--hidden"); // hiding login form and showing create-account form
-        forgotForm.classList.add("form--hidden");
         createAccountForm.classList.remove("form--hidden");
     });
 
     $(document).on("click", "#linkLogin", e => {
         e.preventDefault(); // preventing href link, or refreshing the page when link clicked
         loginForm.classList.remove("form--hidden"); //hiding create-account form and showing login form
-        forgotForm.classList.add("form--hidden");
         createAccountForm.classList.add("form--hidden");
-    });
-
-    $(document).on("click", "#linkForgotPassword", e => {
-        e.preventDefault();
-        loginForm.classList.add("form--hidden");
-        createAccountForm.classList.add("form--hidden");
-        forgotForm.classList.remove("form--hidden");
     });
 
     $(document).on("click", "#loginSubmit", e => {
