@@ -65,15 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
         error: function(data){
           console.log("error");
           $(form).trigger("reset");
-          $(status).addClass('error');
-          $(status).html("Sorry, an error has occurred. Please try again later.");
+          alert("Sorry, an error has occurred. Please try again later.");
         }
       });
     }
     else{
       console.log("Can't submit!");
-      $(status).addClass('error');
-      $(status).html("Sorry, an error occurred with your inputs. Please try again.");
+      alert("Sorry, an error occurred with your inputs. Please try again.");
     }
     
   });

@@ -90,22 +90,19 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                     }
                     else{
                         console.log("didn't work!");
-                        $(status).addClass('error');
-                        $(status).html("Sorry, this username and password combination is incorrect. Please try again.");
+                        alert("Sorry, this username and password combination is incorrect. Please try again.");
                     }
                 },
                 error: function(data){
                     console.log("error");
                     $(loginForm).trigger("reset");
-                    $(status).addClass('error');
-                    $(status).html("Sorry, an error has occurred. Please try again later.");
+                    alert("Sorry, an error has occurred. Please try again later.");
                 }
               });
         }
         else{
             console.log("Can't  submit!");
-            $(status).addClass('error');
-            $(status).html("Sorry, an error occurred with your inputs. Please try again.");
+            alert("Sorry, an error occurred with your inputs. Please try again.");
         }
     });
 
@@ -134,22 +131,19 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                     else{
                         console.log("didn't work!");
                         $(forgotForm).trigger("reset");
-                        $(status).addClass('error');
-                        $(status).html("Sorry, this email does not exist within our records. Please try again.");
+                        alert("Sorry, this email does not exist within our records. Please try again.");
                     }
                 },
                 error: function(data){
                     console.log("error");
                     $(loginForm).trigger("reset");
-                    $(status).addClass('error');
-                    $(status).html("Sorry, an error has occurred. Please try again later.");
+                    alert("Sorry, an error has occurred. Please try again later.");
                 }
               });
         }
         else{
             console.log("Can't  submit!");
-            $(status).addClass('error');
-            $(status).html("Sorry, an error occurred with your inputs. Please try again.");
+            alert("Sorry, an error occurred with your inputs. Please try again.");
         }
     });
 
@@ -185,22 +179,19 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                     }
                     else{
                         console.log("email already in use");
-                        $(status).addClass('error');
-                        $(status).html("Sorry, that email is already in use. Please try again.");
+                        alert("Sorry, that email is already in use. Please try again.");
                     }
                 },
                 error: function(data){
                     console.log("error");
                     $(createAccountForm).trigger("reset");
-                    $(status).addClass('error');
-                    $(status).html("Sorry, an error has occurred. Please try again later.");
+                    alert("Sorry, an error has occurred. Please try again later.");
                 }
               });
         }
         else {
             console.log("Can't submit!");
-            $(status).addClass('error');
-            $(status).html("Sorry, an error occurred with your inputs. Please try again.");
+            alert("Sorry, an error occurred with your inputs. Please try again.");
         }
     });
 
