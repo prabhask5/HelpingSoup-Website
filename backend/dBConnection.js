@@ -53,13 +53,23 @@ queryList.push(createVolunteer);
 var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
     deliveryNotesID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     deliveryNotes VARCHAR(500) NULL,
-    deliveryStatus TINYINT(1) NULL,
+    deliveryStatus TINYINT(1) NOT NULL DEFAULT 0,
     volunteerID INT NOT NULL,
     customerID INT NOT NULL,
     FOREIGN KEY (volunteerID) REFERENCES volunteer(volunteerID),
     FOREIGN KEY (customerID) REFERENCES customer(customerID)
 );`;
 queryList.push(createVolunteerDelivery);
+var createResetTokens = `CREATE TABLE IF NOT EXISTS resettokens(
+    tokenID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    expiration DATETIME NOT NULL,
+    createdAt DATETIME NULL,
+    updatedAt DATETIME NULL,
+    used TINYINT(1) NOT NULL DEFAULT 0
+);`
+queryList.push(createResetTokens);
 class DbService{
     static getDbServiceInstance(){
         for(let query of queryList){
@@ -107,8 +117,8 @@ class DbService{
         try{
             const insert = await new Promise((resolve, reject) => {
                 const query = "INSERT INTO customer (customerFirstName, customerLastName, customerEmail," +
-                     " customerStreetAddress, customerCity, customerState, customerZip, pickUpDate, startTime, endTime, goodsNotes, goodsAssigned)" +
-                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0);";
+                     " customerStreetAddress, customerCity, customerState, customerZip, pickUpDate, startTime, endTime, goodsNotes)" +
+                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
                 connection.query(query, [firstName, lastName, email, address, city, state, zip, date, startTime, endTime, message], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
@@ -119,13 +129,41 @@ class DbService{
             console.log(error);
         }
     }
-    async changePassword(email, newPass){
+    async findEmail(email){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT volunteerEmail FROM volunteer WHERE volunteerEmail = ?;";
+                connection.query(query, [email], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
+                })
+            });
+            return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
+    async updateToken(email){
+        try{
+            const update = await new Promise((resolve, reject) => {
+                const query = "UPDATE resettokens SET used = 1 WHERE email = ?;";
+                connection.query(query, [email], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result);
+                })
+            });
+            return update;
+        } catch(error){
+            console.log(error);
+        }
+    }
+    async createToken(email, expiration, token){
         try{
             const insert = await new Promise((resolve, reject) => {
-                const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ?;";
-                connection.query(query, [newPass, email], (err, result) => {
+                const query = "INSERT INTO resettokens(email, expiration, token) VALUES (?, ?, ?);";
+                connection.query(query, [email, expiration, token], (err, result) => {
                     if (err) reject(new Error(err.message));
-                    resolve(result.insert);
+                    resolve(result);
                 })
             });
             return insert;

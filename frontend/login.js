@@ -117,12 +117,10 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         if(submit){
             var formData = {
                 email: $("#forgotEmail").val(),
-                oldPass: $("#forgotOldPass").val(),
-                newPass: $("#forgotNewPass").val(),
             };
             $.ajax({
                 type: "POST",
-                url: "http://localhost:4000/forgotPassword",
+                url: "http://localhost:4000/forgotPasswordEmail",
                 data: formData,
                 dataType: "json",
                 encode: true,
@@ -131,13 +129,13 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                         console.log("success!");
                         $(forgotForm).trigger("reset");
                         $(status).addClass('success');
-                        $(status).html("Great! Your password has been changed!");
+                        $(status).html("Great! An email has been sent to this address.");
                     }
                     else{
                         console.log("didn't work!");
                         $(forgotForm).trigger("reset");
                         $(status).addClass('error');
-                        $(status).html("Sorry, this username and password combination is incorrect. Please try again.");
+                        $(status).html("Sorry, this email does not exist within our records. Please try again.");
                     }
                 },
                 error: function(data){
@@ -213,11 +211,6 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 canSubmitSignUp = false;
                 signUpPassError = true;
             }
-            if ((e.target.id === "forgotConfirmNewPass" || e.target.id === "forgotNewPass") && (($("#forgotConfirmNewPass").val().length > 0 && $("#forgotNewPass").val().length > 0) && $("#forgotConfirmNewPass").val() !== $("#forgotNewPass").val())) {
-                setInputError(inputElement, "Please make sure your passwords match."); // calls setInputError method
-                canSubmitForgot = false;
-                forgotPassError = true;
-            }
             if(e.target.id === "zip" && (e.target.value.length > 0 && (e.target.value.match(/^[0-9]+$/) == null || e.target.value.length != 5))){
                 setInputError(inputElement, "Please make sure you inputted your zip code in the correct format.");
                 canSubmitSignUp = false;
@@ -241,19 +234,14 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 clearInputError(inputElement);
                 zipError = false;
             }
-            else if(inputElement.id == "email" || inputElement.id == "forgotEmail"){
+            else if(inputElement.id == "email"){
                 clearInputError(inputElement);
                 emailError = false;
-            }
-            else if(inputElement.id == "forgotNewPass" || inputElement.id == "forgotConfirmNewPass"){
-                clearInputError(inputElement);
-                forgotPassError = false;
             }
             else{
                 clearInputError(inputElement);
             }
             if((!signUpPassError) && (!zipError && !emailError)) canSubmitSignUp = true;
-            if(!forgotPassError) canSubmitForgot = true;
             //console.log("errors " + errors + " canSubmit " + canSubmit);
         });
     });
