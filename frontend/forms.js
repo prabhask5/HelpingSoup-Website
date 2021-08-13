@@ -78,8 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".form__input").forEach(inputElement => { // looks at all form__input classes
     inputElement.addEventListener("blur", e => { // when user inputs something then clicks off
-        //console.log(inputElement.id);
-        //console.log($("#1appt"));
         if(e.target.id === "zip" && (e.target.value.length > 0 && (e.target.value.match(/^[0-9]+$/) == null || e.target.value.length !== 5))){
             setInputError(inputElement, "Please make sure you inputted your zip code in the correct format.");
             canSubmit = false;
@@ -104,12 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
         if(e.target.id === "secondTime" || e.target.id === "firstTime"){
-          //console.log($("#1appt").val());
-          //console.log($("#2appt").val());
           var valuestart = $("#firstTime").val();
-          var valuestop = $("#secondTime").val();
-          //console.log(valuestart);
-          //console.log(valuestop);         
+          var valuestop = $("#secondTime").val();    
           var timeStart = new Date("01/01/2007 " + valuestart);
           var timeEnd = new Date("01/01/2007 " + valuestop);
           var diffMin = (timeEnd - timeStart) / 60 / 1000;
@@ -120,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
               var t2 = document.querySelector("#secondTime");
               setInputError(t1, "Please make sure your time range is 30 minutes or greater.");
               setInputError(t2, "Please make sure your time range is 30 minutes or greater.");
-              //setInputError($("#2appt"), "Please make sure your time range is 30 minutes or greater.");
               canSubmit = false;
               timeError = true;
             }
