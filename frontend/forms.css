@@ -140,7 +140,9 @@ section{
 textarea{
     resize: vertical;
 }
-
+.second{
+    margin-top: 15px;
+}
 .form__input {
     display: block;
     width: 100%;
