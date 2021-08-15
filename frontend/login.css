@@ -68,7 +68,7 @@ a{
 }
 @font-face {
     font-family: Platnomor;
-    src: url(/docs/PlatNomor.ttf);
+    src: url(../docs/PlatNomor.ttf);
 }
 section{
     width: 100%;
