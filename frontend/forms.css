@@ -49,8 +49,6 @@ h4{
     right: 520px;
     width: 200px;
     height: 100px;
-    
-
 }
 .container1 {
     margin: 0;
@@ -68,13 +66,7 @@ a{
     padding-top: 1px;
     font-weight: bold;
     color:black;
-
 }
-@font-face {
-    font-family: Platnomor;
-    src: url(../docs/PlatNomor.ttf);
-}
-
 section{
     width: 100%;
     background-color: #83B271;
@@ -98,17 +90,17 @@ section{
 }
 .container,
 .form__input,
-.form__button {
+.form__button,
+#status {
     font: 500 1rem 'Quicksand', sans-serif;
 }
-
 
 .form__input {
     display: block;
     width: 100%;
     padding: 0.75rem;
     box-sizing: border-box;
-    border-radius: var(--border-radius);
+    border-radius: 4px;
     border: 1px solid #dddddd;
     outline: none;
     background: #eeeeee;
@@ -140,20 +132,6 @@ section{
 textarea{
     resize: vertical;
 }
-.second{
-    margin-top: 15px;
-}
-.form__input {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    box-sizing: border-box;
-    border-radius: var(--border-radius);
-    border: 1px solid #dddddd;
-    outline: none;
-    background: #eeeeee;
-    transition: background 0.2s, border-color 0.2s;
-}
 
 .form__input:focus {
     border-color: black;
@@ -175,7 +153,7 @@ textarea{
     font-weight: bold;
     color: #ffffff;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: 4px;
     outline: none;
     cursor: pointer;
     background: var(--color-primary);
@@ -206,6 +184,11 @@ textarea{
     background-color: rgb(250, 129, 92);
     color: white; 
     animation: status 4s ease forwards;
+}
+
+@font-face {
+    font-family: Platnomor;
+    src: url(../docs/PlatNomor.ttf);
 }
 
 @keyframes status {
