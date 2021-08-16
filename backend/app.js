@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 dotenv.config();
+
 const DbService = require('./dBConnection');
 
 app.use(cors());
@@ -41,7 +42,7 @@ app.post('/volunteerSignUp', (request, response) =>{
 app.post('/volunteerLogin', (request, response) => {
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
-    const result = db.getLogin(formData.email);
+    const result = db.getLogin(formData.email, formData.password);
     result
     .then(data => {
         pass = []
@@ -67,7 +68,8 @@ app.post('/forgotPasswordEmail', (request, response) => {
             var token = crypto.randomBytes(64).toString('base64');
             var expireDate = new Date();
             expireDate.setHours(expireDate.getHours() + 1);
-            db.createToken(formData.email, expireDate, token);
+            var createdAt = new Date();
+            db.createToken(formData.email, expireDate, token, createdAt);
             const message = {
                 from: process.env.EMAIL_USER,
                 to: formData.email,
@@ -81,7 +83,7 @@ app.post('/forgotPasswordEmail', (request, response) => {
             response.json({success: true});
         }
         else response.json({success: false});
-    });
+    })
 });
 
 app.get('/user/reset-password', (request, response, next) => {

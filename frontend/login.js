@@ -38,9 +38,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
     const forgotForm = document.querySelector("#forgot");
     var status = document.getElementById("status");
     var canSubmitSignUp = true;
-    var canSubmitForgot = true;
     var signUpPassError = false;
-    var forgotPassError = false;
     var emailError = false;
     var zipError = false;
 
@@ -110,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         e.preventDefault();
         $(status).removeClass();
         $(status).html("");
-        var submit = finalSubmit(canSubmitForgot, 2);
+        var submit = finalSubmit(true, 2);
         if(submit){
             var formData = {
                 email: $("#forgotEmail").val(),
@@ -185,12 +183,13 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 error: function(data){
                     console.log("error");
                     $(createAccountForm).trigger("reset");
-                    alert("Sorry, an error has occurred. Please try again later.");
+                    alert("Sorry, an error occurred with your inputs. Please try again.");
                 }
               });
         }
         else {
             console.log("Can't submit!");
+            console.log("Can't  submit!");
             alert("Sorry, an error occurred with your inputs. Please try again.");
         }
     });
@@ -218,7 +217,10 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
 
         inputElement.addEventListener("input", e => { // when user types again
             if(inputElement.id == "password" || inputElement.id == "confirmPassword"){
-                clearInputError(inputElement);
+                var p1 = document.querySelector("#password");
+                var p2 = document.querySelector("#confirmPassword");
+                clearInputError(p1);
+                clearInputError(p2);
                 signUpPassError = false;
             }
             else if(inputElement.id == "zip"){

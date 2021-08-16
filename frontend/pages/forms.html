@@ -11,7 +11,7 @@
         <header>
             <nav>
                 <ul class="container1">
-                    <img src="/docs/logo3.PNG" alt="HelpingSoup Logo">
+                    <img src="../../docs/logo3.PNG" alt="HelpingSoup Logo">
                     <h4></h4>
                 
                     <li><a href="main.html">Home</a></li>
@@ -27,9 +27,8 @@
        
         <section>
             <div class="container">
-                <form action="http://localhost:4000/donation" method="POST" id="my-form">
+                <form id="my-form">
                     <h1 class="form__title">Donation Form</h1>
-                    <!--first name box-->
                     <div class="form__input-group">
                         <input
                         type="text"
@@ -38,10 +37,9 @@
                         name="firstName" 
                         autofocus 
                         placeholder="First Name"
-                        required>
+                        >
                         <div class="form__input-error-message"></div>
                     </div>
-                    <!--last name box-->
                     <div class="form__input-group">
                         <input 
                         type="text" 
@@ -50,51 +48,19 @@
                         name="lastName" 
                         autofocus 
                         placeholder="Last Name"
-                        required>
+                        >
                         <div class="form__input-error-message"></div>
                     </div>
-                    <!--choice between email or phone-->
-                    <span><br>Method of Communication?<br></span>
-                    <label for="chkYes">
-                        <input 
-                        type="radio" 
-                        id="chkYes" 
-                        name="typeofcommunication" 
-                        onclick="emailorphoneshower()"
-                        required/>
-                        Email address
-                    </label>
-                    <label for="chkNo">
-                        <input 
-                        type="radio" 
-                        id="chkNo" 
-                        name="typeofcommunication" 
-                        onclick="emailorphoneshower()"
-                        required/>
-                        Phone number
-                    </label>
-                    <hr />
-                    <div class="form__input-group" id="emailaddress"  style="display: none">
+                    <div class="form__input-group" id="emailaddress">
                         <input 
                         type="text" 
-                        class="form__input second"
+                        class="form__input"
                         id="email"
                         name="email" 
                         autofocus 
                         placeholder="email@example.com">
                         <div class="form__input-error-message"></div>
                     </div>
-                    <div class="form__input-group" id="phonenumber" style="display: none;">
-                        <input 
-                        type="text" 
-                        class="form__input second"
-                        id="phone"
-                        name="phone" 
-                        autofocus 
-                        placeholder="e.g 999-999-9999">
-                        <div class="form__input-error-message"></div>
-                    </div>
-
                     <div class="form__input-group">
                         <input 
                         type="text" 
@@ -103,7 +69,7 @@
                         name="address" 
                         autofocus 
                         placeholder="Street Address"
-                        required>
+                        >
                         <div class="form__input-error-message"></div>
                     </div>
                     <div class="form__input-group">
@@ -114,7 +80,7 @@
                         name="city" 
                         autofocus 
                         placeholder="City"
-                        required>
+                        >
                         <div class="form__input-error-message"></div>
                     </div>
                     <div class="form__input-group">
@@ -125,7 +91,7 @@
                         name="state" 
                         autofocus 
                         placeholder="State"
-                        required>
+                        >
                         <div class="form__input-error-message"></div>
                     </div>
                     <div class="form__input-group">
@@ -136,10 +102,9 @@
                         name="zip" 
                         autofocus 
                         placeholder="Zip Code"
-                        required>
+                        >
                         <div class="form__input-error-message"></div>
                     </div>
-                    <!--date box-->
                     <div class="form__input-group">
                         <label for="datebox">Choose a date for your pickup</label>
                         <input 
@@ -152,21 +117,27 @@
                         required>
                         <div class="form__input-error-message"></div>
                     </div>
-                    <!--time box-->
                     <div class="form__input-group">
-                        <label for="timebox">Choose a time for your pickup</label>
+                        <label for="timebox">Choose the first time in the day you are available for pickup</label>
                         <input 
                         type="time" 
                         class="form__input" 
-                        id="appt" 
-                        name="time" 
-                        min="10:00" 
-                        max="20:00"
-                        required>
+                        id="firstTime" 
+                        name="firstTime" 
+                        >
+                        <div class="form__input-error-message"></div>
+                    </div>
+                    <div class="form__input-group">
+                        <label for="timebox">Choose the last time in the day you are available for pickup</label>
+                        <input 
+                        type="time" 
+                        class="form__input" 
+                        id="secondTime" 
+                        name="secondTime" 
+                        >
                         <div class="form__input-error-message"></div>
                         <small>Office hours are 10am to 8pm</small>
                     </div>
-                    <!--message box-->
                     <div class="form__input-group">
                         <label for="message">Message</label>
                         <textarea 
@@ -178,7 +149,7 @@
                         ></textarea>
                         <div class="form__input-error-message"></div>
                     </div>
-                    <button type="submit" class="form__button">Continue</button>
+                    <button type='button' id='donationSubmit' class="form__button">Continue</button>
                 </form>
             </div>
             <div id="status"></div>

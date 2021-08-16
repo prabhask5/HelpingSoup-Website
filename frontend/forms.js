@@ -90,12 +90,14 @@ document.addEventListener("DOMContentLoaded", () => {
             emailError = true;
         }
         if((e.target.id === "secondTime" || e.target.id === "firstTime") && !timeError){
-          if ($("#firstTime").val != "" && ($("#firstTime").val() < "10:00" || $("#firstTime").val() > "20:00")){
+          var t1 = document.querySelector("#firstTime");
+          var t2 = document.querySelector("#secondTime");
+          if ($("#firstTime").val() != "" && ($("#firstTime").val() < "10:00" || $("#firstTime").val() > "20:00")){
             setInputError(t1, "Please make sure this time is within our office hours.");
             canSubmit = false;
             rangeError = true;
           }
-          if ($("#secondTime").val != "" && ($("#secondTime").val() < "10:00" || $("#secondTime").val() > "20:00")){
+          if ($("#secondTime").val() != "" && ($("#secondTime").val() < "10:00" || $("#secondTime").val() > "20:00")){
             setInputError(t2, "Please make sure this time is within our office hours.");
             canSubmit = false;
             rangeError = true;

@@ -66,10 +66,7 @@ a{
     color:black;
 
 }
-@font-face {
-    font-family: Platnomor;
-    src: url(/docs/PlatNomor.ttf);
-}
+
 section{
     width: 100%;
     background-color: #83B271;
@@ -92,7 +89,9 @@ section{
 .form__input,
 .form__button,
 .loginform__input,
-.forgotform__input {
+.forgotform__input,
+.form__link,
+#status {
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
@@ -120,6 +119,14 @@ section{
     margin-bottom: 1rem;
 }
 
+.form__message--success {
+    color: var(--color-success);
+}
+
+.form__message--error {
+    color: var(--color-error);
+}
+
 .form__input-group {
     margin-bottom: 1rem;
 }
@@ -129,7 +136,7 @@ section{
     width: 100%;
     padding: 0.75rem;
     box-sizing: border-box;
-    border-radius: var(--border-radius);
+    border-radius: 4px;
     border: 1px solid #dddddd;
     outline: none;
     background: #eeeeee;
@@ -218,4 +225,8 @@ section{
         opacity: 0;
         pointer-events: none;
     }
+}
+@font-face {
+    font-family: Platnomor;
+    src: url(/docs/PlatNomor.ttf);
 }

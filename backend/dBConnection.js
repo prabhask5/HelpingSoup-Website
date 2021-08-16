@@ -34,7 +34,7 @@ var createCustomer = `CREATE TABLE IF NOT EXISTS customer(
     startTime TIME NULL,
     endTime TIME NULL,
     goodsNotes VARCHAR(500) NULL,
-    goodsAssigned TINYINT(1) NOT NULL
+    goodsAssigned TINYINT(1) NOT NULL DEFAULT 0
 );`
 queryList.push(createCustomer);
 var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
@@ -72,6 +72,9 @@ var createResetTokens = `CREATE TABLE IF NOT EXISTS resettokens(
 queryList.push(createResetTokens);
 class DbService{
     static getDbServiceInstance(){
+        connection.connect(function (err) {
+            if (err) console.log(err.message);
+        });
         for(let query of queryList){
             connection.query(query, function (err) {
                 if (err) {
@@ -98,7 +101,7 @@ class DbService{
             console.log(error);
         }
     }
-    async getLogin(email){
+    async getLogin(email, password){
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT volunteerPassword FROM volunteer WHERE volunteerEmail = ?;";
@@ -157,20 +160,22 @@ class DbService{
             console.log(error);
         }
     }
-    async createToken(email, expiration, token){
+    async createToken(email, expiration, token, createdAt){
         try{
             const insert = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO resettokens(email, expiration, token) VALUES (?, ?, ?);";
-                connection.query(query, [email, expiration, token], (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result);
-                })
-            });
+                const query = "INSERT INTO resettokens(email, expiration, token, createdAt) VALUES (?, ?, ?, ?);";
+                    connection.query(query, [email, expiration, token, createdAt], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+                });
             return insert;
         } catch(error){
             console.log(error);
         }
     }
 }
+
+
 
 module.exports = DbService;
