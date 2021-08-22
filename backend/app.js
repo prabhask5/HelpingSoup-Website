@@ -99,11 +99,13 @@ app.get('/user/reset-password', (request, response) => {
     .then(data => {
         if(data.length > 0){
             console.log('token found!');
-            response.json({data: data});
+            response.json({success: true});
         }
-        else console.log('your token has expired or no token as been found, sorry');
+        else{
+            console.log('your token has expired or no token as been found, sorry');
+            response.json({success: false});
+        }
     });
-
     response.redirect('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/login.html');
 });
 

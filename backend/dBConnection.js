@@ -177,7 +177,7 @@ class DbService{
     async deleteTokens(date){
         try{
             const del = await new Promise((resolve, reject) => {
-                const query = "DELETE FROM resettokens WHERE expiration < ? and used = 1;";
+                const query = "DELETE FROM resettokens WHERE expiration < ? OR used = 1;";
                     connection.query(query, [date], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
