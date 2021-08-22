@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const dotenv = require('dotenv');
 const crypto = require('crypto');
+const fs = require('fs')
 const nodemailer = require('nodemailer');
 dotenv.config();
 
@@ -86,8 +87,32 @@ app.post('/forgotPasswordEmail', (request, response) => {
     })
 });
 
-app.get('/user/reset-password', (request, response, next) => {
-    response.sendFile('login.html');
+app.get('/user/reset-password', (request, response) => {
+    //delete expired or used tokens
+    const db = DbService.getDbServiceInstance();
+    const curDate = new Date();
+    db.deleteTokens(curDate);
+
+    //find token
+    const result = db.findToken(request.query.email, request.query.token);
+    result
+    .then(data => {
+        if(data.length > 0){
+            console.log('token found!');
+            response.json({data: data});
+        }
+        else console.log('your token has expired or no token as been found, sorry');
+    });
+
+    response.redirect('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/login.html');
+});
+
+app.post('reset-password', (request, response) => {
+    const db = DbService.getDbServiceInstance();
+    const formData = request.body;
+    const result = db.changePassword(formData.email, formData.oldPass, formData.newPass);
+    result
+    .then(data => response.json({data: data}));
 });
 
 app.post('/donation', (request, response) => {

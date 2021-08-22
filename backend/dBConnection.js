@@ -174,6 +174,48 @@ class DbService{
             console.log(error);
         }
     }
+    async deleteTokens(date){
+        try{
+            const del = await new Promise((resolve, reject) => {
+                const query = "DELETE FROM resettokens WHERE expiration < ? and used = 1;";
+                    connection.query(query, [date], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return del;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    async findToken(email, token){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT tokenID FROM resettokens WHERE email = ? AND token = ?;";
+                    connection.query(query, [email, token], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    async changePassword(email, oldPass, newPass){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ? AND volunteerPassword = ?;";
+                    connection.query(query, [newPass, email, oldPass], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        }catch(error){
+            console.log(error);
+        }
+    }
 }
 
 
