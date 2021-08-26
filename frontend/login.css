@@ -50,6 +50,16 @@ h4{
 
 
 }
+h2{
+    padding: 20px;
+    font-family: "Arial";
+    font-size: 60px;
+}
+h3{
+    padding: 20px;
+    font-family: "Arial";
+    font-size: 30px;
+}
 .container1 {
     margin: 0;
     padding: 0;
@@ -228,5 +238,5 @@ section{
 }
 @font-face {
     font-family: Platnomor;
-    src: url(/docs/PlatNomor.ttf);
+    src: url(../docs/PlatNomor.ttf);
 }
