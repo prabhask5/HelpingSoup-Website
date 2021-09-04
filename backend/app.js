@@ -99,11 +99,17 @@ app.get('/user/reset-password', (request, response) => {
     .then(data => {
         if(data.length > 0){
             console.log('token found!');
-            response.redirect('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html');
+            //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html');
+            //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html'});
+            response.writeHead(302, {Location: '../frontend/pages/forgetpassword.html'});
+            response.end();
         }
         else{
             console.log('your token has expired or no token as been found, sorry');
-            response.redirect('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html');
+            //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html');
+            //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html'});
+            response.writeHead(302, {Location: '../frontend/pages/error.html'});
+            response.end();
         }
     });
 });
