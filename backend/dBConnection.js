@@ -8,7 +8,6 @@ const connection = mysql.createConnection({
     host:process.env.HOST,
     user:process.env.USER,
     password:process.env.PASSWORD,
-    //database:process.env.DATABASE,
     port:process.env.DB_PORT
 });
 
@@ -174,6 +173,13 @@ class DbService{
             console.log(error);
         }
     }
+    
+     getDonations() {
+        const query = "SELECT * FROM helpingsoupdb.customer;";
+        return query;
+
+    }
+   //let getDono = 'SELECT * FROM customer';
 }
 
 

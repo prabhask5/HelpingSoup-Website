@@ -1,16 +1,24 @@
 const express = require('express');
 const app = express();
+const mysql = require("mysql");
 const cors = require('cors');
 const dotenv = require('dotenv');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 dotenv.config();
 
-const DbService = require('./dBConnection');
+const DbService = require('./dBConnection.js');
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+
+const connection = mysql.createConnection({
+    host:process.env.HOST,
+    user:process.env.USER,
+    password:process.env.PASSWORD,
+    port:process.env.DB_PORT
+});
 
 var transporter = nodemailer.createTransport({
     service: process.env.EMAIL_HOST,
@@ -87,7 +95,29 @@ app.post('/forgotPasswordEmail', (request, response) => {
 });
 
 app.get('/user/reset-password', (request, response, next) => {
+    console.log("getting here");
     response.sendFile('login.html');
+});
+
+app.get('/api/GetAllOrders', (request, response) => {
+    const db = DbService.getDbServiceInstance();
+    console.log(db);
+    let query = db.getDonations();
+    connection.connect(function (err){
+        if (err) {
+            console.log(err.message);
+        }
+    });
+    connection.query(query,function(err,result){
+        if (err) {
+            console.log("failing at getting orders");
+            console.log(query);
+            console.log(err.message);
+        }
+        else{
+            response.send(result);
+        }
+    });
 });
 
 app.post('/donation', (request, response) => {
@@ -99,7 +129,6 @@ app.post('/donation', (request, response) => {
          formData.endTime, formData.message);
     result
     .then(data => response.json({data: data}));
-})
-
+});
 
 app.listen(process.env.PORT, () => console.log('app is running'));
