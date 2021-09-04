@@ -30,15 +30,6 @@ img{
     top:350px;
 }
 #image2{
-    /*
-    width: 20.25%;
-    margin-top: 5%;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(130%, -20%);
-    */
     width: 20.3%;
     height: auto;
     float: left;
@@ -46,11 +37,6 @@ img{
     position: absolute;
     right:2.5%;
     top:350px;
-
-    
-    
-    
-
 }
 .roundedcorners{
     border-radius: 20px;
@@ -71,8 +57,6 @@ h1{
     right: 520px;
     width: 200px;
     height: 100px;
-    
-
 }
 h2{
     display: flex;
@@ -142,7 +126,6 @@ li{
     border: 1px solid #CDCDCD;
     border-radius: 10px;
     white-space: nowrap;
-
 }
 a{
     text-decoration: none;
@@ -152,18 +135,6 @@ a{
     font-weight: bold;
     color:black;
 
-}
-@font-face {
-    font-family: Platnomor;
-    src: url(../docs/PlatNomor.ttf);
-}
-@font-face {
-    font-family: Franklin;
-    src: url(../docs/Franklin\ Gothic\ Heavy\ Regular.ttf);
-}
-@font-face {
-    font-family: Elephant;
-    src: url(../docs/Elephant\ V1.ttf);
 }
 .textBox {
     background-color: #ffffff;
@@ -176,6 +147,18 @@ a{
     font-size: 20px;
     width: 50%;
     margin-top: 40px;
+}
+@font-face {
+    font-family: Platnomor;
+    src: url(../docs/PlatNomor.ttf);
+}
+@font-face {
+    font-family: Franklin;
+    src: url(../docs/Franklin\ Gothic\ Heavy\ Regular.ttf);
+}
+@font-face {
+    font-family: Elephant;
+    src: url(../docs/Elephant\ V1.ttf);
 }
 @media only screen and (max-device-width: 1144px) {
     .textBox {
