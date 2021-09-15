@@ -71,6 +71,7 @@ app.post('/forgotPasswordEmail', (request, response) => {
             expireDate.setHours(expireDate.getHours() + 1);
             var createdAt = new Date();
             db.createToken(formData.email, expireDate, token, createdAt);
+            console.log("created token");
             const message = {
                 from: process.env.EMAIL_USER,
                 to: formData.email,
@@ -88,6 +89,7 @@ app.post('/forgotPasswordEmail', (request, response) => {
 });
 
 app.get('/user/reset-password', (request, response) => {
+    
     //delete expired or used tokens
     const db = DbService.getDbServiceInstance();
     const curDate = new Date();
@@ -97,18 +99,19 @@ app.get('/user/reset-password', (request, response) => {
     const result = db.findToken(request.query.email, request.query.token);
     result
     .then(data => {
+        console.log(data);
         if(data.length > 0){
             console.log('token found!');
             //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html');
             //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html'});
-            response.writeHead(302, {Location: '../frontend/pages/forgetpassword.html'});
+            response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/forgotpassword.html'});
             response.end();
         }
         else{
             console.log('your token has expired or no token as been found, sorry');
             //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html');
             //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html'});
-            response.writeHead(302, {Location: '../frontend/pages/error.html'});
+            response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/error.html'});
             response.end();
         }
     });
