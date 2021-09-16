@@ -77,7 +77,7 @@ app.post('/forgotPasswordEmail', (request, response) => {
                 from: process.env.EMAIL_USER,
                 to: formData.email,
                 subject: "HelpingSoup Reset Password",
-                text: 'To reset your password, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/user/reset-password?token='+ encodeURIComponent(token) +'&email='+ formData.email
+                text: 'Hello,\n\nTo reset your password, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/user/reset-password?token='+ encodeURIComponent(token) +'&email='+ formData.email +'\n\nSincerely,\n\nThe HelpingSoupTeam'
             };
             transporter.sendMail(message, (err, info) => {
                 if(err) console.log(err);
@@ -146,6 +146,22 @@ app.post('/donation', (request, response) => {
          formData.endTime, formData.message);
     result
     .then(data => response.json({data: data}));
+    const result2 = db.findEmails();
+    result2
+    .then(data => {
+        for(var i = 0; i < data.length; i++){
+            const message = {
+                from: process.env.EMAIL_USER,
+                to: data[i].volunteerEmail,
+                subject: "New HelpingSoup Donation",
+                text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + formData.startTime + ' to ' + formData.endTime + ' on ' + formData.date + ', and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: [placeholder link].' + '\n\nSincerely,\n\nThe HelpingSoup Team'
+            };
+            transporter.sendMail(message, (err, info) => {
+                if(err) console.log(err);
+                //else console.log(info);
+            });
+        }
+    });
 })
 
 

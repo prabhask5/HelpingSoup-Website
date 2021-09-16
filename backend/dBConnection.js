@@ -229,6 +229,20 @@ class DbService{
             console.log(error);
         }
     }
+    async findEmails(){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT volunteerEmail FROM volunteer;";
+                    connection.query(query, [], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
 }
 
 
