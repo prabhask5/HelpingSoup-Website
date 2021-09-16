@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", e => {
                 var p2 = document.querySelector("#resetConfirmPassword");
                 clearInputError(p1);
                 clearInputError(p2);
-                passError = true;
+                passError = false;
             }
             if(!passError) canSubmit = true;
             //console.log("errors " + errors + " canSubmit " + canSubmit);
