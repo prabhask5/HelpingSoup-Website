@@ -189,7 +189,6 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         }
         else {
             console.log("Can't submit!");
-            console.log("Can't  submit!");
             alert("Sorry, an error occurred with your inputs. Please try again.");
         }
     });

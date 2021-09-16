@@ -1,13 +1,12 @@
-const mysql = require('mysql');
-const dotenv = require('dotenv');
+const mysql = require('mysql2');
+const dotenv = require('dotenv').config({path:__dirname+'/.env'});
 let instance = null;
-dotenv.config();
 var queryList = [];
 
 const connection = mysql.createConnection({
     host:process.env.HOST,
-    user:process.env.USER,
-    password:process.env.PASSWORD,
+    user:process.env.HSDB_USER,
+    password:process.env.HSDB_PASSWORD,
     //database:process.env.DATABASE,
     port:process.env.DB_PORT
 });
@@ -184,7 +183,7 @@ class DbService{
                     })
             });
             return del;
-        }catch(error){
+        } catch(error){
             console.log(error);
         }
     }
@@ -198,21 +197,35 @@ class DbService{
                     })
             });
             return response;
-        }catch(error){
+        } catch(error){
             console.log(error);
         }
     }
-    async changePassword(email, oldPass, newPass){
+    async findOldPassword(email){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ? AND volunteerPassword = ?;";
-                    connection.query(query, [newPass, email, oldPass], (err, result) => {
+                const query = "SELECT volunteerPassword FROM volunteer WHERE volunteerEmail = ?;";
+                    connection.query(query, [email], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
             });
             return response;
-        }catch(error){
+        } catch(error){
+            console.log(error)
+        }
+    }
+    async resetPassword(email, password){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ?;";
+                    connection.query(query, [password, email], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
             console.log(error);
         }
     }
