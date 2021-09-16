@@ -107,10 +107,6 @@ app.get('/user/reset-password', (request, response) => {
             //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html');
             //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html'});
             response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/forgotpassword.html'});
-<<<<<<< HEAD
-            userEmail = request.query.email;
-=======
->>>>>>> ff55b062e02be984e294bcd0347d7eecc38c4674
             response.end();
         }
         else{
