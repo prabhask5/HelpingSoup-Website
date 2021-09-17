@@ -1,13 +1,13 @@
-const mysql = require('mysql');
-const dotenv = require('dotenv');
+const mysql = require('mysql2');
+const dotenv = require('dotenv').config({path:__dirname+'/.env'});
 let instance = null;
-dotenv.config();
 var queryList = [];
 
 const connection = mysql.createConnection({
     host:process.env.HOST,
-    user:process.env.USER,
-    password:process.env.PASSWORD,
+    user:process.env.HSDB_USER,
+    password:process.env.HSDB_PASSWORD,
+    //database:process.env.DATABASE,
     port:process.env.DB_PORT
 });
 
@@ -173,13 +173,76 @@ class DbService{
             console.log(error);
         }
     }
-    
-     getDonations() {
-        const query = "SELECT * FROM helpingsoupdb.customer;";
-        return query;
-
+    async deleteTokens(date){
+        try{
+            const del = await new Promise((resolve, reject) => {
+                const query = "DELETE FROM resettokens WHERE expiration < ? OR used = 1;";
+                    connection.query(query, [date], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return del;
+        } catch(error){
+            console.log(error);
+        }
     }
-   //let getDono = 'SELECT * FROM customer';
+    async findToken(email, token){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT tokenID FROM resettokens WHERE email = ? AND token = ?;";
+                    connection.query(query, [email, token], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
+    async findOldPassword(email){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT volunteerPassword FROM volunteer WHERE volunteerEmail = ?;";
+                    connection.query(query, [email], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
+            console.log(error)
+        }
+    }
+    async resetPassword(email, password){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ?;";
+                    connection.query(query, [password, email], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
+    async findEmails(){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT volunteerEmail FROM volunteer;";
+                    connection.query(query, [], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
 }
 
 
