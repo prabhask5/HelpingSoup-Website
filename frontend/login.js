@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                         console.log("success!");
                         $(forgotForm).trigger("reset");
                         $(status).addClass('success');
-                        $(status).html("Great! An email has been sent to this address.");
+                        $(status).html("Great! An email has been sent to this address. Check your spam email if you do not see it.");
                     }
                     else{
                         console.log("didn't work!");
@@ -189,7 +189,6 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         }
         else {
             console.log("Can't submit!");
-            console.log("Can't  submit!");
             alert("Sorry, an error occurred with your inputs. Please try again.");
         }
     });
