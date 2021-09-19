@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                         $(loginForm).trigger("reset");
                         $(status).addClass('success');
                         $(status).html("Great! You've been logged in (theoretically)!");
+                        window.location.replace("../pages/userpage.html");
                     }
                     else{
                         console.log("didn't work!");

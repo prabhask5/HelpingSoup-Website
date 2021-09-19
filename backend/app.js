@@ -16,6 +16,15 @@ app.use(express.urlencoded({extended:false}));
 
 var userEmail = null;
 
+const connection = mysql.createConnection({
+    host:process.env.HOST,
+    user:process.env.HSDB_USER,
+    password:process.env.HSDB_PASSWORD,
+    database:process.env.DATABASE,
+    port:process.env.DB_PORT
+});
+
+
 var transporter = nodemailer.createTransport({
     service: process.env.EMAIL_HOST,
     auth: {
@@ -137,11 +146,12 @@ app.post('/resetVolunteerPassword', (request, response) => {
         }
     });
 });
-
+/*
 app.get('/api/GetAllOrders', (request, response) => {
     const db = DbService.getDbServiceInstance();
     console.log(db);
     let query = db.getDonations();
+    console.log("testing " + DbService.connection);
     connection.connect(function (err){
         if (err) {
             console.log(err.message);
@@ -158,7 +168,7 @@ app.get('/api/GetAllOrders', (request, response) => {
         }
     });
 });
-
+*/
 app.post('/donation', (request, response) => {
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
@@ -185,6 +195,29 @@ app.post('/donation', (request, response) => {
         }
     });
 })
+
+app.get('/api/GetAllOrders', (request, response) => {
+    const db = DbService.getDbServiceInstance();
+    console.log(db);
+    let query = db.getDonations();
+    connection.connect(function (err){
+        if (err) {
+            console.log(err.message);
+        }
+        else{
+        connection.query(query,function(err,result){
+            if (err) {
+                console.log("failing at getting orders");
+                console.log(query);
+                console.log(err.message);
+            }
+            else{
+                response.send(result);
+             }
+         });
+        }
+    });
+});
 
 
 app.listen(process.env.PORT, () => console.log('app is running'));

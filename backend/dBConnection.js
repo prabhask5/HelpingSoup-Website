@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
     host:process.env.HOST,
     user:process.env.HSDB_USER,
     password:process.env.HSDB_PASSWORD,
-    //database:process.env.DATABASE,
+    database:process.env.DATABASE,
     port:process.env.DB_PORT
 });
 
@@ -242,6 +242,11 @@ class DbService{
         } catch(error){
             console.log(error);
         }
+    }
+    getDonations() {
+        const query = "SELECT * FROM helpingsoupdb.customer;";
+        return query;
+
     }
 }
 
