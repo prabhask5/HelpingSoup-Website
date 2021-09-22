@@ -197,11 +197,12 @@ app.post('/donation', (request, response) => {
 })
 
 app.get('/api/GetAllOrders', (request, response) => {
+    console.log("getting all orders");
     const db = DbService.getDbServiceInstance();
-    console.log(db);
     let query = db.getDonations();
     connection.connect(function (err){
         if (err) {
+            console.log("getting a error with orders");
             console.log(err.message);
         }
         else{
@@ -212,6 +213,7 @@ app.get('/api/GetAllOrders', (request, response) => {
                 console.log(err.message);
             }
             else{
+                
                 response.send(result);
              }
          });
