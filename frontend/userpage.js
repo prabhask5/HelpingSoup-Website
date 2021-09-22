@@ -7,8 +7,7 @@ function getOrders() {
     console.log("getting into getOrders");
     var url = "http://localhost:4000/api/GetAllOrders";
     var method = "GET";
-    callAjax(url,method);
-    console.log("got ajax")
+    callAjax(url,method).
     done(function(data,textStatus,jqXHR) {
         if (data) {
             console.log("got some data");

@@ -16,13 +16,6 @@ app.use(express.urlencoded({extended:false}));
 
 var userEmail = null;
 
-const connection = mysql.createConnection({
-    host:process.env.HOST,
-    user:process.env.HSDB_USER,
-    password:process.env.HSDB_PASSWORD,
-    database:process.env.DATABASE,
-    port:process.env.DB_PORT
-});
 
 
 var transporter = nodemailer.createTransport({
@@ -199,26 +192,12 @@ app.post('/donation', (request, response) => {
 app.get('/api/GetAllOrders', (request, response) => {
     console.log("getting all orders");
     const db = DbService.getDbServiceInstance();
-    let query = db.getDonations();
-    connection.connect(function (err){
-        if (err) {
-            console.log("getting a error with orders");
-            console.log(err.message);
-        }
-        else{
-        connection.query(query,function(err,result){
-            if (err) {
-                console.log("failing at getting orders");
-                console.log(query);
-                console.log(err.message);
-            }
-            else{
-                
-                response.send(result);
-             }
-         });
-        }
+    const result= db.getDonations();
+    result
+    .then(data => {
+            response.send(data);
     });
+    
 });
 
 
