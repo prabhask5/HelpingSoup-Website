@@ -190,7 +190,6 @@ app.post('/donation', (request, response) => {
 })
 
 app.get('/api/GetAllOrders', (request, response) => {
-    console.log("getting all orders");
     const db = DbService.getDbServiceInstance();
     const result= db.getDonations();
     result

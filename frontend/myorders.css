@@ -1,0 +1,11 @@
+#move {
+    margin: auto;
+    width:90%;
+    height: auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+}
+h5 {
+    text-align: center;
+}
