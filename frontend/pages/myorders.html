@@ -6,6 +6,7 @@
     </script>
     <link rel="stylesheet" href="../login.css">
     <link rel="stylesheet" href="../myorders.css">
+    <script src="../myorders.js"></script>
 </head>
 <header>
     <nav>
@@ -26,21 +27,22 @@
     <h5>Your Current Orders</h5>
     <div id="Order">
         <div id="move">
-                <table id="customerTable" class="table table-bordered">
-                    <thead>
-                    <tr id="E0">
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Address</th>
-                        <th class="text-center">Start Time</th>
-                        <th class="text-center">End Time</th>
-                        <th class="text-center">Pickup Date</th>
-                        <th class="text-center">Status</th>
-                    </tr>
-                    </thead>
-                    <tbody id="rowsAdd">
+            <table id="ordersTable" class="table table-bordered">
+                <thead>
+                <tr id="R0">
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Address</th>
+                    <th class="text-center">Start Time</th>
+                    <th class="text-center">End Time</th>
+                    <th class="text-center">Pickup Date</th>
+                    <th class="text-center">Goods Notes</th>
+                    <th class="text-center">Status</th>
+                </tr>
+                </thead>
+                <tbody id="newRows">
 
-                    </tbody>
-                </table>
+                </tbody>
+            </table>
         </div>
     </div>    
 </body>

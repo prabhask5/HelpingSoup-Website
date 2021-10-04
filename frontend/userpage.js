@@ -22,7 +22,7 @@ function getOrders() {
                 startTime = timeConvert(startTime);
                 var Date = element.pickupDate.substring(0,10);
                 var popUp = addPopUp(rowID,goodsNotes);
-                addRow(rowID);
+                addRow(rowID,goodsNotes);
                 $(`#E${rowID}1`).html(Name);
                 $(`#E${rowID}2`).html(Address);
                 $(`#E${rowID}3`).html(startTime);
@@ -36,16 +36,16 @@ function getOrders() {
     });
 }
 //adding a row dynamically
-function addRow (rowID) {
+function addRow (rowID,goodsNotes) {
     console.log("addRow is called");
-    var SaveBtn = addSaveBtn(rowID);
+    var SaveBtn = addSaveBtn(rowID,goodsNotes);
     var code =`<tr id="E${rowID}">
                 <th id="E${rowID}1" class="text-center"></th>
                 <th id="E${rowID}2" class="text-center"></th>
                 <th id="E${rowID}3" class="text-center"></th>
                 <th id="E${rowID}4" class="text-center"></th>
                 <th id="E${rowID}5" class="text-center"></th>
-                <th id="E${rowID}6" class="text-center"></th>
+                <th id="E${rowID}6" class="text-center notes"></th>
                 <th id="E${rowID}7" class="text-center">${SaveBtn}</th>
                 </tr>`;
     if (rowID == 1){
@@ -66,7 +66,7 @@ function timeConvert (time){
         time = time + " PM";
         if (timeArray[0] > 12) {
             var newHour = (timeArray[0] % 12).toString();
-            
+                
             time = newHour + time.substring(2)
         }
     }
@@ -76,37 +76,44 @@ function timeConvert (time){
     return time;
 }
 //adding the save button to the row
-function addSaveBtn (rowID) {
+function addSaveBtn (rowID,goodsNotes) {
     console.log("addSaveBtn is called");
-    var code = `<button class="btn btn-md btn-primary" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID})">&#10004;</button>`;
+    console.log(`This is the goodsNotes ${goodsNotes}`);
+    var code = `<button class="btn btn-md btn-primary" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID},'${goodsNotes}')">&#10004;</button>`;
     return code;
 }
 
-function SaveOrder(rowID) {
+function SaveOrder(rowID,goodsNotes) {
     console.log("Save Order is called");
-    var selectedName = $(`#E${rowID}1`).val();
-    var selectedAddress = $(`#E${rowID}2`).val();
-    var selectedStartTime = $(`#E${rowID}3`).val();
-    var selectedEndTime = $(`#E${rowID}4`).val();
-    var selectedDate = $(`#E${rowID}5`).val();
-    var selectedNotes = $(`#E${rowID}6`).val();
-    console.log(rowID);
+    console.log("this is the rowid " + `#E${rowID}1`);
+    var Name = encodeURI($(`#E${rowID}1`).text());
+    var Address = encodeURI($(`#E${rowID}2`).text());
+    var startTime = encodeURI($(`#E${rowID}3`).text());
+    var endTime = encodeURI($(`#E${rowID}4`).text());
+    var Date = $(`#E${rowID}5`).text();
     $(`#E${rowID}`).remove();
+    
+    var goods = goodsNotes;
+    goods = encodeURI(goods);
+    var partUrl = "http://localhost:5500/frontend/pages/myorders.html?Name="
+    var url = partUrl + Name + "&Address=" + Address + "&startTime=" + startTime + "&endTime=" + endTime + "&Date=" + Date + "&goodNotes=" + goods;
+    console.log(url);
+    window.location.href = url;
 }
 
 function addPopUp (rowID,goodsNotes) {
     console.log("added Popup");
-    var code = `<div id="popUp${rowID}" class="popup" onclick="popUp(${rowID})">Click for Goods Notes
-    <span class="popuptext" id="myPopup${rowID}">${goodsNotes}</span>
-  </div>`
+    var code =`<p class="expand-one" id=popUp${rowID} onClick="popUpClicked(${rowID})"><a href="#">Click for Good Notes</a></p>
+                <p class="content-one" id=hiddenWords${rowID}>${goodsNotes}</p>`
   return code;
 }
 
-function popUp(rowID) {
+function popUpClicked (rowID) {
     console.log("popup is clicked");
-    var popup = document.getElementById(`myPopup${rowID}`);
-    popup.classList.toggle("show");
-  }
+    $(`#hiddenWords${rowID}`).slideToggle('slow');
+}
+
+
 
 function callAjax(uri, method, formData) {
     return $.ajax({
