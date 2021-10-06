@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mysql = require("mysql");
 const cors = require('cors');
 const dotenv = require('dotenv');
 const crypto = require('crypto');
@@ -7,7 +8,7 @@ const fs = require('fs')
 const nodemailer = require('nodemailer');
 dotenv.config();
 
-const DbService = require('./dBConnection');
+const DbService = require('./dBConnection.js');
 
 app.use(cors());
 app.use(express.json());
@@ -134,6 +135,27 @@ app.post('/resetVolunteerPassword', (request, response) => {
             .then(data => response.json({success: true}));
             const result2 = db.updateToken(userEmail);
             userEmail = null;
+        }
+    });
+});
+
+app.get('/api/GetAllOrders', (request, response) => {
+    const db = DbService.getDbServiceInstance();
+    console.log(db);
+    let query = db.getDonations();
+    connection.connect(function (err){
+        if (err) {
+            console.log(err.message);
+        }
+    });
+    connection.query(query,function(err,result){
+        if (err) {
+            console.log("failing at getting orders");
+            console.log(query);
+            console.log(err.message);
+        }
+        else{
+            response.send(result);
         }
     });
 });
