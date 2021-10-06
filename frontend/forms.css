@@ -90,12 +90,14 @@ section{
 }
 .container,
 .form__input,
+.form__input2,
 .form__button,
 #status {
     font: 500 1rem 'Quicksand', sans-serif;
 }
 
-.form__input {
+.form__input,
+.form__input2 {
     display: block;
     width: 100%;
     padding: 0.75rem;
@@ -107,7 +109,8 @@ section{
     transition: background 0.2s, border-color 0.2s;
 }
 
-.form__input:focus {
+.form__input:focus,
+.form__input2:focus {
     border-color: black;
     background: #ffffff;
 }
@@ -133,7 +136,8 @@ textarea{
     resize: vertical;
 }
 
-.form__input:focus {
+.form__input:focus,
+.form__input2:focus {
     border-color: black;
     background: #ffffff;
 }

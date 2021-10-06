@@ -21,8 +21,7 @@ var transporter = nodemailer.createTransport({
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
     }
-  });
-
+});
 app.post('/volunteerSignUp', (request, response) =>{
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
@@ -33,9 +32,13 @@ app.post('/volunteerSignUp', (request, response) =>{
             response.json({success: false});
         }
         else{
+            var opt = 0;
+            if(formData.emailOpt == "true"){
+                opt = 1;
+            }
             const result2 = db.insertVolunteer(formData.firstName, formData.lastName, formData.email,
                 formData.address, formData.city, formData.state,
-                 formData.zip, formData.school, formData.password);
+                 formData.zip, formData.school, formData.password, opt);
            result2
            .then(response.json({success: true}));
         }
@@ -101,7 +104,6 @@ app.get('/user/reset-password', (request, response) => {
     result
     .then(data => {
         if(data.length > 0){
-            console.log('token found!');
             //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html');
             //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html'});
             response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/forgotpassword.html'});
@@ -109,7 +111,6 @@ app.get('/user/reset-password', (request, response) => {
             response.end();
         }
         else{
-            console.log('your token has expired or no token as been found, sorry');
             //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html');
             //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html'});
             response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/error.html'});
@@ -142,7 +143,7 @@ app.post('/donation', (request, response) => {
     const db = DbService.getDbServiceInstance();
     const result = db.insertDonation(formData.firstName, formData.lastName, formData.email,
          formData.address, formData.city, formData.state,
-         formData.zip, formData.date, formData.startTime,
+         formData.zip, formData.startTime,
          formData.endTime, formData.message);
     result
     .then(data => response.json({data: data}));
@@ -150,19 +151,55 @@ app.post('/donation', (request, response) => {
     result2
     .then(data => {
         for(var i = 0; i < data.length; i++){
-            const message = {
-                from: process.env.EMAIL_USER,
-                to: data[i].volunteerEmail,
-                subject: "New HelpingSoup Donation",
-                text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + formData.startTime + ' to ' + formData.endTime + ' on ' + formData.date + ', and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: [placeholder link].' + '\n\nSincerely,\n\nThe HelpingSoup Team'
-            };
-            transporter.sendMail(message, (err, info) => {
-                if(err) console.log(err);
-                //else console.log(info);
+            var currEmail = data[i].volunteerEmail;
+            const result3 = db.findOptIn(currEmail);
+            result3.then(data2 => {
+                if(data2[0].volunteerEmailOptIn == 1){
+                    //var time1 = 0;
+                    //var time2 = 0;
+                    var time1 = timeConvert(formData.startTime);
+                    var time2 = timeConvert(formData.endTime);
+                    const message = {
+                        from: process.env.EMAIL_USER,
+                        to: currEmail,
+                        subject: "New HelpingSoup Donation",
+                        text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + time1 + ' to ' + time2 + ', and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: [placeholder link].' + '\n\nIf you want to opt out of these emails, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/optout?email='+ currEmail + '\n\nSincerely,\n\nThe HelpingSoup Team'
+                    };
+                    transporter.sendMail(message, (err, info) => {
+                        if(err) console.log(err);
+                        //else console.log(info);
+                    });
+                }
             });
         }
     });
-})
+});
 
+app.get('/optout', (request, response) => {
+    const db = DbService.getDbServiceInstance();
+    db.changeOptIn(request.query.email);
+    response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/changedOptIn.html'});
+    response.end();
+});
+
+
+function timeConvert (time){
+    var timeArray = time.split(':');
+    time = timeArray[0] + ":" + timeArray[1];
+
+    if (timeArray[0] >= 12) {
+
+        time = time + " PM";
+        if (timeArray[0] > 12) {
+            var newHour = (timeArray[0] % 12).toString();
+
+            time = newHour + time.substring(2)
+        }
+    }
+    else{
+        time = time + " AM";
+    }
+    return time;
+}
 
 app.listen(process.env.PORT, () => console.log('app is running'));
