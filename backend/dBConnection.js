@@ -308,8 +308,6 @@ class DbService{
             console.log(error);
         }
     }
-}
-
     async insertSelectedCustomer (notes,status,email,ID) {
         try {
             const response = await new Promise((resolve,reject) => {
@@ -325,6 +323,7 @@ class DbService{
         }
     }
 }
+
 
 /** 
 class DbService {
