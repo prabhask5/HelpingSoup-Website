@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
         city: $("#city").val(),
         state: $("#state").val(),
         zip: $("#zip").val(),
-        date: $("#date").val(),
         startTime: $("#firstTime").val(),
         endTime: $("#secondTime").val(),
         message: $("#message").val(),

@@ -24,6 +24,8 @@ Donation form:
     entering donation information into mysql database
     error checking for email, zip code, and times (checks if times are 30 min apart and if they're in office hours)
     error checking for if fields are empty
+    sends out email to volunteers who have opted in
+    email allows volunteers to opt out
 Login form:
     checking if volunteer credentials are correct from mysql database
     error checking for if fields are empty
@@ -35,3 +37,4 @@ Sign Up form:
     error checking for email, zip code, and passwords (checks if passwords are same)
     error checking for if fields are empty
     checks if volunteer email already exists in mysql database, and throws error if it is
+    allows user to opt out of donation emails
