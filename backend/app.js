@@ -9,12 +9,15 @@ const nodemailer = require('nodemailer');
 dotenv.config();
 
 const DbService = require('./dBConnection.js');
+const { allowedNodeEnvironmentFlags } = require('process');
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 var userEmail = null;
+
+
 
 var transporter = nodemailer.createTransport({
     service: process.env.EMAIL_HOST,
@@ -23,7 +26,7 @@ var transporter = nodemailer.createTransport({
       pass: process.env.EMAIL_PASS
     }
   });
-
+//POST CALLS
 app.post('/volunteerSignUp', (request, response) =>{
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
@@ -90,34 +93,7 @@ app.post('/forgotPasswordEmail', (request, response) => {
     })
 });
 
-app.get('/user/reset-password', (request, response) => {
-    
-    //delete expired or used tokens
-    const db = DbService.getDbServiceInstance();
-    const curDate = new Date();
-    db.deleteTokens(curDate);
 
-    //find token
-    const result = db.findToken(request.query.email, request.query.token);
-    result
-    .then(data => {
-        if(data.length > 0){
-            console.log('token found!');
-            //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html');
-            //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html'});
-            response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/forgotpassword.html'});
-            userEmail = request.query.email;
-            response.end();
-        }
-        else{
-            console.log('your token has expired or no token as been found, sorry');
-            //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html');
-            //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html'});
-            response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/error.html'});
-            response.end();
-        }
-    });
-});
 
 app.post('/resetVolunteerPassword', (request, response) => {
     const formData = request.body;
@@ -134,27 +110,6 @@ app.post('/resetVolunteerPassword', (request, response) => {
             .then(data => response.json({success: true}));
             const result2 = db.updateToken(userEmail);
             userEmail = null;
-        }
-    });
-});
-
-app.get('/api/GetAllOrders', (request, response) => {
-    const db = DbService.getDbServiceInstance();
-    console.log(db);
-    let query = db.getDonations();
-    connection.connect(function (err){
-        if (err) {
-            console.log(err.message);
-        }
-    });
-    connection.query(query,function(err,result){
-        if (err) {
-            console.log("failing at getting orders");
-            console.log(query);
-            console.log(err.message);
-        }
-        else{
-            response.send(result);
         }
     });
 });
@@ -185,6 +140,57 @@ app.post('/donation', (request, response) => {
         }
     });
 })
+
+app.post('/api/SelectingOrders',(request,response) => {
+    const formData = request.body;
+    const db = DbService.getDbServiceInstance();
+    console.log(formData);
+    const result = db.insertSelectedCustomer(formData.deliveryNotes,formData.deliveryStatus,formData.volunteerEmail,formData.customerID);
+    
+    result
+    .then(response.json({success: true}));
+});
+
+//GET CALLS
+app.get('/user/reset-password', (request, response) => {
+    
+    //delete expired or used tokens
+    const db = DbService.getDbServiceInstance();
+    const curDate = new Date();
+    db.deleteTokens(curDate);
+
+    //find token
+    const result = db.findToken(request.query.email, request.query.token);
+    result
+    .then(data => {
+        if(data.length > 0){
+            console.log('token found!');
+            //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html');
+            //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html'});
+            response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/forgotpassword.html'});
+            userEmail = request.query.email;
+            response.end();
+        }
+        else{
+            console.log('your token has expired or no token as been found, sorry');
+            //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html');
+            //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html'});
+            response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/error.html'});
+            response.end();
+        }
+    });
+});
+
+app.get('/api/GetAllOrders', (request, response) => {
+    const db = DbService.getDbServiceInstance();
+    const result= db.getDonations();
+    result
+    .then(data => {
+            response.send(data);
+    });
+    
+});
+
 
 
 app.listen(process.env.PORT, () => console.log('app is running'));

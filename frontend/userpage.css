@@ -1,0 +1,25 @@
+h5 {
+    text-align: center;
+}
+
+#move {
+    margin: auto;
+    width:90%;
+    height: auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+p.content-one {
+    width:20%;
+    inline-size: 600px;
+    overflow-wrap: break-word;
+    display:none;
+}
+
+.notes {
+    padding: 0px;
+    margin: 0px;
+    inline-size: 600px;
+}
