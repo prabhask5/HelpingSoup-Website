@@ -13,6 +13,7 @@ function getOrders() {
             console.log("got some data");
             data.forEach(element => {
                 var rowID = $("#customerTable tr").length;
+                var ID = element.customerID;
                 var Name = element.customerFirstName + " " + element.customerLastName;
                 var Address = element.customerStreetAddress;
                 var goodsNotes = element.goodsNotes;
@@ -23,6 +24,8 @@ function getOrders() {
                 var Date = element.pickupDate.substring(0,10);
                 var popUp = addPopUp(rowID,goodsNotes);
                 addRow(rowID,goodsNotes);
+                console.log("this is the type customerID " + ID);
+                $(`#E${rowID}0`).val(ID);
                 $(`#E${rowID}1`).html(Name);
                 $(`#E${rowID}2`).html(Address);
                 $(`#E${rowID}3`).html(startTime);
@@ -38,8 +41,9 @@ function getOrders() {
 //adding a row dynamically
 function addRow (rowID,goodsNotes) {
     console.log("addRow is called");
-    var SaveBtn = addSaveBtn(rowID,goodsNotes);
+    var SaveBtn = addSaveBtn(rowID);
     var code =`<tr id="E${rowID}">
+                <th id="E${rowID}0" hidden class="text-center"></th>   
                 <th id="E${rowID}1" class="text-center"></th>
                 <th id="E${rowID}2" class="text-center"></th>
                 <th id="E${rowID}3" class="text-center"></th>
@@ -76,45 +80,49 @@ function timeConvert (time){
     return time;
 }
 //adding the save button to the row
-function addSaveBtn (rowID,goodsNotes) {
+function addSaveBtn (rowID) {
     console.log("addSaveBtn is called");
-    console.log(`This is the goodsNotes ${goodsNotes}`);
-    var code = `<button class="btn btn-md btn-primary" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID},'${goodsNotes}')">&#10004;</button>`;
+    var code = `<button class="btn btn-md btn-primary" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID})">&#10004;</button>`;
     return code;
 }
-
-function SaveOrder(rowID,goodsNotes) {
+//saving order with post call sending volunteerEmail and customerID
+function SaveOrder(rowID) {
     console.log("Save Order is called");
     console.log("this is the rowid " + `#E${rowID}1`);
-    var Name = encodeURI($(`#E${rowID}1`).text());
-    var Address = encodeURI($(`#E${rowID}2`).text());
-    var startTime = encodeURI($(`#E${rowID}3`).text());
-    var endTime = encodeURI($(`#E${rowID}4`).text());
-    var Date = $(`#E${rowID}5`).text();
-    $(`#E${rowID}`).remove();
+    var urlParams = new URLSearchParams(window.location.search);
+    var volunteerEmail = urlParams.get('email');
     
-    var goods = goodsNotes;
-    goods = encodeURI(goods);
-    var partUrl = "http://localhost:5500/frontend/pages/myorders.html?Name="
-    var url = partUrl + Name + "&Address=" + Address + "&startTime=" + startTime + "&endTime=" + endTime + "&Date=" + Date + "&goodNotes=" + goods;
-    console.log(url);
-    window.location.href = url;
+    
+    var url = 'http://localhost:4000/api/SelectingOrders';
+    var method = "POST";
+    var myObject = new Object();
+    console.log("object created");
+    myObject.deliveryNotes = "here";
+    myObject.deliveryStatus = "selected";
+    myObject.volunteerEmail = volunteerEmail;
+    myObject.customerID = $(`#E${rowID}0`).val();
+    console.log("all elements declared");
+    var myStr = JSON.stringify(myObject);
+    console.log(myStr);
+    $(`#E${rowID}`).remove();
+    callAjax(url,method,myStr);
 }
 
+//adding popup button
 function addPopUp (rowID,goodsNotes) {
     console.log("added Popup");
     var code =`<p class="expand-one" id=popUp${rowID} onClick="popUpClicked(${rowID})"><a href="#">Click for Good Notes</a></p>
                 <p class="content-one" id=hiddenWords${rowID}>${goodsNotes}</p>`
   return code;
 }
-
+//when popup is clicked
 function popUpClicked (rowID) {
     console.log("popup is clicked");
     $(`#hiddenWords${rowID}`).slideToggle('slow');
 }
 
 
-
+//ajax function
 function callAjax(uri, method, formData) {
     return $.ajax({
     url: uri,

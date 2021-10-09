@@ -85,7 +85,9 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                         $(loginForm).trigger("reset");
                         $(status).addClass('success');
                         $(status).html("Great! You've been logged in (theoretically)!");
-                        window.location.replace("../pages/userpage.html");
+                        var url = "http://localhost:5500/frontend/pages/userpage.html?email=" + formData.email;
+                        console.log("this is the url " + url);
+                        window.location.replace(url);
                     }
                     else{
                         console.log("didn't work!");

@@ -9,6 +9,7 @@ const nodemailer = require('nodemailer');
 dotenv.config();
 
 const DbService = require('./dBConnection.js');
+const { allowedNodeEnvironmentFlags } = require('process');
 
 app.use(cors());
 app.use(express.json());
@@ -25,7 +26,7 @@ var transporter = nodemailer.createTransport({
       pass: process.env.EMAIL_PASS
     }
   });
-
+//POST CALLS
 app.post('/volunteerSignUp', (request, response) =>{
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
@@ -92,6 +93,65 @@ app.post('/forgotPasswordEmail', (request, response) => {
     })
 });
 
+
+
+app.post('/resetVolunteerPassword', (request, response) => {
+    const formData = request.body;
+    const db = DbService.getDbServiceInstance();
+    const result = db.findOldPassword(userEmail);
+    result
+    .then(data => {
+        if(data[0].volunteerPassword == formData.password){
+            response.json({success: false});
+        }
+        else{
+            const result = db.resetPassword(userEmail, formData.password);
+            result
+            .then(data => response.json({success: true}));
+            const result2 = db.updateToken(userEmail);
+            userEmail = null;
+        }
+    });
+});
+
+app.post('/donation', (request, response) => {
+    const formData = request.body;
+    const db = DbService.getDbServiceInstance();
+    const result = db.insertDonation(formData.firstName, formData.lastName, formData.email,
+         formData.address, formData.city, formData.state,
+         formData.zip, formData.date, formData.startTime,
+         formData.endTime, formData.message);
+    result
+    .then(data => response.json({data: data}));
+    const result2 = db.findEmails();
+    result2
+    .then(data => {
+        for(var i = 0; i < data.length; i++){
+            const message = {
+                from: process.env.EMAIL_USER,
+                to: data[i].volunteerEmail,
+                subject: "New HelpingSoup Donation",
+                text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + formData.startTime + ' to ' + formData.endTime + ' on ' + formData.date + ', and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: [placeholder link].' + '\n\nSincerely,\n\nThe HelpingSoup Team'
+            };
+            transporter.sendMail(message, (err, info) => {
+                if(err) console.log(err);
+                //else console.log(info);
+            });
+        }
+    });
+})
+
+app.post('/api/SelectingOrders',(request,response) => {
+    const formData = request.body;
+    const db = DbService.getDbServiceInstance();
+    console.log(formData);
+    const result = db.insertSelectedCustomer(formData.deliveryNotes,formData.deliveryStatus,formData.volunteerEmail,formData.customerID);
+    
+    result
+    .then(response.json({success: true}));
+});
+
+//GET CALLS
 app.get('/user/reset-password', (request, response) => {
     
     //delete expired or used tokens
@@ -121,74 +181,6 @@ app.get('/user/reset-password', (request, response) => {
     });
 });
 
-app.post('/resetVolunteerPassword', (request, response) => {
-    const formData = request.body;
-    const db = DbService.getDbServiceInstance();
-    const result = db.findOldPassword(userEmail);
-    result
-    .then(data => {
-        if(data[0].volunteerPassword == formData.password){
-            response.json({success: false});
-        }
-        else{
-            const result = db.resetPassword(userEmail, formData.password);
-            result
-            .then(data => response.json({success: true}));
-            const result2 = db.updateToken(userEmail);
-            userEmail = null;
-        }
-    });
-});
-/*
-app.get('/api/GetAllOrders', (request, response) => {
-    const db = DbService.getDbServiceInstance();
-    console.log(db);
-    let query = db.getDonations();
-    console.log("testing " + DbService.connection);
-    connection.connect(function (err){
-        if (err) {
-            console.log(err.message);
-        }
-    });
-    connection.query(query,function(err,result){
-        if (err) {
-            console.log("failing at getting orders");
-            console.log(query);
-            console.log(err.message);
-        }
-        else{
-            response.send(result);
-        }
-    });
-});
-*/
-app.post('/donation', (request, response) => {
-    const formData = request.body;
-    const db = DbService.getDbServiceInstance();
-    const result = db.insertDonation(formData.firstName, formData.lastName, formData.email,
-         formData.address, formData.city, formData.state,
-         formData.zip, formData.date, formData.startTime,
-         formData.endTime, formData.message);
-    result
-    .then(data => response.json({data: data}));
-    const result2 = db.findEmails();
-    result2
-    .then(data => {
-        for(var i = 0; i < data.length; i++){
-            const message = {
-                from: process.env.EMAIL_USER,
-                to: data[i].volunteerEmail,
-                subject: "New HelpingSoup Donation",
-                text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + formData.startTime + ' to ' + formData.endTime + ' on ' + formData.date + ', and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: [placeholder link].' + '\n\nSincerely,\n\nThe HelpingSoup Team'
-            };
-            transporter.sendMail(message, (err, info) => {
-                if(err) console.log(err);
-                //else console.log(info);
-            });
-        }
-    });
-})
-
 app.get('/api/GetAllOrders', (request, response) => {
     const db = DbService.getDbServiceInstance();
     const result= db.getDonations();
@@ -198,6 +190,7 @@ app.get('/api/GetAllOrders', (request, response) => {
     });
     
 });
+
 
 
 app.listen(process.env.PORT, () => console.log('app is running'));

@@ -21,3 +21,7 @@ h5 {
     inline-size: 600px;
 }
 
+.buttons {
+    white-space: nowrap;
+}
+

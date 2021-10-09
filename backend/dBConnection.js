@@ -30,15 +30,14 @@ var createCustomer = `CREATE TABLE IF NOT EXISTS customer(
     pickupDate DATE NULL,
     startTime TIME NULL,
     endTime TIME NULL,
-    goodsNotes VARCHAR(500) NULL,
-    goodsAssigned TINYINT(1) NOT NULL DEFAULT 0
+    goodsNotes VARCHAR(500) NULL
 );`
 queryList.push(createCustomer);
 var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
     volunteerID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     volunteerFirstName VARCHAR(100) NULL,
     volunteerLastName VARCHAR(100) NULL,
-    volunteerEmail VARCHAR(100) NULL,
+    volunteerEmail VARCHAR(100) UNIQUE NOT NULL ,
     volunteerStreetAddress VARCHAR(250) NULL,
     volunteerCity VARCHAR(100) NULL,
     volunteerState VARCHAR(50) NULL,
@@ -48,12 +47,12 @@ var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
 );`;
 queryList.push(createVolunteer);
 var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
-    deliveryNotesID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    volunteerDeliveryID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     deliveryNotes VARCHAR(500) NULL,
-    deliveryStatus TINYINT(1) NOT NULL DEFAULT 0,
-    volunteerID INT NOT NULL,
+    deliveryStatus VARCHAR(20) NULL,
+    volunteerEmail VARCHAR(100) NOT NULL,
     customerID INT NOT NULL,
-    FOREIGN KEY (volunteerID) REFERENCES volunteer(volunteerID),
+    FOREIGN KEY (volunteerEmail) REFERENCES volunteer(volunteerEmail),
     FOREIGN KEY (customerID) REFERENCES customer(customerID)
 );`;
 queryList.push(createVolunteerDelivery);
@@ -277,6 +276,20 @@ class DbService{
         }
     }
 
+    async insertSelectedCustomer (notes,status,email,ID) {
+        try {
+            const response = await new Promise((resolve,reject) => {
+                const query = "INSERT INTO volunteerdelivery(deliveryNotes,deliveryStatus,volunteerEmail,customerID) VALUES (?, ?, ?, ?);";
+                this.dbPool.query(query, [notes,status,email,ID], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result);
+                })
+            }); 
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 /** 

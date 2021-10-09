@@ -5,6 +5,9 @@ $(document).ready(function(){
 
 function addRow (rowID) {
     console.log("addRow is called");
+    var delBtn = addDeleteBtn(rowID);
+    var doneBtn = addDoneBtn(rowID);
+    var InProgressBtn = addInProgressBtn(rowID);
     var code =`<tr id="E${rowID}">
                 <th id="E${rowID}1" class="text-center"></th>
                 <th id="E${rowID}2" class="text-center"></th>
@@ -12,7 +15,7 @@ function addRow (rowID) {
                 <th id="E${rowID}4" class="text-center"></th>
                 <th id="E${rowID}5" class="text-center"></th>
                 <th id="E${rowID}6" class="text-center notes"><p id="E${rowID}6p" class="straight"></p></th>
-                <th id="E${rowID}7" class="text-center">sampletext</th>
+                <th id="E${rowID}7" class="text-center buttons">${doneBtn} ${InProgressBtn} ${delBtn}</th>
                 </tr>`;
     if (rowID == 1){
         $("#newRows").append(code);
@@ -21,6 +24,8 @@ function addRow (rowID) {
         $("#newRows").prepend(code);
     }
 }
+
+
 
 function gettingURL () {
     var urlParams = new URLSearchParams(window.location.search);
@@ -40,6 +45,21 @@ function gettingURL () {
     $(`#E${rowID}4`).html(endTime);
     $(`#E${rowID}5`).html(Date);
     $(`#E${rowID}6p`).html(goodNotes);
+}
+
+function addDeleteBtn (rowID) {
+    var code = `<button class="btn btn-md btn-primary" id="deleteBtn${rowID}">&#10060;</button>`;
+    return code;
+}
+
+function addDoneBtn (rowID) {
+    var code = `<button class="btn btn-md btn-primary" id="doneBtn${rowID}">&#10004;</button>`;
+    return code;
+}
+
+function addInProgressBtn (rowID) {
+    var code = `<button class="btn btn-md btn-primary" id="InProgressBtn${rowID}">	&#9202;</button>`;
+    return code;
 }
 
 function callAjax(uri, method, formData) {
