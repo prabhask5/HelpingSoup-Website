@@ -1,7 +1,14 @@
 $(document).ready(function(){
     console.log("ready is called");
+    changeHref();
     getOrders();
 });
+//html change with url
+function changeHref () {
+    var urlParams = new URLSearchParams(window.location.search);
+    var volunteerEmail = urlParams.get('email');
+    $(`#linkOrder`).attr("href","myorders.html?email=" + volunteerEmail);
+}
 //GET CALLS
 function getOrders() {
     console.log("get orders is called");

@@ -283,7 +283,7 @@ class DbService{
     async getDonations() {
         try{
             const response = await new Promise((resolve, reject) => {
-                const query =  "SELECT * FROM customer;";
+                const query =  "select * from customer where customerID not in(select customerID from volunteerdelivery);";
                     this.dbPool.query(query, [], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -317,6 +317,53 @@ class DbService{
                     resolve(result);
                 })
             }); 
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getSelectedOrders (email) {
+        try {
+            const response = await new Promise((resolve,reject) => {
+                const query = "select a.customerID,a.customerFirstName,a.customerLastName,a.customerEmail,a.customerStreetAddress," +
+                "a.pickupDate,a.startTime,a.endTime,a.goodsNotes,b.deliveryStatus from customer a," + 
+                "volunteerdelivery b where a.customerID = b.customerID and b.volunteerEmail = ?;";
+                this.dbPool.query(query, [email], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result);
+                })
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async delSelectedOrder (ID) {
+        try {
+            const response = await new Promise((resolve,reject) => {
+                const query = "DELETE FROM volunteerdelivery WHERE customerID = ?;";
+                this.dbPool.query(query, [ID], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result);
+                })
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    async updateInProgress (ID,Status) {
+        try {
+            const response = await new Promise((resolve,reject) => {
+                const query = "UPDATE volunteerdelivery SET deliveryStatus = ? WHERE customerID = ?;";
+                this.dbPool.query(query, [Status,ID], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result);
+                })
+            });
             return response;
         } catch (error) {
             console.log(error);

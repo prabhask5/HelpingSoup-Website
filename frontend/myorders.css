@@ -25,3 +25,6 @@ h5 {
     white-space: nowrap;
 }
 
+.buttons{
+    display: inline-block;
+}

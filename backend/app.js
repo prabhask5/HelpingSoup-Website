@@ -208,6 +208,34 @@ app.get('/api/GetAllOrders', (request, response) => {
     
 });
 
+app.get('/api/GetAllSelectedOrders', (request, response) => {
+    const email = request.query.volunteerEmail;
+    const db = DbService.getDbServiceInstance();
+    const result = db.getSelectedOrders(email);
+
+    result
+    .then(data =>{
+        response.send(data);
+    });
+});
+
+app.delete('/api/delSelectedOrder', (request, response) => {
+    const ID = request.query.customerID;
+    const db = DbService.getDbServiceInstance();
+    const result = db.delSelectedOrder(ID);
+    result
+    .then(response.json({success: true}));
+});
+
+app.put('/api/updateStatus', (request, response) => {
+    const ID = request.query.customerID;
+    const Status = request.query.deliveryStatus;
+    console.log("type of " + typeof Status);
+    const db = DbService.getDbServiceInstance();
+    const result = db.updateInProgress(ID,Status);
+    result
+    .then(response.json({success: true}));
+});
 //HELPER FUNCTIONS
 function timeConvert (time){
     var timeArray = time.split(':');
