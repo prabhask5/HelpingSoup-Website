@@ -152,8 +152,12 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         e.preventDefault();
         $(status).removeClass();
         $(status).html("");
+        var optIn = false;
         var submit = finalSubmit(canSubmitSignUp, 0);
         if(submit) {
+            if(document.getElementById('emailOpt').checked){
+                optIn = true;
+            }
             var formData = {
                 firstName: $("#firstName").val(),
                 lastName: $("#lastName").val(),
@@ -164,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 zip: $("#zip").val(),
                 school: $("#school").val(),
                 password: $("#password").val(),
+                emailOpt: optIn
               };
             $.ajax({
                 type: "POST",
@@ -194,6 +199,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
             console.log("Can't submit!");
             alert("Sorry, an error occurred with your inputs. Please try again.");
         }
+        optIn = false;
     });
 
     document.querySelectorAll(".form__input, .forgotform__input, .loginform__input").forEach(inputElement => { // looks at all form__input classes

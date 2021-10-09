@@ -27,7 +27,6 @@ var createCustomer = `CREATE TABLE IF NOT EXISTS customer(
     customerCity VARCHAR(100) NULL,
     customerState VARCHAR(50) NULL,
     customerZip CHAR(5) NULL,
-    pickupDate DATE NULL,
     startTime TIME NULL,
     endTime TIME NULL,
     goodsNotes VARCHAR(500) NULL
@@ -43,7 +42,8 @@ var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
     volunteerState VARCHAR(50) NULL,
     volunteerZip CHAR(5) NULL,
     volunteerSchool VARCHAR(100) NULL,
-    volunteerPassword VARCHAR(250) NOT NULL
+    volunteerPassword VARCHAR(250) NOT NULL,
+    volunteerEmailOptIn TINYINT(1) NOT NULL DEFAULT 0
 );`;
 queryList.push(createVolunteer);
 var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
@@ -102,12 +102,17 @@ class DbService{
     
     }
 
-    async insertVolunteer(firstName, lastName, email, address, city, state, zip, school, password){
+    async insertVolunteer(firstName, lastName, email, address, city, state, zip, school, password, emailOpt){
         try{
+            var volunteerOpt = 0;
+            if(emailOpt){
+                volunteerOpt = 1;
+            }
+            else volunteerOpt = 0;
             const insert = await new Promise((resolve, reject) => {
                 const query = "INSERT INTO volunteer (volunteerFirstName, volunteerLastName, volunteerEmail," +
                      " volunteerStreetAddress, volunteerCity, volunteerState," +
-                     " volunteerZip, volunteerSchool, volunteerPassword) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                     " volunteerZip, volunteerSchool, volunteerPassword, volunteerEmailOptIn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
                 this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, school, password], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insert);
@@ -133,13 +138,13 @@ class DbService{
             console.log(error);
         }
     }
-    async insertDonation(firstName, lastName, email, address, city, state, zip, date, startTime, endTime, message){
+    async insertDonation(firstName, lastName, email, address, city, state, zip, startTime, endTime, message){
         try{
             const insert = await new Promise((resolve, reject) => {
                 const query = "INSERT INTO customer (customerFirstName, customerLastName, customerEmail," +
-                     " customerStreetAddress, customerCity, customerState, customerZip, pickUpDate, startTime, endTime, goodsNotes)" +
-                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-                this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, date, startTime, endTime, message], (err, result) => {
+                     " customerStreetAddress, customerCity, customerState, customerZip, startTime, endTime, goodsNotes)" +
+                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, startTime, endTime, message], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
                 })
@@ -261,6 +266,20 @@ class DbService{
             console.log(error);
         }
     }
+    async findOptIn(email){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "SELECT volunteerEmailOptIn FROM volunteer WHERE volunteerEmail = ?;";
+                    this.dbPool.query(query, [email], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
     async getDonations() {
         try{
             const response = await new Promise((resolve, reject) => {
@@ -275,6 +294,21 @@ class DbService{
             console.log(error);
         }
     }
+    async changeOptIn(email){
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query = "UPDATE volunteer SET volunteerEmailOptIn = 0 WHERE volunteerEmail = ?;";
+                     this.dbPool.query(query, [email], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
+}
 
     async insertSelectedCustomer (notes,status,email,ID) {
         try {
