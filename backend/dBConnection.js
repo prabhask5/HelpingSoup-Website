@@ -3,18 +3,16 @@ const dotenv = require('dotenv').config({path:__dirname+'/.env'});
 let instance = null;
 var queryList = [];
 
-const connection = mysql.createConnection({
-    host:process.env.HOST,
-    user:process.env.HSDB_USER,
-    password:process.env.HSDB_PASSWORD,
-    //database:process.env.DATABASE,
-    port:process.env.DB_PORT
-});
 
-connection.connect((err => {
-    if (err) console.log(err.message);
-    else console.log('db ' + connection.state);
-}));
+const config = {
+    connectionLimit : process.env.CONNECTIONLIMIT,
+    queueLimit: process.env.QUEUELIMIT,
+    host: process.env.HOST,
+    user: process.env.HSDB_USER,
+    password: process.env.HSDB_PASSWORD,
+    database: process.env.DATABASE,
+    port: process.env.DB_PORT
+};
 
 var createDb = "CREATE DATABASE IF NOT EXISTS helpingsoupdb;";
 queryList.push(createDb);
@@ -31,15 +29,14 @@ var createCustomer = `CREATE TABLE IF NOT EXISTS customer(
     customerZip CHAR(5) NULL,
     startTime TIME NULL,
     endTime TIME NULL,
-    goodsNotes VARCHAR(500) NULL,
-    goodsAssigned TINYINT(1) NOT NULL DEFAULT 0
+    goodsNotes VARCHAR(500) NULL
 );`
 queryList.push(createCustomer);
 var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
     volunteerID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     volunteerFirstName VARCHAR(100) NULL,
     volunteerLastName VARCHAR(100) NULL,
-    volunteerEmail VARCHAR(100) NULL,
+    volunteerEmail VARCHAR(100) UNIQUE NOT NULL ,
     volunteerStreetAddress VARCHAR(250) NULL,
     volunteerCity VARCHAR(100) NULL,
     volunteerState VARCHAR(50) NULL,
@@ -50,12 +47,12 @@ var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
 );`;
 queryList.push(createVolunteer);
 var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
-    deliveryNotesID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    volunteerDeliveryID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     deliveryNotes VARCHAR(500) NULL,
-    deliveryStatus TINYINT(1) NOT NULL DEFAULT 0,
-    volunteerID INT NOT NULL,
+    deliveryStatus VARCHAR(20) NULL,
+    volunteerEmail VARCHAR(100) NOT NULL,
     customerID INT NOT NULL,
-    FOREIGN KEY (volunteerID) REFERENCES volunteer(volunteerID),
+    FOREIGN KEY (volunteerEmail) REFERENCES volunteer(volunteerEmail),
     FOREIGN KEY (customerID) REFERENCES customer(customerID)
 );`;
 queryList.push(createVolunteerDelivery);
@@ -69,19 +66,40 @@ var createResetTokens = `CREATE TABLE IF NOT EXISTS resettokens(
     used TINYINT(1) NOT NULL DEFAULT 0
 );`
 queryList.push(createResetTokens);
+
 class DbService{
-    static getDbServiceInstance(){
-        connection.connect(function (err) {
-            if (err) console.log(err.message);
-        });
-        for(let query of queryList){
-            connection.query(query, function (err) {
-                if (err) {
-                    return console.log(err.message);
-                }
+    static objHandle=new DbService();
+    static getDbServiceInstance() {
+        return this.objHandle;
+    }
+  
+    constructor(){
+        this.dbPool= mysql.createPool(config);
+       
+        this.dbPool.on('connection', function (connection) {
+            console.log('DB Connection established');
+          
+            connection.on('error', function (err) {
+              console.error(new Date(), 'MySQL error', err.code);
             });
-        }
-        return instance ? instance : new DbService();
+            connection.on('close', function (err) {
+              console.error(new Date(), 'MySQL close', err);
+            });
+          
+        });
+        for(let query of queryList){   
+            this.dbPool.query(query,function(err,rows){
+                if (err) {
+                    console.log("failed to load query ");
+                    console.log(err.message);
+                    throw err;
+                }  
+                      
+            });
+            
+        } 
+       
+    
     }
 
     async insertVolunteer(firstName, lastName, email, address, city, state, zip, school, password, emailOpt){
@@ -95,7 +113,7 @@ class DbService{
                 const query = "INSERT INTO volunteer (volunteerFirstName, volunteerLastName, volunteerEmail," +
                      " volunteerStreetAddress, volunteerCity, volunteerState," +
                      " volunteerZip, volunteerSchool, volunteerPassword, volunteerEmailOptIn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-                connection.query(query, [firstName, lastName, email, address, city, state, zip, school, password, volunteerOpt], (err, result) => {
+                this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, school, password], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insert);
                 })
@@ -109,7 +127,7 @@ class DbService{
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT volunteerPassword FROM volunteer WHERE volunteerEmail = ?;";
-                connection.query(query, [email], (err, results) => {
+                this.dbPool.query(query, [email], (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
                 })
@@ -126,7 +144,7 @@ class DbService{
                 const query = "INSERT INTO customer (customerFirstName, customerLastName, customerEmail," +
                      " customerStreetAddress, customerCity, customerState, customerZip, startTime, endTime, goodsNotes)" +
                      " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-                connection.query(query, [firstName, lastName, email, address, city, state, zip, startTime, endTime, message], (err, result) => {
+                this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, startTime, endTime, message], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
                 })
@@ -140,7 +158,7 @@ class DbService{
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT volunteerEmail FROM volunteer WHERE volunteerEmail = ?;";
-                connection.query(query, [email], (err, results) => {
+                this.dbPool.query(query, [email], (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
                 })
@@ -154,7 +172,7 @@ class DbService{
         try{
             const update = await new Promise((resolve, reject) => {
                 const query = "UPDATE resettokens SET used = 1 WHERE email = ?;";
-                connection.query(query, [email], (err, result) => {
+                this.dbPool.query(query, [email], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
                 })
@@ -168,7 +186,7 @@ class DbService{
         try{
             const insert = await new Promise((resolve, reject) => {
                 const query = "INSERT INTO resettokens(email, expiration, token, createdAt) VALUES (?, ?, ?, ?);";
-                    connection.query(query, [email, expiration, token, createdAt], (err, result) => {
+                    this.dbPool.query(query, [email, expiration, token, createdAt], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
@@ -182,7 +200,7 @@ class DbService{
         try{
             const del = await new Promise((resolve, reject) => {
                 const query = "DELETE FROM resettokens WHERE expiration < ? OR used = 1;";
-                    connection.query(query, [date], (err, result) => {
+                    this.dbPool.query(query, [date], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
@@ -196,7 +214,7 @@ class DbService{
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT tokenID FROM resettokens WHERE email = ? AND token = ?;";
-                    connection.query(query, [email, token], (err, result) => {
+                    this.dbPool.query(query, [email, token], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
@@ -210,7 +228,7 @@ class DbService{
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT volunteerPassword FROM volunteer WHERE volunteerEmail = ?;";
-                    connection.query(query, [email], (err, result) => {
+                    this.dbPool.query(query, [email], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
@@ -224,7 +242,7 @@ class DbService{
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ?;";
-                    connection.query(query, [password, email], (err, result) => {
+                    this.dbPool.query(query, [password, email], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
@@ -238,7 +256,7 @@ class DbService{
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT volunteerEmail FROM volunteer;";
-                    connection.query(query, [], (err, result) => {
+                    this.dbPool.query(query, [], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
@@ -252,7 +270,21 @@ class DbService{
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT volunteerEmailOptIn FROM volunteer WHERE volunteerEmail = ?;";
-                    connection.query(query, [email], (err, result) => {
+                    this.dbPool.query(query, [email], (err, result) => {
+                        if (err) reject(new Error(err.message));
+                        resolve(result);
+                    })
+            });
+            return response;
+        } catch(error){
+            console.log(error);
+        }
+    }
+    async getDonations() {
+        try{
+            const response = await new Promise((resolve, reject) => {
+                const query =  "SELECT * FROM customer;";
+                    this.dbPool.query(query, [], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
@@ -266,7 +298,7 @@ class DbService{
         try{
             const response = await new Promise((resolve, reject) => {
                 const query = "UPDATE volunteer SET volunteerEmailOptIn = 0 WHERE volunteerEmail = ?;";
-                    connection.query(query, [email], (err, result) => {
+                     this.dbPool.query(query, [email], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
                     })
@@ -278,6 +310,36 @@ class DbService{
     }
 }
 
+    async insertSelectedCustomer (notes,status,email,ID) {
+        try {
+            const response = await new Promise((resolve,reject) => {
+                const query = "INSERT INTO volunteerdelivery(deliveryNotes,deliveryStatus,volunteerEmail,customerID) VALUES (?, ?, ?, ?);";
+                this.dbPool.query(query, [notes,status,email,ID], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(result);
+                })
+            }); 
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 
+/** 
+class DbService {
+
+    constructor() {
+        if (!DbService.instance) {
+            DbService.instance = new DbRepo();
+        }
+    }
+  
+    static getDbServiceInstance() {
+        return DbService.instance;
+    }
+  
+  }
+  */
 
 module.exports = DbService;
