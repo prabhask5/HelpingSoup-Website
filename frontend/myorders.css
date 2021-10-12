@@ -1,0 +1,30 @@
+#move {
+    margin: auto;
+    width:90%;
+    height: auto;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+}
+h5 {
+    text-align: center;
+}
+.straight {
+    width:20%;
+    inline-size: 600px;
+    overflow-wrap: break-word;
+}
+
+.notes {
+    padding: 0px;
+    margin: 0px;
+    inline-size: 600px;
+}
+
+.buttons {
+    white-space: nowrap;
+}
+
+.buttons{
+    display: inline-block;
+}

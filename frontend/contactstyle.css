@@ -69,6 +69,6 @@ color:black;
 
 }
 @font-face {
-font-family: Platnomor;
-src: url(/docs/PlatNomor.ttf);
+    font-family: Platnomor;
+    src: url(../docs/PlatNomor.ttf);
 }

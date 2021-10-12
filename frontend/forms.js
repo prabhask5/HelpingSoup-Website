@@ -34,8 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     $(status).removeClass();
     $(status).html("");
-    canSubmit = finalSubmit(canSubmit);
-    if(canSubmit){
+    var submit = finalSubmit(canSubmit);
+    if(submit){
       var formData = {
         firstName: $("#firstName").val(),
         lastName: $("#lastName").val(),
@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
         city: $("#city").val(),
         state: $("#state").val(),
         zip: $("#zip").val(),
-        date: $("#date").val(),
         startTime: $("#firstTime").val(),
         endTime: $("#secondTime").val(),
         message: $("#message").val(),
@@ -65,23 +64,19 @@ document.addEventListener("DOMContentLoaded", () => {
         error: function(data){
           console.log("error");
           $(form).trigger("reset");
-          $(status).addClass('error');
-          $(status).html("Sorry, an error has occurred. Please try again later.");
+          alert("Sorry, an error has occurred. Please try again later.");
         }
       });
     }
     else{
       console.log("Can't submit!");
-      $(status).addClass('error');
-      $(status).html("Sorry, an error occurred with your inputs. Please try again.");
+      alert("Sorry, an error occurred with your inputs. Please try again.");
     }
     
   });
 
   document.querySelectorAll(".form__input").forEach(inputElement => { // looks at all form__input classes
     inputElement.addEventListener("blur", e => { // when user inputs something then clicks off
-        //console.log(inputElement.id);
-        //console.log($("#1appt"));
         if(e.target.id === "zip" && (e.target.value.length > 0 && (e.target.value.match(/^[0-9]+$/) == null || e.target.value.length !== 5))){
             setInputError(inputElement, "Please make sure you inputted your zip code in the correct format.");
             canSubmit = false;
@@ -93,34 +88,39 @@ document.addEventListener("DOMContentLoaded", () => {
             canSubmit = false;
             emailError = true;
         }
-        if(e.target.id === "secondTime" || e.target.id === "firstTime"){
-          if (($("#firstTime").val() < "10:00" || $("#firstTime").val() > "20:00") || ($("#secondTime").val() < "10:00" || $("#secondTime").val() > "20:00")){
-            setInputError(inputElement, "Please make sure this time is within our office hours.");
+        if((e.target.id === "secondTime" || e.target.id === "firstTime") && !timeError){
+          var t1 = document.querySelector("#firstTime");
+          var t2 = document.querySelector("#secondTime");
+          if ($("#firstTime").val() != "" && ($("#firstTime").val() < "10:00" || $("#firstTime").val() > "20:00")){
+            setInputError(t1, "Please make sure this time is within our office hours.");
+            canSubmit = false;
+            rangeError = true;
+          }
+          if ($("#secondTime").val() != "" && ($("#secondTime").val() < "10:00" || $("#secondTime").val() > "20:00")){
+            setInputError(t2, "Please make sure this time is within our office hours.");
             canSubmit = false;
             rangeError = true;
           }
         }
         if(e.target.id === "secondTime" || e.target.id === "firstTime"){
-          //console.log($("#1appt").val());
-          //console.log($("#2appt").val());
           var valuestart = $("#firstTime").val();
-          var valuestop = $("#secondTime").val();
-          //console.log(valuestart);
-          //console.log(valuestop);         
+          var valuestop = $("#secondTime").val();    
           var timeStart = new Date("01/01/2007 " + valuestart);
           var timeEnd = new Date("01/01/2007 " + valuestop);
           var diffMin = (timeEnd - timeStart) / 60 / 1000;
-          console.log(diffMin);
+          //console.log(diffMin);
           if((valuestart != "" && valuestop != "") && !timeError){
             if(diffMin < 30){
-              setInputError(inputElement, "Please make sure your time range is 30 minutes or greater.");
-              //setInputError($("#2appt"), "Please make sure your time range is 30 minutes or greater.");
+              var t1 = document.querySelector("#firstTime");
+              var t2 = document.querySelector("#secondTime");
+              setInputError(t1, "Please make sure your time range is 30 minutes or greater.");
+              setInputError(t2, "Please make sure your time range is 30 minutes or greater.");
               canSubmit = false;
               timeError = true;
             }
           } 
         }
-        console.log(rangeError + " " + timeError);
+        //console.log(rangeError + " " + timeError + " " + zipError + " " + emailError);
     });
 
     inputElement.addEventListener("input", e => { // when user types again
@@ -128,23 +128,24 @@ document.addEventListener("DOMContentLoaded", () => {
         clearInputError(inputElement);
         rangeError = false;
       }  
-      else if(inputElement.id == "firstTime" || inputElement.id == "secondTime"){
+      if((inputElement.id == "firstTime" || inputElement.id == "secondTime") && timeError){
           var t1 = document.querySelector("#firstTime");
           var t2 = document.querySelector("#secondTime");
           clearInputError(t1);
           clearInputError(t2);
           timeError = false;
         }
-        else if(inputElement.id == "zip"){
+      else if(inputElement.id == "zip"){
           clearInputError(inputElement);
           zipError = false;
         }
-        else if(inputElement.id == "email"){
+      else if(inputElement.id == "email"){
           clearInputError(inputElement);
           emailError = false;
         }
+      else clearInputError(inputElement);
         if((!rangeError && !timeError) && (!zipError && !emailError)) canSubmit = true;
-        console.log(rangeError + " " + timeError);
+        //console.log(rangeError + " " + timeError + " " + zipError + " " + emailError);
     });
   });
 });

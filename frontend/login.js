@@ -8,22 +8,21 @@ function clearInputError(inputElement) {
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = ""; // removes message
 }
 
-function finalSignUpSubmit(canSubmit){
+function finalSubmit(canSubmit, mode){
     var ret = true;
-    document.querySelectorAll(".form__input").forEach(inputElement => {
-        if(inputElement.value.length === 0){
-            setInputError(inputElement, "Please enter information here.");
-            ret = false;
-        }
-    });
-    //console.log("Ret is " + ret);
-    if(canSubmit == false) ret = false;
-    return ret;
-}
-
-function finalLoginSubmit(canSubmit){
-    var ret = true;
-    document.querySelectorAll(".loginform__input").forEach(inputElement => {
+    var selectClass = "";
+    switch(mode){
+        case 0:
+            selectClass = ".form__input";
+            break;
+        case 1:
+            selectClass = ".loginform__input";
+            break;
+        case 2:
+            selectClass = ".forgotform__input";
+            break;
+    }
+    document.querySelectorAll(selectClass).forEach(inputElement => {
         if(inputElement.value.length === 0){
             setInputError(inputElement, "Please enter information here.");
             ret = false;
@@ -38,10 +37,10 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
     const createAccountForm = document.querySelector("#createAccount");
     const forgotForm = document.querySelector("#forgot");
     var status = document.getElementById("status");
-    var zipError = false;
+    var canSubmitSignUp = true;
+    var signUpPassError = false;
     var emailError = false;
-    var passError = false;
-    var canSubmit = true;
+    var zipError = false;
 
     $(document).on("click", "#linkCreateAccount", e => {
         e.preventDefault(); // preventing href link, or refreshing the page when link clicked
@@ -68,8 +67,8 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
         e.preventDefault();
         $(status).removeClass();
         $(status).html("");
-        canSubmit = finalLoginSubmit(canSubmit);
-        if(canSubmit){
+        var submit = finalSubmit(true, 1);
+        if(submit){
             var formData = {
                 email: $("#loginEmail").val(),
                 password: $("#loginPass").val(),
@@ -78,53 +77,87 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 type: "POST",
                 url: "http://localhost:4000/volunteerLogin",
                 data: formData,
-                dataType: "text",
+                dataType: "json",
                 encode: true,
                 success: function(data){
-                    var obj = JSON.parse(data);
-                    pass = []
-                    for(var i = 0; i < obj.data.length; i++){
-                        pass.push(obj.data[i].volunteerPassword);
-                    }
-                    console.log("success!");
-                    var canLogin = false;
-                    for(var i = 0; i < pass.length; i++){
-                        if(pass[i] == formData.password) canLogin = true;
-                    }
-                    if(canLogin){
+                    if(data.CanLogin == true){
+                        console.log("logged in!");
                         $(loginForm).trigger("reset");
                         $(status).addClass('success');
                         $(status).html("Great! You've been logged in (theoretically)!");
+                        var url = "http://localhost:5500/frontend/pages/userpage.html?email=" + formData.email;
+                        console.log("this is the url " + url);
+                        window.location.replace(url);
                     }
                     else{
-                        $(loginForm).trigger("reset");
-                        $(status).addClass('error');
-                        $(status).html("Sorry, this username and password combination is incorrect. Please try again.");
+                        console.log("didn't work!");
+                        alert("Sorry, this username and password combination is incorrect. Please try again.");
                     }
                 },
                 error: function(data){
                     console.log("error");
                     $(loginForm).trigger("reset");
-                    $(status).addClass('error');
-                    $(status).html("Sorry, an error has occurred. Please try again later.");
+                    alert("Sorry, an error has occurred. Please try again later.");
                 }
               });
         }
         else{
             console.log("Can't  submit!");
-            $(status).addClass('error');
-            $(status).html("Sorry, an error occurred with your inputs. Please try again.");
+            alert("Sorry, an error occurred with your inputs. Please try again.");
         }
+    });
 
-        //setFormMessage(loginForm, "error", "Invalid email/password combination"); // default error message
+    $(document).on("click", "#forgotSubmit", e => {
+        e.preventDefault();
+        $(status).removeClass();
+        $(status).html("");
+        var submit = finalSubmit(true, 2);
+        if(submit){
+            var formData = {
+                email: $("#forgotEmail").val(),
+            };
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:4000/forgotPasswordEmail",
+                data: formData,
+                dataType: "json",
+                encode: true,
+                success: function(data){
+                    if(data.success == true){
+                        console.log("success!");
+                        $(forgotForm).trigger("reset");
+                        $(status).addClass('success');
+                        $(status).html("Great! An email has been sent to this address. Check your spam email if you do not see it.");
+                    }
+                    else{
+                        console.log("didn't work!");
+                        $(forgotForm).trigger("reset");
+                        alert("Sorry, this email does not exist within our records. Please try again.");
+                    }
+                },
+                error: function(data){
+                    console.log("error");
+                    $(loginForm).trigger("reset");
+                    alert("Sorry, an error has occurred. Please try again later.");
+                }
+              });
+        }
+        else{
+            console.log("Can't  submit!");
+            alert("Sorry, an error occurred with your inputs. Please try again.");
+        }
     });
 
     $(document).on("click", "#signUpSubmit", e => {
         e.preventDefault();
         $(status).removeClass();
         $(status).html("");
-        canSubmit = finalSignUpSubmit(canSubmit);
-        if(canSubmit) {
+        var optIn = false;
+        var submit = finalSubmit(canSubmitSignUp, 0);
+        if(submit) {
+            if(document.getElementById('emailOpt').checked){
+                optIn = true;
+            }
             var formData = {
                 firstName: $("#firstName").val(),
                 lastName: $("#lastName").val(),
@@ -135,69 +168,81 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                 zip: $("#zip").val(),
                 school: $("#school").val(),
                 password: $("#password").val(),
-              }
+                emailOpt: optIn
+              };
             $.ajax({
                 type: "POST",
                 url: "http://localhost:4000/volunteerSignUp",
                 data: formData,
-                dataType: "text",
+                dataType: "json",
                 encode: true,
                 success: function(data){
-                    console.log("success!");
-                    $(createAccountForm).trigger("reset");
-                    $(status).addClass('success');
-                    $(status).html("Great! Your account has been made!");
+                    if(data.success == true){
+                        console.log("success!");
+                        $(createAccountForm).trigger("reset");
+                        $(status).addClass('success');
+                        $(status).html("Great! Your account has been made!");
+                    }
+                    else{
+                        console.log("email already in use");
+                        alert("Sorry, that email is already in use. Please try again.");
+                    }
                 },
                 error: function(data){
                     console.log("error");
                     $(createAccountForm).trigger("reset");
-                    $(status).addClass('error');
-                    $(status).html("Sorry, an error has occurred. Please try again later.");
+                    alert("Sorry, an error occurred with your inputs. Please try again.");
                 }
               });
         }
         else {
             console.log("Can't submit!");
-            $(status).addClass('error');
-            $(status).html("Sorry, an error occurred with your inputs. Please try again.");
+            alert("Sorry, an error occurred with your inputs. Please try again.");
         }
+        optIn = false;
     });
 
-    document.querySelectorAll(".form__input, .loginform__input").forEach(inputElement => { // looks at all form__input classes
+    document.querySelectorAll(".form__input, .forgotform__input, .loginform__input").forEach(inputElement => { // looks at all form__input classes
         inputElement.addEventListener("blur", e => { // when user inputs something then clicks off
-            if (e.target.id === "confirmPassword" && (e.target.value.length > 0 && e.target.value !== $("#password").val())) {
+            if ((e.target.id === "confirmPassword" || e.target.id === "password") && (($("#confirmPassword").val().length > 0 && $("#password").val().length > 0) && $("#confirmPassword").val() !== $("#password").val())) {
                 setInputError(inputElement, "Please make sure your passwords match."); // calls setInputError method
-                canSubmit = false;
-                passError = true;
+                canSubmitSignUp = false;
+                signUpPassError = true;
             }
             if(e.target.id === "zip" && (e.target.value.length > 0 && (e.target.value.match(/^[0-9]+$/) == null || e.target.value.length != 5))){
                 setInputError(inputElement, "Please make sure you inputted your zip code in the correct format.");
-                canSubmit = false;
+                canSubmitSignUp = false;
                 zipError = true;
             }
             var re = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
             if(e.target.id === "email" && (e.target.value.length > 0 && !re.test(e.target.value))){
                 setInputError(inputElement, "Please make you inputted your email address in the correct format.");
-                canSubmit = false;
+                canSubmitSignUp = false;
                 emailError = true;
             }
-            //console.log("errors " + errors + " canSubmit " + canSubmit);;
+            //console.log("errors " + errors + " canSubmit " + canSubmit);
         });
 
         inputElement.addEventListener("input", e => { // when user types again
             if(inputElement.id == "password" || inputElement.id == "confirmPassword"){
-                clearInputError(inputElement);
-                passError = false;
+                var p1 = document.querySelector("#password");
+                var p2 = document.querySelector("#confirmPassword");
+                clearInputError(p1);
+                clearInputError(p2);
+                signUpPassError = false;
             }
             else if(inputElement.id == "zip"){
                 clearInputError(inputElement);
                 zipError = false;
             }
-            else if(inputElement.id == "email" || inputElement.id == "loginEmail"){
+            else if(inputElement.id == "email"){
                 clearInputError(inputElement);
                 emailError = false;
             }
-                if((!passError) && (!zipError && !emailError)) canSubmit = true;
+            else{
+                clearInputError(inputElement);
+            }
+            if((!signUpPassError) && (!zipError && !emailError)) canSubmitSignUp = true;
             //console.log("errors " + errors + " canSubmit " + canSubmit);
         });
     });
