@@ -47,16 +47,26 @@ img{
     right:2.5%;
     top:350px;
 
-    
-    
-    
-
+}
+#image3{
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 0px;
+    position: absolute;
+    left: -0.64%;
+    top: 150px;
 }
 .roundedcorners{
     border-radius: 20px;
     box-shadow:0 3px 10px rgb(0, 0, 0);
 }
-
+.flip-horizontally {
+    transform: scaleX(-1);
+}
+.flip-vertically {
+    transform: scaleY(-1);
+}
 .imagery{
     display: inline-block;
     text-align: center;
