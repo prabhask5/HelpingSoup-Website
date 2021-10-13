@@ -324,7 +324,7 @@ class DbService{
         try {
             const response = await new Promise((resolve,reject) => {
                 const query = "select a.customerID,a.customerFirstName,a.customerLastName,a.customerEmail,a.customerStreetAddress," +
-                "a.startTime,a.endTime,a.goodsNotes,b.deliveryStatus from helpingsoupdb.customer a," + 
+                "a.firstDate,a.lastDate,a.startTime,a.endTime,a.goodsNotes,b.deliveryStatus from helpingsoupdb.customer a," + 
                 "helpingsoupdb.volunteerdelivery b where a.customerID = b.customerID and b.volunteerEmail = ?;";
                 this.dbPool.query(query, [email], (err, result) => {
                     if (err) reject(new Error(err.message));

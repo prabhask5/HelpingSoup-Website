@@ -28,16 +28,20 @@ function getOrders() {
                 var endTime = element.endTime;
                 endTime = timeConvert(endTime);
                 startTime = timeConvert(startTime);
-                var Date = element.pickupDate.substring(0,10);
+                var startDate = element.firstDate.substring(0,10);
+                var endDate = element.lastDate.substring(0,10);
+                startDate = dateSymbolSwitch(startDate);
+                endDate = dateSymbolSwitch(endDate);
                 var popUp = addPopUp(rowID,goodsNotes);
+                
                 addRow(rowID,goodsNotes);
-                console.log("this is the type customerID " + ID);
+
                 $(`#E${rowID}0`).val(ID);
                 $(`#E${rowID}1`).html(Name);
                 $(`#E${rowID}2`).html(Address);
                 $(`#E${rowID}3`).html(startTime);
                 $(`#E${rowID}4`).html(endTime);
-                $(`#E${rowID}5`).html(Date);
+                $(`#E${rowID}5`).html(startDate + " - " + endDate);
                 $(`#E${rowID}6`).html(popUp);
                 console.log("All elements of row have been added this is the rowID " + rowID);
             });
@@ -127,7 +131,13 @@ function popUpClicked (rowID) {
     console.log("popup is clicked");
     $(`#hiddenWords${rowID}`).slideToggle('slow');
 }
-
+//change "-" to "/" in date
+function dateSymbolSwitch (date) {
+    var goodDate = date.replace(/\-/g,'/');
+    var dateArr = goodDate.split("/");
+    var newDate = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
+    return newDate;
+}
 
 //ajax function
 function callAjax(uri, method, formData) {
