@@ -217,11 +217,13 @@ a{
     color: rgb(255, 255, 255);
     font-family: Raleway;
     padding-bottom:60px;
-    font-size: 11px;
+    font-size: 13px;
     height: 60px;
     line-height: 60px;
-    white-space: nowrap;
-    padding-left: 60px;
+    margin:0;
+    white-space:normal;
+    padding-left: 15%;
+
     
 
  }
