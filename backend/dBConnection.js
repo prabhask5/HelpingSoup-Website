@@ -26,6 +26,8 @@ var createCustomer = `CREATE TABLE IF NOT EXISTS helpingsoupdb.customer(
     customerCity VARCHAR(100) NULL,
     customerState VARCHAR(50) NULL,
     customerZip CHAR(5) NULL,
+    firstDate DATE NULL,
+    lastDate DATE NULL,
     startTime TIME NULL,
     endTime TIME NULL,
     goodsNotes VARCHAR(500) NULL
@@ -105,12 +107,12 @@ class DbService{
             }
             else volunteerOpt = 0;
             const insert = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO volunteer (volunteerFirstName, volunteerLastName, volunteerEmail," +
+                const query = "INSERT INTO helpingsoupdb.volunteer (volunteerFirstName, volunteerLastName, volunteerEmail," +
                      " volunteerStreetAddress, volunteerCity, volunteerState," +
                      " volunteerZip, volunteerSchool, volunteerPassword, volunteerEmailOptIn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-                this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, school, password], (err, result) => {
+                this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, school, password, emailOpt], (err, result) => {
                     if (err) reject(new Error(err.message));
-                    resolve(result.insert);
+                    resolve(result);
                 })
             });
             return insert;
@@ -121,7 +123,7 @@ class DbService{
     async getLogin(email, password){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT volunteerPassword FROM volunteer WHERE volunteerEmail = ?;";
+                const query = "SELECT volunteerPassword FROM helpingsoupdb.volunteer WHERE volunteerEmail = ?;";
                 this.dbPool.query(query, [email], (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
@@ -133,13 +135,13 @@ class DbService{
             console.log(error);
         }
     }
-    async insertDonation(firstName, lastName, email, address, city, state, zip, startTime, endTime, message){
+    async insertDonation(firstName, lastName, email, address, city, state, zip, firstDate, lastDate, startTime, endTime, message){
         try{
             const insert = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO customer (customerFirstName, customerLastName, customerEmail," +
-                     " customerStreetAddress, customerCity, customerState, customerZip, startTime, endTime, goodsNotes)" +
-                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-                this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, startTime, endTime, message], (err, result) => {
+                const query = "INSERT INTO helpingsoupdb.customer (customerFirstName, customerLastName, customerEmail," +
+                     " customerStreetAddress, customerCity, customerState, customerZip, firstDate, lastDate, startTime, endTime, goodsNotes)" +
+                     " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                this.dbPool.query(query, [firstName, lastName, email, address, city, state, zip, firstDate, lastDate, startTime, endTime, message], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
                 })
@@ -152,7 +154,7 @@ class DbService{
     async findEmail(email){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT volunteerEmail FROM volunteer WHERE volunteerEmail = ?;";
+                const query = "SELECT volunteerEmail FROM helpingsoupdb.volunteer WHERE volunteerEmail = ?;";
                 this.dbPool.query(query, [email], (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results);
@@ -166,7 +168,7 @@ class DbService{
     async updateToken(email){
         try{
             const update = await new Promise((resolve, reject) => {
-                const query = "UPDATE resettokens SET used = 1 WHERE email = ?;";
+                const query = "UPDATE helpingsoupdb.resettokens SET used = 1 WHERE email = ?;";
                 this.dbPool.query(query, [email], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
@@ -180,7 +182,7 @@ class DbService{
     async createToken(email, expiration, token, createdAt){
         try{
             const insert = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO resettokens(email, expiration, token, createdAt) VALUES (?, ?, ?, ?);";
+                const query = "INSERT INTO helpingsoupdb.resettokens(email, expiration, token, createdAt) VALUES (?, ?, ?, ?);";
                     this.dbPool.query(query, [email, expiration, token, createdAt], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -194,7 +196,7 @@ class DbService{
     async deleteTokens(date){
         try{
             const del = await new Promise((resolve, reject) => {
-                const query = "DELETE FROM resettokens WHERE expiration < ? OR used = 1;";
+                const query = "DELETE FROM helpingsoupdb.resettokens WHERE expiration < ? OR used = 1;";
                     this.dbPool.query(query, [date], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -208,7 +210,7 @@ class DbService{
     async findToken(email, token){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT tokenID FROM resettokens WHERE email = ? AND token = ?;";
+                const query = "SELECT tokenID FROM helpingsoupdb.resettokens WHERE email = ? AND token = ?;";
                     this.dbPool.query(query, [email, token], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -222,7 +224,7 @@ class DbService{
     async findOldPassword(email){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT volunteerPassword FROM volunteer WHERE volunteerEmail = ?;";
+                const query = "SELECT volunteerPassword FROM helpingsoupdb.volunteer WHERE volunteerEmail = ?;";
                     this.dbPool.query(query, [email], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -236,7 +238,7 @@ class DbService{
     async resetPassword(email, password){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "UPDATE volunteer SET volunteerPassword = ? WHERE volunteerEmail = ?;";
+                const query = "UPDATE helpingsoupdb.volunteer SET volunteerPassword = ? WHERE volunteerEmail = ?;";
                     this.dbPool.query(query, [password, email], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -250,7 +252,7 @@ class DbService{
     async findEmails(){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT volunteerEmail FROM volunteer;";
+                const query = "SELECT volunteerEmail FROM helpingsoupdb.volunteer;";
                     this.dbPool.query(query, [], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -264,7 +266,7 @@ class DbService{
     async findOptIn(email){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT volunteerEmailOptIn FROM volunteer WHERE volunteerEmail = ?;";
+                const query = "SELECT volunteerEmailOptIn FROM helpingsoupdb.volunteer WHERE volunteerEmail = ?;";
                     this.dbPool.query(query, [email], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -278,7 +280,7 @@ class DbService{
     async getDonations() {
         try{
             const response = await new Promise((resolve, reject) => {
-                const query =  "select * from customer where customerID not in(select customerID from volunteerdelivery);";
+                const query =  "select * from helpingsoupdb.customer where customerID not in(select customerID from helpingsoupdb.volunteerdelivery);";
                     this.dbPool.query(query, [], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -292,7 +294,7 @@ class DbService{
     async changeOptIn(email){
         try{
             const response = await new Promise((resolve, reject) => {
-                const query = "UPDATE volunteer SET volunteerEmailOptIn = 0 WHERE volunteerEmail = ?;";
+                const query = "UPDATE helpingsoupdb.volunteer SET volunteerEmailOptIn = 0 WHERE volunteerEmail = ?;";
                      this.dbPool.query(query, [email], (err, result) => {
                         if (err) reject(new Error(err.message));
                         resolve(result);
@@ -306,7 +308,7 @@ class DbService{
     async insertSelectedCustomer (notes,status,email,ID) {
         try {
             const response = await new Promise((resolve,reject) => {
-                const query = "INSERT INTO volunteerdelivery(deliveryNotes,deliveryStatus,volunteerEmail,customerID) VALUES (?, ?, ?, ?);";
+                const query = "INSERT INTO helpingsoupdb.volunteerdelivery(deliveryNotes,deliveryStatus,volunteerEmail,customerID) VALUES (?, ?, ?, ?);";
                 this.dbPool.query(query, [notes,status,email,ID], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
@@ -322,8 +324,8 @@ class DbService{
         try {
             const response = await new Promise((resolve,reject) => {
                 const query = "select a.customerID,a.customerFirstName,a.customerLastName,a.customerEmail,a.customerStreetAddress," +
-                "a.pickupDate,a.startTime,a.endTime,a.goodsNotes,b.deliveryStatus from customer a," + 
-                "volunteerdelivery b where a.customerID = b.customerID and b.volunteerEmail = ?;";
+                "a.startTime,a.endTime,a.goodsNotes,b.deliveryStatus from helpingsoupdb.customer a," + 
+                "helpingsoupdb.volunteerdelivery b where a.customerID = b.customerID and b.volunteerEmail = ?;";
                 this.dbPool.query(query, [email], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
@@ -338,7 +340,7 @@ class DbService{
     async delSelectedOrder (ID) {
         try {
             const response = await new Promise((resolve,reject) => {
-                const query = "DELETE FROM volunteerdelivery WHERE customerID = ?;";
+                const query = "DELETE FROM helpingsoupdb.volunteerdelivery WHERE customerID = ?;";
                 this.dbPool.query(query, [ID], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
@@ -353,7 +355,7 @@ class DbService{
     async updateInProgress (ID,Status) {
         try {
             const response = await new Promise((resolve,reject) => {
-                const query = "UPDATE volunteerdelivery SET deliveryStatus = ? WHERE customerID = ?;";
+                const query = "UPDATE helpingsoupdb.volunteerdelivery SET deliveryStatus = ? WHERE customerID = ?;";
                 this.dbPool.query(query, [Status,ID], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);

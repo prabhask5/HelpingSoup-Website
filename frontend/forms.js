@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
   var emailError = false;
   var zipError = false;
   var timeError = false;
+  var dateError = false;
+  var rangeDateError = false;
   var rangeError = false;
   var canSubmit = true;
 
@@ -44,6 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
         city: $("#city").val(),
         state: $("#state").val(),
         zip: $("#zip").val(),
+        firstDate: $("#firstDate").val(),
+        lastDate: $("#lastDate").val(),
         startTime: $("#firstTime").val(),
         endTime: $("#secondTime").val(),
         message: $("#message").val(),
@@ -120,6 +124,39 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           } 
         }
+        if((e.target.id === "firstDate" || e.target.id === "lastDate") && !dateError){
+          var t1 = document.querySelector("#firstDate");
+          var t2 = document.querySelector("#lastDate");
+          var today = new Date();
+          today.setHours(0,0,0,0);
+          today.setDate(today.getDate() - 1);
+          if (new Date($("#firstDate").val()) < today){
+            setInputError(t1, "Make sure your date is valid.");
+            canSubmit = false;
+            rangeDateError = true;
+          }
+          if (new Date($("#secondDate").val()) < today){
+            setInputError(t2, "Make sure your date is valid.");
+            canSubmit = false;
+            rangeDateError = true;
+          }
+        }
+        if(e.target.id === "firstDate" || e.target.id === "lastDate"){
+          var valuestart = $("#firstDate").val();
+          var valuestop = $("#lastDate").val();    
+          if((valuestart != "" && valuestop != "") && !dateError){
+            var d1 = new Date($("#firstDate").val());
+            var d2 = new Date($("#lastDate").val());
+            if(d1 > d2 || d1.getTime() === d2.getTime()){
+              var t1 = document.querySelector("#firstDate");
+              var t2 = document.querySelector("#lastDate");
+              setInputError(t1, "Please make sure your dates are sequential.");
+              setInputError(t2, "Please make sure your dates are sequential.");
+              canSubmit = false;
+              dateError = true;
+            }
+          } 
+        }
         //console.log(rangeError + " " + timeError + " " + zipError + " " + emailError);
     });
 
@@ -127,6 +164,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if(inputElement.id == "firstTime" || inputElement.id == "secondTime"){
         clearInputError(inputElement);
         rangeError = false;
+      }
+      if(inputElement.id == "firstDate" || inputElement.id == "lastDate"){
+        clearInputError(inputElement);
+        rangeDateError = false;
       }  
       if((inputElement.id == "firstTime" || inputElement.id == "secondTime") && timeError){
           var t1 = document.querySelector("#firstTime");
@@ -135,6 +176,13 @@ document.addEventListener("DOMContentLoaded", () => {
           clearInputError(t2);
           timeError = false;
         }
+      else if((inputElement.id == "firstDate" || inputElement.id == "lastDate") && dateError){
+        var t1 = document.querySelector("#firstDate");
+        var t2 = document.querySelector("#lastDate");
+        clearInputError(t1);
+        clearInputError(t2);
+        dateError = false;
+      }
       else if(inputElement.id == "zip"){
           clearInputError(inputElement);
           zipError = false;
@@ -144,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
           emailError = false;
         }
       else clearInputError(inputElement);
-        if((!rangeError && !timeError) && (!zipError && !emailError)) canSubmit = true;
+        if((!rangeError && !timeError) && ((!zipError && !emailError) && (!rangeDateError && !dateError))) canSubmit = true;
         //console.log(rangeError + " " + timeError + " " + zipError + " " + emailError);
     });
   });
