@@ -1,16 +1,15 @@
 const mysql = require('mysql2');
 const dotenv = require('dotenv').config({path:__dirname+'/.env'});
-let instance = null;
 var queryList = [];
 
 
 const config = {
-    connectionLimit : process.env.CONNECTIONLIMIT,
+    connectionLimit: process.env.CONNECTIONLIMIT,
     queueLimit: process.env.QUEUELIMIT,
     host: process.env.HOST,
     user: process.env.HSDB_USER,
     password: process.env.HSDB_PASSWORD,
-    database: process.env.DATABASE,
+    //database: process.env.DATABASE,
     port: process.env.DB_PORT
 };
 
@@ -18,7 +17,7 @@ var createDb = "CREATE DATABASE IF NOT EXISTS helpingsoupdb;";
 queryList.push(createDb);
 var useDb = "use helpingsoupdb;";
 queryList.push(useDb);
-var createCustomer = `CREATE TABLE IF NOT EXISTS customer(
+var createCustomer = `CREATE TABLE IF NOT EXISTS helpingsoupdb.customer(
     customerID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     customerFirstName VARCHAR(50) NULL,
     customerLastName VARCHAR(50) NULL,
@@ -32,7 +31,7 @@ var createCustomer = `CREATE TABLE IF NOT EXISTS customer(
     goodsNotes VARCHAR(500) NULL
 );`
 queryList.push(createCustomer);
-var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
+var createVolunteer = `CREATE TABLE IF NOT EXISTS helpingsoupdb.volunteer(
     volunteerID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     volunteerFirstName VARCHAR(100) NULL,
     volunteerLastName VARCHAR(100) NULL,
@@ -46,7 +45,7 @@ var createVolunteer = `CREATE TABLE IF NOT EXISTS volunteer(
     volunteerEmailOptIn TINYINT(1) NOT NULL DEFAULT 0
 );`;
 queryList.push(createVolunteer);
-var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
+var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS helpingsoupdb.volunteerdelivery(
     volunteerDeliveryID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     deliveryNotes VARCHAR(500) NULL,
     deliveryStatus VARCHAR(20) NULL,
@@ -56,7 +55,7 @@ var createVolunteerDelivery = `CREATE TABLE IF NOT EXISTS volunteerdelivery(
     FOREIGN KEY (customerID) REFERENCES customer(customerID)
 );`;
 queryList.push(createVolunteerDelivery);
-var createResetTokens = `CREATE TABLE IF NOT EXISTS resettokens(
+var createResetTokens = `CREATE TABLE IF NOT EXISTS helpingsoupdb.resettokens(
     tokenID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL,
     token VARCHAR(255) NOT NULL,
@@ -75,7 +74,6 @@ class DbService{
   
     constructor(){
         this.dbPool= mysql.createPool(config);
-       
         this.dbPool.on('connection', function (connection) {
             console.log('DB Connection established');
           
@@ -85,7 +83,6 @@ class DbService{
             connection.on('close', function (err) {
               console.error(new Date(), 'MySQL close', err);
             });
-          
         });
         for(let query of queryList){   
             this.dbPool.query(query,function(err,rows){
@@ -97,9 +94,7 @@ class DbService{
                       
             });
             
-        } 
-       
-    
+        }
     }
 
     async insertVolunteer(firstName, lastName, email, address, city, state, zip, school, password, emailOpt){
