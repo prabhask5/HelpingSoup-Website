@@ -1,0 +1,200 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    }
+    
+    body{
+    --color-primary: #009579;
+    --color-primary-dark: #007f67;
+    --color-secondary: #252c6a;
+    --color-error: #cc3333;
+    --color-success: #4bb544;
+    --border-radius: 4px
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #83B271;
+    }
+    header {
+    background: #ffffff;
+    padding: 0px;
+    color: var(--color-primary);
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    }
+    img{
+    width:120px;
+    height:120px;
+    vertical-align: bottom;
+    margin-left: 10px;
+    }
+    ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    }
+    li{
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    margin-top: 2.3%;
+    
+    }
+    h1{
+    padding: 20px;
+    display:inline-table;
+    position: absolute;
+    font-size: 60px;
+    top: 5px;
+    right: 520px;
+    width: 200px;
+    height: 100px;
+    
+    
+    }
+    .container {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    }
+    a{
+    text-decoration: none;
+    font-family:'Platnomor';
+    padding-left:50px;
+    padding-right:50px;
+    font-weight: bold;
+    color:black;
+    
+    }
+    @font-face {
+        font-family: Platnomor;
+        src: url(../docs/PlatNomor.ttf);
+    }
+
+    @font-face {
+        font-family: Franklin;
+        src: url(../docs/Franklin\ Gothic\ Heavy\ Regular.ttf);
+    }
+    @font-face {
+        font-family: Raleway;
+        src: url(../docs/Raleway-ThinItalic.ttf);
+    }
+
+    .fifty{
+        font-size: 50px;
+        text-align: center;
+        padding-top: 2%;
+        color: white;
+        font-family: 'Franklin';
+    }
+
+    .textBox {
+        background-color: #ffffff;
+        text-align:center;
+        font-family: Georgia, serif;
+        margin:auto;
+        border: 2px solid rgb(0, 0, 0);
+        padding: 25px;
+        border-radius: 15px;
+        font-size: 20px;
+        width: 50%;
+        margin-top: 40px;
+    }
+
+   
+    #konda{
+        width: 300px;
+        height: 320px;
+        position:absolute;
+        float: left;
+        top: 50%;
+        left: 2.5%;
+        
+    }
+
+    #probs{
+        width: 300px;
+        height: 320px;
+        position:absolute;
+        float: left;
+        top: 50%;
+        left: 27.5%;
+
+        
+    }
+
+    #farz{
+        width: 300px;
+        height: 320px;
+        position:absolute;
+        float: left;
+        top: 50%;
+        left: 52.5%;
+        
+    }
+
+    #shreyu{
+        width: 300px;
+        height: 320px;
+        position:absolute;
+        float: left;
+        top: 50%;
+        left: 77.5%;
+        
+    }
+
+    
+    .caption1 {
+        font-size: 20px;
+        display: block;
+        text-align: center;
+        width: 26.5%;
+        position: absolute;
+        top: 92.5%;
+        
+        font-family: Raleway;
+        color: white;
+        font-size: 20px;
+        
+    }
+
+    .caption2 {
+        display: block;
+        text-align: center;
+        width: 26.5%;
+        font-family: Raleway;
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 92.5%;
+        left: 25%;
+    }
+    .caption3 {
+        display: block;
+        text-align: center;
+        width: 26.5%;
+        font-family: Raleway;
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 92.5%;
+        left: 50%;
+    }
+    .caption4 {
+        display: block;
+        text-align: center;
+        width: 26.5%;
+        font-family: Raleway;
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 92.5%;
+        left: 75%;
+    }
+
+    .inline-block {
+        display: inline-block;
+     }
+
+     
