@@ -47,6 +47,7 @@ function gettingURL () {
     var volunteerEmail = urlParams.get('email');
     var method = 'GET';
     var url = "http://localhost:4000/api/GetAllSelectedOrders?volunteerEmail=" + volunteerEmail;
+    console.log("this is the url " + url);
     callAjax(url,method).
     done(function(data,textStatus,jqXHR) {
         if (data) {
@@ -61,8 +62,11 @@ function gettingURL () {
                 var endTime = element.endTime;
                 endTime = timeConvert(endTime);
                 startTime = timeConvert(startTime);
-                var Date = element.pickupDate.substring(0,10);
+                var startDate = element.firstDate.substring(0,10);
+                var endDate = element.lastDate.substring(0,10);
                 var Status = element.deliveryStatus;
+                startDate = dateSymbolSwitch(startDate);
+                endDate = dateSymbolSwitch(endDate);
 
                 addRow(rowID,ID);
 
@@ -88,7 +92,7 @@ function gettingURL () {
                 $(`#E${rowID}2`).html(Address);
                 $(`#E${rowID}3`).html(startTime);
                 $(`#E${rowID}4`).html(endTime);
-                $(`#E${rowID}5`).html(Date);
+                $(`#E${rowID}5`).html(startDate + " - " + endDate);
                 $(`#E${rowID}6p`).html(goodsNotes);
             });
         };
@@ -194,6 +198,13 @@ function timeConvert (time){
         time = time + " AM";
     }
     return time;
+}
+//change "-" to "/" in date
+function dateSymbolSwitch (date) {
+    var goodDate = date.replace(/\-/g,'/');
+    var dateArr = goodDate.split("/");
+    var newDate = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
+    return newDate;
 }
 
 function callAjax(uri, method, formData) {

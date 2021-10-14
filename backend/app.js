@@ -119,7 +119,7 @@ app.post('/donation', (request, response) => {
     const db = DbService.getDbServiceInstance();
     const result = db.insertDonation(formData.firstName, formData.lastName, formData.email,
          formData.address, formData.city, formData.state,
-         formData.zip, formData.startTime,
+         formData.zip, formData.firstDate, formData.lastDate, formData.startTime,
          formData.endTime, formData.message);
     result
     .then(data => response.json({data: data}));
@@ -139,7 +139,7 @@ app.post('/donation', (request, response) => {
                         from: process.env.EMAIL_USER,
                         to: currEmail,
                         subject: "New HelpingSoup Donation",
-                        text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + time1 + ' to ' + time2 + ', and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: [placeholder link].' + '\n\nIf you want to opt out of these emails, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/optout?email='+ currEmail + '\n\nSincerely,\n\nThe HelpingSoup Team'
+                        text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + formData.firstDate + ' to ' + formData.lastDate + ', from ' + time1 + ' to ' + time2 + ' on those days, and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/login.html' + '\n\nIf you want to opt out of these emails, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/optout?email='+ currEmail + '\n\nSincerely,\n\nThe HelpingSoup Team'
                     };
                     transporter.sendMail(message, (err, info) => {
                         if(err) console.log(err);
