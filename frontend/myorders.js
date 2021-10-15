@@ -1,13 +1,13 @@
 $(document).ready(function(){
     console.log("ready is called");
-    changeHref();
     gettingURL();
 });
 
-function changeHref () {
+function changeHref (base,reference) {
     var urlParams = new URLSearchParams(window.location.search);
     var volunteerEmail = urlParams.get('email');
-    $(`#linkUser`).attr("href","userpage.html?email=" + volunteerEmail);
+    $("#" + reference).attr("href", base + "?email=" + volunteerEmail);
+    
 }
 
 function addRow (rowID,ID) {
