@@ -4,6 +4,7 @@ $(document).ready(function(){
 });
 
 function changeHref (base,reference) {
+    
     var urlParams = new URLSearchParams(window.location.search);
     var volunteerEmail = urlParams.get('email');
     $("#" + reference).attr("href", base + "?email=" + volunteerEmail);
