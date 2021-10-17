@@ -85,7 +85,7 @@ section{
     justify-content: center;
     flex-direction: column;
 }
-.container{
+.container2{
     width: 90%;
     max-width: 500px;
     margin: 50px;
@@ -95,7 +95,7 @@ section{
     border-radius: 8px;
     margin-bottom: 20px;
 }
-.container,
+.container2,
 .form__input,
 .form__button,
 .loginform__input,

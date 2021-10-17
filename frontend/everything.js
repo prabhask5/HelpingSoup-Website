@@ -5,7 +5,6 @@ $(document).ready(function(){
 
 //html change with url
 function changeHref (base,reference) {
-    alert("this change calledx");
     var urlParams = new URLSearchParams(window.location.search);
     var volunteerEmail = urlParams.get('email');
     $("#" + reference).attr("href", base + "?email=" + volunteerEmail);
@@ -19,7 +18,7 @@ function insertCode () {
     if (volunteerEmail != null){
         $(`#drops`).remove()
         var code = `
-        <ul class="container">
+        <ul class="container1">
             <img src="../../docs/logo3.PNG" alt="HelpingSoup Logo">
 
             <li><a id="linkOrder1" onclick="changeHref(\`main.html\`,\`linkOrder1\`)" href="main.html">Home</a></li>
@@ -42,7 +41,7 @@ function insertCode () {
                     <div class="dropdown-content">
                     <a id="linkOrder5" onclick="changeHref(\`userpage.html\`,\`linkOrder5\`)" href="userpage.html">Donation's List</a>
                     <a id="linkOrder6" onclick="changeHref(\`myorders.html\`,\`linkOrder6\`)" href="myorders.html">My Orders</a>
-                    <a id="linkOrder6" >Sign Out</a>
+                    <a id="linkOrder7" href="login.html">Sign Out</a>
                     </div>
                 </div></li>
 
