@@ -83,7 +83,7 @@ app.post('/forgotPasswordEmail', (request, response) => {
                 from: process.env.EMAIL_USER,
                 to: formData.email,
                 subject: "HelpingSoup Reset Password",
-                text: 'Hello,\n\nTo reset your password, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/user/reset-password?token='+ encodeURIComponent(token) +'&email='+ formData.email +'\n\nSincerely,\n\nThe HelpingSoupTeam'
+                text: 'Hello,\n\nTo reset your password, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/user/reset-password?token='+ encodeURIComponent(token) +'&email='+ formData.email +'\n\nSincerely,\n\nThe HelpingSoup Team'
             };
             transporter.sendMail(message, (err, info) => {
                 if(err) console.log(err);
