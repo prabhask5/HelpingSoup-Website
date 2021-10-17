@@ -5,23 +5,32 @@
         <link rel="stylesheet" href="../login.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="../login.js"></script>
+        <link rel="stylesheet" href="../everything.css">
+        <script src="../everything.js"></script>
 
     </head>
     
     <body>
 
         <header>
-            <nav>
-                <ul class="container1">
+            <nav id ="insertHere" >
+                <ul id="drops" class="container1">
                     <img src="../../docs/logo3.PNG" alt="HelpingSoup Logo">
                     <h1></h1>
-
+                
                     <li><a href="main.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li><div class="dropdown">
+                        <a>About</a>
+                        <div class="dropdown-content">
+                        <a href='aboutus.html'>About us</a>
+                        <a href='about.html'>How it Works</a>
+                        <a href='missionstatement.html'>Mission Statement</a>
+                        <a href='partners.html'>Partners</a>
+                        <a href='contact.html'>Contact Us</a>
+                        </div>
+                      </div></li>
                     <li><a href="forms.html">Donation Form</a></li>
                     <li><a href="login.html">Volunteer Login/Sign Up</a></li>
-
-
                 </ul>
             </nav>
         </header>
@@ -29,7 +38,7 @@
 
 <body>
     <section>
-        <div class="container">
+        <div class="container2">
             <form action="http://localhost:4000/volunteerLogin" method="POST" id="login">
                 <h1 class="form__title">Volunteer Login</h1>
                 <div class="form__message form__message--error"></div>
