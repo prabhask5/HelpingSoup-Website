@@ -151,6 +151,7 @@ a{
     padding-right:50px;
     font-weight: bold;
     color:black;
+    font-size: 21px;
 
 }
 .textBox {
@@ -240,18 +241,21 @@ a{
     margin:0;
     white-space:normal;
     padding-left: 15%;
-
-    
-
+      
  }
  #footer1{
     position:absolute;
-    right:100px;
-    bottom:15px;
+    right:165px;
+    bottom:13px;
 }
 #footer2{
     position:absolute;
     right:30px;
+    bottom:13px;
+}
+#footer3{
+    position:absolute;
+    right:95px;
     bottom:13px;
 }
 
@@ -284,4 +288,10 @@ a{
     background-color: #83B271;
   }
 
+
+.footertext{
+    font-size: 13px;
+    inline-size: 60px;
+    overflow-wrap: break-word;
+}
   
