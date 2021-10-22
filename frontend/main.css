@@ -344,3 +344,25 @@ a{
     line-height: 30px;
     text-align: center;
 }
+
+.item1 { grid-area: header; }
+.item2 { grid-area: menu; }
+.item3 { grid-area: main; }
+.item4 { grid-area: right; }
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'header header menu menu'
+    'main main right right';
+  grid-gap: px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: px;
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
