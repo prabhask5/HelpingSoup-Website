@@ -16,7 +16,7 @@ h5 {
     line-height: 2;
     text-shadow: -2px 4px 2px #666666;
     margin: auto;
-    top: 100px;
+    top: 50px;
     height: 25%;
     font-family: 'Franklin';
 }
@@ -31,7 +31,6 @@ h6 {
     line-height: 2;
     text-shadow: -2px 4px 2px #666666;
     margin: auto;
-    top: 100px;
     font-family: 'Raleway';
 }
 .straight {
