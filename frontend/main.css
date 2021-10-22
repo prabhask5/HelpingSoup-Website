@@ -6,6 +6,8 @@
 body{
     font-family: Arial, Helvetica, sans-serif;
     background-color: #83B271;
+    margin-bottom: 100px;
+
 
 }
 header {
@@ -118,7 +120,7 @@ h4{
     justify-content: space-between;
 }
 li{
-    background: white;
+    background: rgb(255, 255, 255);
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -151,6 +153,9 @@ a{
     padding-right:50px;
     font-weight: bold;
     color:black;
+    font-size: 21px;
+    display:block;
+        
 
 }
 .textBox {
@@ -226,6 +231,8 @@ a{
     }
     
   }
+
+
   .footer {
     position:fixed;
     bottom:0;
@@ -237,22 +244,28 @@ a{
     font-size: 13px;
     height: 60px;
     line-height: 60px;
-    margin:0;
-    white-space:normal;
-    padding-left: 15%;
-
-    
-
+    text-align: center;
+      
  }
  #footer1{
     position:absolute;
-    right:100px;
-    bottom:15px;
+    right:165px;
+    bottom:13px;
 }
 #footer2{
     position:absolute;
     right:30px;
     bottom:13px;
+}
+#footer3{
+    position:absolute;
+    right:95px;
+    bottom:13px;
+}
+#footer4{
+    position:absolute;
+    right:235px;
+    bottom:5px;
 }
 
 .dropdown {
@@ -284,4 +297,37 @@ a{
     background-color: #83B271;
   }
 
-  
+
+.footertext{
+    font-size: 13px;
+    overflow-wrap: break-word;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-indent:-240px;
+}
+
+@media only screen and (max-device-width: 1630px) {
+    .footertext{
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-device-width: 1500px) {
+    .footertext{
+        font-size: 11px;
+    }
+}
+
+@media only screen and (max-device-width: 1416px) {
+    .footertext{
+        font-size: 10px;
+    }
+}
+
+@media only screen and (max-device-width: 1313px) {
+    .footertext{
+        font-size: 9px;
+    }
+}
+
