@@ -111,22 +111,22 @@ function gettingURL () {
 
 //adding all buttons
 function addDeleteBtn (rowID,ID) {
-    var code = `<button class="btn btn-md btn-primary" onclick="delOrder(${rowID},${ID})" id="deleteBtn${rowID}">&#10060;</button>`;
+    var code = `<button class="btn btn-md btn-primary" title="Delete Order" onclick="delOrder(${rowID},${ID})" id="deleteBtn${rowID}">&#10060;</button>`;
     return code;
 }
 
 function addDoneBtn (rowID,ID) {
-    var code = `<button class="btn btn-md btn-primary" onclick="doneOrder(${rowID},${ID})" id="doneBtn${rowID}">&#10004;</button>`;
+    var code = `<button class="btn btn-md btn-primary" title="Complete Order" onclick="doneOrder(${rowID},${ID})" id="doneBtn${rowID}">&#10004;&#65039;</button>`;
     return code;
 }
 
 function addInProgressBtn (rowID,ID) {
-    var code = `<button class="btn btn-md btn-primary" onclick="inProgressOrder(${rowID},${ID})" id="InProgressBtn${rowID}">&#9202;</button>`;
+    var code = `<button class="btn btn-md btn-primary" title="Order in Progress" onclick="inProgressOrder(${rowID},${ID})" id="InProgressBtn${rowID}">&#9202;</button>`;
     return code;
 }
 
 function addChangeBtn (rowID,ID) {
-    var code = `<button class="btn btn-md btn-primary" onclick="changeStatus(${rowID},${ID})" id="changeBtn${rowID}">Change Status</button>`;
+    var code = `<button class="btn btn-md btn-primary" title="Change Order Status" onclick="changeStatus(${rowID},${ID})" id="changeBtn${rowID}">Change Status</button>`;
     return code;
 }
 
