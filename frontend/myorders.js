@@ -48,7 +48,6 @@ function gettingURL () {
     var volunteerEmail = urlParams.get('email');
     var method = 'GET';
     var url = "http://localhost:4000/api/GetAllSelectedOrders?volunteerEmail=" + volunteerEmail;
-    console.log("this is the url " + url);
     callAjax(url,method).
     done(function(data,textStatus,jqXHR) {
         if (data) {
