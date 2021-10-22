@@ -26,3 +26,141 @@
     color: #FFFFFF;
     background-color: #83B271;
   }
+
+  .footer {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background-color: #454545;
+    color: rgb(255, 255, 255);
+    font-family: Raleway;
+    padding-bottom:60px;
+    font-size: 13px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+      
+ }
+ #footer1{
+    position:absolute;
+    right:165px;
+    bottom:13px;
+}
+#footer2{
+    position:absolute;
+    right:30px;
+    bottom:13px;
+}
+#footer3{
+    position:absolute;
+    right:95px;
+    bottom:13px;
+}
+#footer4{
+    position:absolute;
+    right:235px;
+    bottom:5px;
+}
+
+.dropdown {
+    display: inline-block;
+    position: relative;
+  }
+  .dropdown-content {
+    display: none;
+    position: relative;
+    width: 100%;
+    z-index:1;
+    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
+  }
+  .dropdown:hover .dropdown-content {
+    display: block;
+    position: absolute;
+  }
+  .dropdown-content a{
+    display: block;
+    color: #000000;
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    z-index:-1;
+
+  }
+  .dropdown-content a:hover {
+    color: #FFFFFF;
+    background-color: #83B271;
+  }
+
+
+.footertext{
+    font-size: 13px;
+    overflow-wrap: break-word;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-indent:-240px;
+}
+
+@media only screen and (max-device-width: 1630px) {
+    .footertext{
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-device-width: 1500px) {
+    .footertext{
+        font-size: 11px;
+    }
+}
+
+@media only screen and (max-device-width: 1416px) {
+    .footertext{
+        font-size: 10px;
+    }
+}
+
+@media only screen and (max-device-width: 1313px) {
+    .footertext{
+        font-size: 9px;
+    }
+}
+
+@font-face {
+  font-family: Platnomor;
+  src: url(../docs/PlatNomor.ttf);
+}
+@font-face {
+  font-family: Franklin;
+  src: url(../docs/Franklin\ Gothic\ Heavy\ Regular.ttf);
+}
+@font-face {
+  font-family: Elephant;
+  src: url(../docs/Elephant\ V1.ttf);   
+}
+@font-face {
+  font-family: Raleway;
+  src: url(../docs/Raleway-ThinItalic.ttf);
+}
+@font-face {
+  font-family: RalewayBold;
+  src: url(../docs/Raleway-Bold.ttf);
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #83B271;
+  margin-bottom: 100px;
+}
+
+a{
+  text-decoration: none;
+  font-family:'Platnomor';
+  padding-left:50px;
+  padding-right:50px;
+  font-weight: bold;
+  color:black;
+  font-size: 21px;
+  display:block;
+      
+
+}

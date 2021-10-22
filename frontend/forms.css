@@ -33,12 +33,12 @@ ul{
 }
 li{
     background: white;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 20px;
+    border-radius: 10px;
     margin-bottom: 20px;
     display: flex;
     margin-top: 2.3%;
-    
+
 }
 h4{
     padding: 20px;
@@ -61,12 +61,15 @@ h4{
 a{
     text-decoration: none;
     font-family:'Platnomor';
-    padding-left:56px;
-    padding-right:35px;
-    padding-top: 1px;
+    padding-left:50px;
+    padding-right:50px;
     font-weight: bold;
     color:black;
+    font-size: 21px;
+    display:block;
+
 }
+
 section{
     width: 100%;
     background-color: #83B271;
