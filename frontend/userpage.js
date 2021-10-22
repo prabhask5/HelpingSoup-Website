@@ -94,7 +94,7 @@ function timeConvert (time){
 //adding the save button to the row
 function addSaveBtn (rowID) {
     console.log("addSaveBtn is called");
-    var code = `<button class="btn btn-md btn-primary" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID})">&#10004;</button>`;
+    var code = `<button class="btn btn-md btn-primary" title="Select Order" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID})">&#10004;&#65039;</button>`;
     return code;
 }
 //saving order with post call sending volunteerEmail and customerID
