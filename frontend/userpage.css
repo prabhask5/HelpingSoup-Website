@@ -1,12 +1,30 @@
 h5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 60px;
     text-align: center;
-    
+    line-height: 2;
+    text-shadow: -2px 4px 2px #666666;
+    margin: auto;
+    top: 50px;
+    height: 25%;
+    font-family: 'Franklin';
 }
-
 h6 {
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    line-height: 2;
+    text-shadow: -2px 4px 2px #666666;
+    margin: auto;
+    font-family: 'Raleway';
 }
-
 #move {
     margin: auto;
     width:90%;
