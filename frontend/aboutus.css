@@ -115,7 +115,7 @@
     #konda{
         width: 300px;
         height: 320px;
-        position:relative;
+        position:absolute;
         float: left;
         top: 50%;
         left: 1%;
@@ -125,7 +125,7 @@
     #probs{
         width: 300px;
         height: 320px;
-        position:relative;
+        position:absolute;
         float: left;
         top: 50%;
         left: 25%;
@@ -136,7 +136,7 @@
     #shreyu{
         width: 300px;
         height: 320px;
-        position:relative;
+        position:absolute;
         float: left;
         top: 50%;
         left: 50%;
@@ -147,7 +147,7 @@
     #farz{
         width: 300px;
         height: 320px;
-        position:relative;
+        position:absolute;
         float: left;
         top: 50%;
         left: 75%;
@@ -202,10 +202,11 @@
     }
 
     ul{
-        display: inline-flex;
+        display: inline-flexbox;
         justify-content: center;
         align-items: center;
-        margin-left: -6.5%;
+        text-align: center;
+        margin-left: -5%;
     }
      ul.fans l {
         display: inline-block;
