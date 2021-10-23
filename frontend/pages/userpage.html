@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>HelpingSoup</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src=
@@ -35,7 +36,7 @@
                 <li><div class="dropdown">
                     <a style="color: black;">Volunteer Pages</a>
                     <div class="dropdown-content">
-                    <a id="linkOrder5" onclick="changeHref(`userpage.html`,`linkOrder5`)" href="userpage.html">Donation's List</a>
+                    <a id="linkOrder5" onclick="changeHref(`userpage.html`,`linkOrder5`)" href="userpage.html">Donation List</a>
                     <a id="linkOrder6" onclick="changeHref(`myorders.html`,`linkOrder6`)" href="myorders.html">My Orders</a>
                     <a id="linkOrder7" href="login.html" >Sign Out</a>
                     </div>
@@ -45,9 +46,7 @@
         </nav>
     </header>
     <body>
-        <h5>Available Orders</h5>
-        <h6>Click the green checkmark to select an order</h6>
-        
+        <h5>Available Orders</h5> 
         <div id="Customer">
             <div id="move">
                     <table id="customerTable" class="table table-bordered">
@@ -55,9 +54,9 @@
                         <tr id="E0">
                             <th class="text-center">Name</th>
                             <th class="text-center">Address</th>
-                            <th class="text-center">Start Time</th>
-                            <th class="text-center">End Time</th>
-                            <th class="text-center">Pickup Date</th>
+                            <th class="text-center">First Available Time</th>
+                            <th class="text-center">Last Available Time</th>
+                            <th class="text-center">Pickup Dates</th>
                             <th id="goodsNotes" class="text-center">Goods Notes</th>
                         </tr>
                         </thead>

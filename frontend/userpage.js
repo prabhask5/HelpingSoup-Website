@@ -94,7 +94,7 @@ function timeConvert (time){
 //adding the save button to the row
 function addSaveBtn (rowID) {
     console.log("addSaveBtn is called");
-    var code = `<button class="btn btn-md btn-primary" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID})">&#10004;</button>`;
+    var code = `<button class="btn btn-md btn-primary" title="Select Order" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID})">&#10004;</button>`;
     return code;
 }
 //saving order with post call sending volunteerEmail and customerID
@@ -123,7 +123,7 @@ function SaveOrder(rowID) {
 //adding popup button
 function addPopUp (rowID,goodsNotes) {
     console.log("added Popup");
-    var code =`<p class="expand-one" id=popUp${rowID} onClick="popUpClicked(${rowID})"><a href="#">Click for Good Notes</a></p>
+    var code =`<p class="expand-one" id=popUp${rowID} onClick="popUpClicked(${rowID})"><a href="#">Click for Goods Notes</a></p>
                 <p class="content-one" id=hiddenWords${rowID}>${goodsNotes}</p>`
   return code;
 }
