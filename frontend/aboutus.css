@@ -115,20 +115,20 @@
     #konda{
         width: 300px;
         height: 320px;
-        position:absolute;
+        position:relative;
         float: left;
         top: 50%;
-        left: 2.5%;
+        left: 1%;
         
     }
 
     #probs{
         width: 300px;
         height: 320px;
-        position:absolute;
+        position:relative;
         float: left;
         top: 50%;
-        left: 27.5%;
+        left: 25%;
 
         
     }
@@ -136,10 +136,10 @@
     #shreyu{
         width: 300px;
         height: 320px;
-        position:absolute;
+        position:relative;
         float: left;
         top: 50%;
-        left: 52.5%;
+        left: 50%;
         
     }
     
@@ -202,14 +202,16 @@
     }
 
     ul{
-        display: flex;
+        display: inline-flex;
         justify-content: center;
         align-items: center;
+        margin-left: -6.5%;
     }
      ul.fans l {
         display: inline-block;
         margin-top: 40px;
-        margin-left:-1.25%
+        margin-left: 1%;
+        margin-right: -3%;
         
         
       }
