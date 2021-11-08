@@ -1,3 +1,4 @@
+import { config } from './reference.js';
 $(document).ready(function(){
     console.log("ready is called");
     gettingURL();
@@ -47,7 +48,7 @@ function gettingURL () {
     var urlParams = new URLSearchParams(window.location.search);
     var volunteerEmail = urlParams.get('email');
     var method = 'GET';
-    var url = "http://localhost:4000/api/GetAllSelectedOrders?volunteerEmail=" + volunteerEmail;
+    var url = config.backendDomain + "api/GetAllSelectedOrders?volunteerEmail=" + volunteerEmail;
     callAjax(url,method).
     done(function(data,textStatus,jqXHR) {
         if (data) {
@@ -133,7 +134,7 @@ function addChangeBtn (rowID,ID) {
 function delOrder (rowID,ID) {
     console.log("getting into delete");
     var method = "DELETE";
-    var url = "http://localhost:4000/api/delSelectedOrder?customerID=" + ID;
+    var url = config.backendDomain + "api/delSelectedOrder?customerID=" + ID;
     callAjax(url,method);
     $(`#E${rowID}`).remove();
 }
@@ -142,7 +143,7 @@ function delOrder (rowID,ID) {
 function inProgressOrder (rowID,ID) {
     console.log("getting into in progress");
     var method = "PUT";
-    var url = "http://localhost:4000/api/updateStatus?customerID=" + ID + "&deliveryStatus=" + "In Progress";
+    var url = config.backendDomain + "api/updateStatus?customerID=" + ID + "&deliveryStatus=" + "In Progress";
     callAjax(url,method);
     console.log(`#E${rowID}7c`);
     $(`#E${rowID}7c`).attr('hidden',false);
@@ -156,7 +157,7 @@ function inProgressOrder (rowID,ID) {
 function changeStatus (rowID,ID) {
     console.log("getting into change status");
     var method = "PUT";
-    var url = "http://localhost:4000/api/updateStatus?customerID=" + ID + "&deliveryStatus=" + "selected";
+    var url = config.backendDomain + "api/updateStatus?customerID=" + ID + "&deliveryStatus=" + "selected";
     callAjax(url,method);
     $(`#E${rowID}7c`).attr('hidden',true);
     $(`#E${rowID}7d`).attr('hidden',false);
@@ -169,7 +170,7 @@ function changeStatus (rowID,ID) {
 function doneOrder (rowID,ID) {
     console.log("getting into done");
     var method = "PUT";
-    var url = "http://localhost:4000/api/updateStatus?customerID=" + ID + "&deliveryStatus=" + "done";
+    var url = config.backendDomain + "api/updateStatus?customerID=" + ID + "&deliveryStatus=" + "done";
     callAjax(url,method);
     $(`#E${rowID}7c`).attr('hidden',false);
     $(`#E${rowID}7d`).attr('hidden',true);

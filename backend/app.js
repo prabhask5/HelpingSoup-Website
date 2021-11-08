@@ -23,7 +23,8 @@ var transporter = nodemailer.createTransport({
       pass: process.env.EMAIL_PASS
     }
 });
-
+var frontEnd = process.env.FRONTEND_DOMAIN;
+var backEnd = process.env.DOMAIN;
 //POST CALLS
 app.post('/volunteerSignUp', (request, response) =>{
     const formData = request.body;
@@ -83,7 +84,7 @@ app.post('/forgotPasswordEmail', (request, response) => {
                 from: process.env.EMAIL_USER,
                 to: formData.email,
                 subject: "HelpingSoup Reset Password",
-                text: 'Hello,\n\nTo reset your password, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/user/reset-password?token='+ encodeURIComponent(token) +'&email='+ formData.email +'\n\nSincerely,\n\nThe HelpingSoup Team'
+                text: 'Hello,\n\nTo reset your password, please click the link below.\n\nhttp://' + backEnd + '/user/reset-password?token='+ encodeURIComponent(token) +'&email='+ formData.email +'\n\nSincerely,\n\nThe HelpingSoup Team'
             };
             transporter.sendMail(message, (err, info) => {
                 if(err) console.log(err);
@@ -139,7 +140,7 @@ app.post('/donation', (request, response) => {
                         from: process.env.EMAIL_USER,
                         to: currEmail,
                         subject: "New HelpingSoup Donation",
-                        text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + formData.firstDate + ' to ' + formData.lastDate + ', from ' + time1 + ' to ' + time2 + ' on those days, and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/login.html' + '\n\nIf you want to opt out of these emails, please click the link below.\n\nhttp://' + process.env.DOMAIN + '/optout?email='+ currEmail + '\n\nSincerely,\n\nThe HelpingSoup Team'
+                        text: 'Hello,\n\nA new donation from ' + formData.firstName + ' ' + formData.lastName + ' has been submitted to HelpingSoup. The donation is available from '  + formData.firstDate + ' to ' + formData.lastDate + ', from ' + time1 + ' to ' + time2 + ' on those days, and it is located at ' + formData.address + ', ' + formData.city + ', ' + formData.state + ' ' + formData.zip + '.\n\nFor more information, click this link: http://' + frontEnd + '/frontend/pages/login.html' + '\n\nIf you want to opt out of these emails, please click the link below.\n\nhttp://' + backEnd + '/optout?email='+ currEmail + '\n\nSincerely,\n\nThe HelpingSoup Team'
                     };
                     transporter.sendMail(message, (err, info) => {
                         if(err) console.log(err);
@@ -184,7 +185,7 @@ app.get('/user/reset-password', (request, response) => {
             console.log('token found!');
             //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html');
             //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/forgetpassword.html'});
-            response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/forgotpassword.html'});
+            response.writeHead(302, {Location: frontEnd + '/frontend/pages/forgotpassword.html'});
             userEmail = request.query.email;
             response.end();
         }
@@ -192,7 +193,7 @@ app.get('/user/reset-password', (request, response) => {
             console.log('your token has expired or no token as been found, sorry');
             //login.navigate('http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html');
             //response.writeHead(302, {Location: 'http://' + process.env.FRONTEND_DOMAIN + '/frontend/pages/error.html'});
-            response.writeHead(302, {Location: 'http://localhost:5500/frontend/pages/error.html'});
+            response.writeHead(302, {Location: frontEnd + '/frontend/pages/error.html'});
             response.end();
         }
     });

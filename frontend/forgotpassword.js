@@ -1,3 +1,4 @@
+import { config } from './reference.js';
 function setInputError(inputElement, message) {
     inputElement.classList.add("form__input--error"); // change to error text
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = message; // changes error to input message
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", e => {
               }
             $.ajax({
                 type: "POST",
-                url: "http://localhost:4000/resetVolunteerPassword",
+                url: config.backendDomain + "resetVolunteerPassword",
                 data: formData,
                 dataType: "json",
                 encode: true,

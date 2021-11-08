@@ -1,3 +1,5 @@
+import { config } from './reference.js';
+
 $(document).ready(function(){
     console.log("ready is called");
     getOrders();
@@ -13,7 +15,7 @@ function changeHref (base,reference) {
 //GET CALLS
 function getOrders() {
     console.log("get orders is called");
-    var url = "http://localhost:4000/api/GetAllOrders";
+    var url = config.backendDomain + "api/GetAllOrders";
     var method = "GET";
     callAjax(url,method).
     done(function(data,textStatus,jqXHR) {
@@ -94,18 +96,20 @@ function timeConvert (time){
 //adding the save button to the row
 function addSaveBtn (rowID) {
     console.log("addSaveBtn is called");
-    var code = `<button class="btn btn-md btn-primary" title="Select Order" id="SaveBtn${rowID}" onClick="SaveOrder(${rowID})">&#10004;&#65039;</button>`;
+    var code = `<button class="btn btn-md btn-primary" title="Select Order" id="SaveBtn${rowID}" onClick= "SaveOrder(${rowID})">&#10004;&#65039;</button>`;
     return code;
 }
+
 //saving order with post call sending volunteerEmail and customerID
 function SaveOrder(rowID) {
     console.log("Save Order is called");
+    
     console.log("this is the rowid " + `#E${rowID}1`);
     var urlParams = new URLSearchParams(window.location.search);
     var volunteerEmail = urlParams.get('email');
     
     
-    var url = 'http://localhost:4000/api/SelectingOrders';
+    var url = config.backendDomain + 'api/SelectingOrders';
     var method = "POST";
     var myObject = new Object();
     console.log("object created");

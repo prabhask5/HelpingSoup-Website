@@ -1,3 +1,5 @@
+import { config } from './reference.js';
+
 function setInputError(inputElement, message) {
     inputElement.classList.add("form__input--error"); // change to error text
     inputElement.parentElement.querySelector(".form__input-error-message").textContent = message; // changes error to input message
@@ -75,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
               }
             $.ajax({
                 type: "POST",
-                url: "http://localhost:4000/volunteerLogin",
+                url: config.backendDomain + "volunteerLogin",
                 data: formData,
                 dataType: "json",
                 encode: true,
@@ -85,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                         $(loginForm).trigger("reset");
                         $(status).addClass('success');
                         $(status).html("Great! You've been logged in (theoretically)!");
-                        var url = "http://localhost:5500/frontend/pages/userpage.html?email=" + formData.email;
+                        var url = config.frontendDomain + "frontend/pages/userpage.html?email=" + formData.email;
                         console.log("this is the url " + url);
                         window.location.replace(url);
                     }
@@ -118,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
             };
             $.ajax({
                 type: "POST",
-                url: "http://localhost:4000/forgotPasswordEmail",
+                url: config.backendDomain + "forgotPasswordEmail",
                 data: formData,
                 dataType: "json",
                 encode: true,
@@ -172,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
               };
             $.ajax({
                 type: "POST",
-                url: "http://localhost:4000/volunteerSignUp",
+                url: config.backendDomain + "volunteerSignUp",
                 data: formData,
                 dataType: "json",
                 encode: true,
