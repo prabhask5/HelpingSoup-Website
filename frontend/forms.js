@@ -1,4 +1,10 @@
-function setInputError(inputElement, message) {
+var protocol = "http://";
+const config = {
+    frontendDomain: protocol + "localhost:5500/",
+    backendDomain: protocol + "localhost:4000/"
+};
+
+ function setInputError(inputElement, message) {
   inputElement.classList.add("form__input--error"); // change to error text
   inputElement.parentElement.querySelector(".form__input-error-message").textContent = message; // changes error to input message
 }
@@ -60,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       $.ajax({
         type: "POST",
-        url: "http://localhost:4000/donation",
+        url: config.backendDomain + "donation",
         data: formData,
         dataType: "text",
         encode: true,
