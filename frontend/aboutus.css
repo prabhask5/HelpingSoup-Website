@@ -118,7 +118,7 @@
         position:absolute;
         float: left;
         top: 50%;
-        left: 2.5%;
+        left: 1%;
         
     }
 
@@ -128,18 +128,8 @@
         position:absolute;
         float: left;
         top: 50%;
-        left: 27.5%;
+        left: 25%;
 
-        
-    }
-
-    #farz{
-        width: 300px;
-        height: 320px;
-        position:absolute;
-        float: left;
-        top: 50%;
-        left: 52.5%;
         
     }
 
@@ -149,7 +139,18 @@
         position:absolute;
         float: left;
         top: 50%;
-        left: 77.5%;
+        left: 50%;
+        
+    }
+    
+    
+    #farz{
+        width: 300px;
+        height: 320px;
+        position:absolute;
+        float: left;
+        top: 50%;
+        left: 75%;
         
     }
 
@@ -201,13 +202,17 @@
     }
 
     ul{
-        display: flex;
+        display: inline-flexbox;
         justify-content: center;
         align-items: center;
+        text-align: center;
+        margin-left: -5%;
     }
      ul.fans l {
         display: inline-block;
         margin-top: 40px;
+        margin-left: 1%;
+        margin-right: -3%;
         
         
       }
