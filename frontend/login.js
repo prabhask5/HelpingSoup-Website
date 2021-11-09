@@ -1,4 +1,8 @@
-import { config } from './reference.js';
+var protocol = "http://";
+const config = {
+    frontendDomain: protocol + "localhost:5500/",
+    backendDomain: protocol + "localhost:4000/"
+};
 
 function setInputError(inputElement, message) {
     inputElement.classList.add("form__input--error"); // change to error text
@@ -86,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => { // form has loaded
                         console.log("logged in!");
                         $(loginForm).trigger("reset");
                         $(status).addClass('success');
-                        $(status).html("Great! You've been logged in (theoretically)!");
+                        $(status).html("Great! You've been logged in!");
                         var url = config.frontendDomain + "frontend/pages/userpage.html?email=" + formData.email;
                         console.log("this is the url " + url);
                         window.location.replace(url);

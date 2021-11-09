@@ -1,4 +1,8 @@
-import { config } from './reference.js';
+var protocol = "http://";
+const config = {
+    frontendDomain: protocol + "localhost:5500/",
+    backendDomain: protocol + "localhost:4000/"
+};
 
  function setInputError(inputElement, message) {
   inputElement.classList.add("form__input--error"); // change to error text
