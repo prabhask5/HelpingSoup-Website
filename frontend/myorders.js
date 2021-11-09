@@ -1,7 +1,7 @@
 var protocol = "http://";
 const config = {
-    frontendDomain: protocol + "localhost:5500/",
-    backendDomain: protocol + "localhost:4000/"
+    frontendDomain: protocol + "helpingsoup.com/",
+    backendDomain: protocol + "helpingsoup.com:4000/"
 };
 $(document).ready(function(){
     console.log("ready is called");
