@@ -409,6 +409,21 @@ class DbService{
             console.log(error);
         }
     }
+
+    async getFirstName (email) {
+        try {
+            const response = await new Promise((resolve,reject) => {
+                const query = "SELECT volunteerFirstName from helpingsoupdb.volunteer WHERE volunteerEmail = ?;";
+                this.dbPool.query(query, [email], (err,result) => {
+                    if (err) reject (new Error(err.message));
+                    resolve(result);
+                })
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 
