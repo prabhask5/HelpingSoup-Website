@@ -42,8 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     $(status).removeClass();
     $(status).html("");
+    var optIn = false;
     var submit = finalSubmit(canSubmit);
     if(submit){
+      if(document.getElementById('emailOpt').checked){
+        optIn = true;
+      }
       var formData = {
         firstName: $("#firstName").val(),
         lastName: $("#lastName").val(),
@@ -56,7 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
         lastDate: $("#lastDate").val(),
         startTime: $("#firstTime").val(),
         endTime: $("#secondTime").val(),
-        message: $("#message").val(),
+        emailOpt: optIn,
+        message: $("#message").val()
       }
   
       $.ajax({
@@ -141,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
             canSubmit = false;
             rangeDateError = true;
           }
-          if (new Date($("#secondDate").val()) < today){
+          if (new Date($("#lastDate").val()) < today){
             setInputError(t2, "Make sure your date is valid.");
             canSubmit = false;
             rangeDateError = true;
