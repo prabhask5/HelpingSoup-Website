@@ -118,10 +118,14 @@ app.post('/resetVolunteerPassword', (request, response) => {
 app.post('/donation', (request, response) => {
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
+    var opt = 0;
+    if(formData.emailOpt == "true"){
+        opt = 1;
+    }
     const result = db.insertDonation(formData.firstName, formData.lastName, formData.email,
          formData.address, formData.city, formData.state,
          formData.zip, formData.firstDate, formData.lastDate, formData.startTime,
-         formData.endTime, formData.message);
+         formData.endTime, opt, formData.message);
     result
     .then(data => response.json({data: data}));
     const result2 = db.findEmails();
@@ -162,9 +166,7 @@ app.get('/optout', (request, response) => {
 app.post('/api/SelectingOrders',(request,response) => {
     const formData = request.body;
     const db = DbService.getDbServiceInstance();
-    console.log(formData);
     const result = db.insertSelectedCustomer(formData.deliveryNotes,formData.deliveryStatus,formData.volunteerEmail,formData.customerID);
-    
     result
     .then(response.json({success: true}));
 });
@@ -231,9 +233,35 @@ app.delete('/api/delSelectedOrder', (request, response) => {
 app.put('/api/updateStatus', (request, response) => {
     const ID = request.query.customerID;
     const Status = request.query.deliveryStatus;
-    console.log("type of " + typeof Status);
     const db = DbService.getDbServiceInstance();
     const result = db.updateInProgress(ID,Status);
+    if(Status == "In Progress"){
+        const emailCustomer = db.getCustomerEmailDetails(ID);
+        emailCustomer
+        .then(data => {
+            var cEmail = data[0].customerEmail;
+            const optIn = db.findCustomerOptIn(cEmail);
+            optIn
+            .then(data2 => {
+                if(data2[0].customerEmailOptIn == 1){
+                    const result2 = db.getVolunteerEmailDetails(ID);
+                    result2
+                    .then(data3 => {
+                        const message = {
+                            from: process.env.EMAIL_USER,
+                            to: cEmail,
+                            subject: "HelpingSoup Pickup Alert",
+                            text: 'Hello,\n\n\nThis is an email to notify you that ' + data3[0].volunteerFirstName + ' ' + data3[0].volunteerLastName + ' has selected to pick up your donation. Please be ready for the volunteer to come at any time to pick up your donation.\n\nWe greatly appreciate you using our service!\n\n\nSincerely,\n\nThe HelpingSoup Team'
+                        };
+                        transporter.sendMail(message, (err, info) => {
+                            if(err) console.log(err);
+                            //else console.log(info);
+                        });
+                    });
+                }
+            });
+        });
+    }
     result
     .then(response.json({success: true}));
 });
