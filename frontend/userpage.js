@@ -130,7 +130,7 @@ function SaveOrder(rowID) {
 //adding popup button
 function addPopUp (rowID,goodsNotes) {
     console.log("added Popup");
-    var code =`<p class="expand-one" id=popUp${rowID} onClick="popUpClicked(${rowID})"><a href="#">Click for Goods Notes</a></p>
+    var code =`<p class="expand-one" id=popUp${rowID} onClick="popUpClicked(${rowID})"><a href="#">Click for Good Notes</a></p>
                 <p class="content-one" id=hiddenWords${rowID}>${goodsNotes}</p>`
   return code;
 }
