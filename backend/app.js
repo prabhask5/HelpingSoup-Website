@@ -158,6 +158,7 @@ app.post('/donation', (request, response) => {
 
 app.get('/optout', (request, response) => {
     const db = DbService.getDbServiceInstance();
+  
     db.changeOptIn(request.query.email);
     response.writeHead(302, {Location: frontEnd + '/frontend/pages/changedOptIn.html'});
     response.end();
