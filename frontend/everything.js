@@ -25,7 +25,7 @@ function insertCode () {
         $(`#drops`).remove()
         var code = `
         <ul class="container1">
-            <img src="../../docs/logo3.PNG" alt="HelpingSoup Logo">
+            <img src="../../docs/logo3.png" alt="HelpingSoup Logo">
 
             <li><a id="linkOrder1" onclick="changeHref(\`main.html\`,\`linkOrder1\`)" href="main.html">Home</a></li>
                 <li><div class="dropdown">
