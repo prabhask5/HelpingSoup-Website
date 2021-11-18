@@ -56,6 +56,7 @@ function gettingURL () {
     callAjax(url,method).
     done(function(data,textStatus,jqXHR) {
         if (data) {
+            addUserLoggedIn(volunteerEmail);
             console.log(data);
             data.forEach(element => {
                 var rowID = $(`#ordersTable tr`).length;
@@ -210,6 +211,20 @@ function dateSymbolSwitch (date) {
     var dateArr = goodDate.split("/");
     var newDate = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
     return newDate;
+}
+
+function addUserLoggedIn (email) {
+    var url = config.backendDomain + "api/getFirstName?volunteerEmail=" + email;
+    var method = 'GET';
+    callAjax(url,method).
+    done(function(data,textStatus,jqXHR) {
+        if (data) {
+            data.forEach(element => {
+                var volunteerFirstName = element.volunteerFirstName;
+                $(`#UserLog`).html("Logged in as: " + volunteerFirstName);
+            });
+        }
+    });
 }
 
 function callAjax(uri, method, formData) {
