@@ -20,9 +20,12 @@ function getOrders() {
     console.log("get orders is called");
     var url = config.backendDomain + "api/GetAllOrders";
     var method = "GET";
+    var urlParams = new URLSearchParams(window.location.search);
+    var volunteerEmail = urlParams.get('email');
     callAjax(url,method).
     done(function(data,textStatus,jqXHR) {
         if (data) {
+            addUserLoggedIn(volunteerEmail);
             console.log("got some data");
             data.forEach(element => {
                 var rowID = $("#customerTable tr").length;
@@ -145,6 +148,20 @@ function dateSymbolSwitch (date) {
     var dateArr = goodDate.split("/");
     var newDate = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
     return newDate;
+}
+
+function addUserLoggedIn (email) {
+    var url = config.backendDomain + "api/getFirstName?volunteerEmail=" + email;
+    var method = 'GET';
+    callAjax(url,method).
+    done(function(data,textStatus,jqXHR) {
+        if (data) {
+            data.forEach(element => {
+                var volunteerFirstName = element.volunteerFirstName;
+                $(`#UserLog`).html("Logged in as: " + volunteerFirstName);
+            });
+        }
+    });
 }
 
 //ajax function

@@ -266,6 +266,16 @@ app.put('/api/updateStatus', (request, response) => {
     result
     .then(response.json({success: true}));
 });
+
+app.get('/api/getFirstName', (request,response) => {
+    const email = request.query.volunteerEmail;
+    const db = DbService.getDbServiceInstance();
+    const result = db.getFirstName(email);
+    result
+    .then(data =>{
+        response.send(data);
+    });
+});
 //HELPER FUNCTIONS
 function timeConvert (time){
     var timeArray = time.split(':');
