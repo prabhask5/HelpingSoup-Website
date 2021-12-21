@@ -164,3 +164,17 @@ a{
       
 
 }
+
+h12{
+  text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    line-height: 2;
+    text-shadow: -2px 4px 2px #666666;
+    margin: auto;
+    font-family: 'Raleway';
+}
