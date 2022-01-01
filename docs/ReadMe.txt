@@ -1,3 +1,7 @@
+WEBSITE URL: http://helpingsoup.com
+
+
+
 To use:
 1. Install node_modules express, cors, dotenv, mysql2, nodemon (when downloading nodemon use npm install -g nodemon --server), crypto, and nodemailer
 2. Install mySql or xampp for db hosting (make sure to download mysql module on xampp)
